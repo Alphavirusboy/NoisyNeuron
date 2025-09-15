@@ -19,14 +19,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django.http import JsonResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('audio_processor/', include('audio_processor.urls')),
     path('api/audio/', include('audio_processor.urls')),
-    path('api/markov/', include('markov_models.urls')),
-    path('api/music-theory/', include('music_theory.urls')),
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('markov_models/', include('markov_models.urls')),
+    path('music_theory/', include('music_theory.urls')),
+    path('api/health/', lambda request: JsonResponse({'status': 'ok'}), name='health'),
+    path('', TemplateView.as_view(template_name='index-modern.html'), name='home'),
 ]
 
 if settings.DEBUG:

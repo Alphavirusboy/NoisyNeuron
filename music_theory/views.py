@@ -15,7 +15,7 @@ from .models import (
     Instrument, Chord, ChordProgression, InstrumentChord, 
     Song, UserProgress, LearningPath, Practice
 )
-from .theory_engine import MusicTheoryEngine, PitchDetector, MetronomeEngine
+from .theory_engine import EnhancedMusicTheoryEngine, PitchDetector, MetronomeEngine
 from .serializers import (
     InstrumentSerializer, ChordSerializer, SongSerializer,
     UserProgressSerializer, LearningPathSerializer
@@ -33,7 +33,7 @@ class InstrumentViewSet(viewsets.ModelViewSet):
         instrument = self.get_object()
         skill_level = int(request.query_params.get('skill_level', 1))
         
-        theory_engine = MusicTheoryEngine()
+        theory_engine = EnhancedMusicTheoryEngine()
         path = theory_engine.get_learning_path(instrument.name.lower(), skill_level)
         
         return Response(path)
@@ -74,7 +74,7 @@ class ChordViewSet(viewsets.ModelViewSet):
         instrument = request.query_params.get('instrument', 'guitar')
         skill_level = int(request.query_params.get('skill_level', 1))
         
-        theory_engine = MusicTheoryEngine()
+        theory_engine = EnhancedMusicTheoryEngine()
         substitutions = theory_engine.get_chord_substitutions(
             chord.name, instrument, skill_level
         )
@@ -105,7 +105,7 @@ class SongViewSet(viewsets.ModelViewSet):
             temp_path = temp_file.name
         
         try:
-            theory_engine = MusicTheoryEngine()
+            theory_engine = EnhancedMusicTheoryEngine()
             analysis = theory_engine.analyze_audio_harmony(temp_path)
             
             # Clean up temp file
@@ -128,7 +128,7 @@ class SongViewSet(viewsets.ModelViewSet):
         instrument = request.query_params.get('instrument', 'guitar')
         skill_level = int(request.query_params.get('skill_level', 1))
         
-        theory_engine = MusicTheoryEngine()
+        theory_engine = EnhancedMusicTheoryEngine()
         
         # Get original chord progression
         if song.chord_progression and song.chord_progression.chords:
@@ -249,7 +249,7 @@ class ChordRecommendationView(View):
             instrument = data.get('instrument', 'guitar')
             skill_level = int(data.get('skill_level', 1))
             
-            theory_engine = MusicTheoryEngine()
+            theory_engine = EnhancedMusicTheoryEngine()
             recommendations = theory_engine.get_chord_substitutions(
                 chord, instrument, skill_level
             )
@@ -285,7 +285,7 @@ class KeyDetectionView(View):
                     temp_file.write(chunk)
                 temp_path = temp_file.name
             
-            theory_engine = MusicTheoryEngine()
+            theory_engine = EnhancedMusicTheoryEngine()
             analysis = theory_engine.analyze_audio_harmony(temp_path)
             
             # Clean up

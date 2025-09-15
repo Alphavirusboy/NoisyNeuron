@@ -19,13 +19,16 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'noisyneuron.settings')
 # is populated before importing code that may import ORM models.
 django_asgi_app = get_asgi_application()
 
-from audio_processor.consumers import ProcessingConsumer
+from audio_processor.consumers import AudioProcessingConsumer, MusicTheoryConsumer
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            path("ws/processing/", ProcessingConsumer.as_asgi()),
+            path("ws/audio-processing/", AudioProcessingConsumer.as_asgi()),
+            path("ws/music-theory/", MusicTheoryConsumer.as_asgi()),
+            # Legacy route for backward compatibility
+            path("ws/processing/", AudioProcessingConsumer.as_asgi()),
         ])
     ),
 })

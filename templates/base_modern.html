@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NoisyNeuron - AI Music Source Separation{% endblock %}</title>
+    <meta name="description" content="Professional AI-powered music source separation for musicians, producers, and educators">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+        <!-- Modern Styles -->
+    <link rel="stylesheet" href="{% static 'css/modern-clean.css' %}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Meta tags for social sharing -->
+    <meta property="og:title" content="NoisyNeuron - AI Music Source Separation">
+    <meta property="og:description" content="Professional AI-powered music source separation for musicians, producers, and educators">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-waveform"></i>
+            </div>
+            <div class="loading-text">Loading NoisyNeuron...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="main-navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <div class="navbar-brand">
+                <a href="{% url 'home' %}" class="brand-link">
+                    <div class="brand-icon">
+                        <i class="fas fa-waveform"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1 class="brand-name">NoisyNeuron</h1>
+                        <p class="brand-tagline">AI Music Separation</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="navbar-menu" id="navbar-menu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'audio_processor:separate' %}" class="nav-link {% if 'separate' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-waveform"></i>
+                            <span>Separate</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'music_theory:learn' %}" class="nav-link {% if 'learn' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Learn</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'music_theory:practice' %}" class="nav-link {% if 'practice' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-guitar"></i>
+                            <span>Practice</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Right Side Actions -->
+            <div class="navbar-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+
+                {% if user.is_authenticated %}
+                <!-- User Menu -->
+                <div class="user-menu" data-dropdown>
+                    <button class="user-menu-trigger" data-dropdown-trigger>
+                        {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="Profile" class="user-avatar">
+                        {% else %}
+                        <div class="user-avatar user-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        {% endif %}
+                        <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="dropdown-menu" data-dropdown-menu>
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <p class="user-email">{{ user.email }}</p>
+                                {% if user.is_premium %}
+                                <span class="badge badge-premium">Premium</span>
+                                {% else %}
+                                <span class="badge badge-free">Free</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <a href="{% url 'accounts:profile' %}" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <a href="{% url 'accounts:profile_edit' %}" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-crown"></i>
+                            <span>Upgrade</span>
+                        </a>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <form method="post" action="{% url 'accounts:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item dropdown-item-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Auth Buttons -->
+                <div class="auth-buttons">
+                    <a href="{% url 'accounts:login' %}" class="btn btn-ghost">Login</a>
+                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Sign Up</a>
+                </div>
+                {% endif %}
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <ul class="mobile-nav">
+                    <li><a href="{% url 'home' %}" class="mobile-nav-link">Home</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" class="mobile-nav-link">Dashboard</a></li>
+                    <li><a href="{% url 'audio_processor:separate' %}" class="mobile-nav-link">Separate</a></li>
+                    <li><a href="{% url 'music_theory:learn' %}" class="mobile-nav-link">Learn</a></li>
+                    <li><a href="{% url 'music_theory:practice' %}" class="mobile-nav-link">Practice</a></li>
+                    <li><a href="{% url 'accounts:profile' %}" class="mobile-nav-link">Profile</a></li>
+                    <li><a href="{% url 'accounts:profile_edit' %}" class="mobile-nav-link">Settings</a></li>
+                    {% else %}
+                    <li><a href="{% url 'accounts:login' %}" class="mobile-nav-link">Login</a></li>
+                    <li><a href="{% url 'accounts:signup' %}" class="mobile-nav-link">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <!-- Messages -->
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                <div class="alert-content">
+                    {% if message.tags == 'success' %}
+                    <i class="fas fa-check-circle"></i>
+                    {% elif message.tags == 'error' %}
+                    <i class="fas fa-exclamation-circle"></i>
+                    {% elif message.tags == 'warning' %}
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {% else %}
+                    <i class="fas fa-info-circle"></i>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+                <button type="button" class="alert-close" data-dismiss="alert" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Page Content -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <div class="brand-icon">
+                            <i class="fas fa-waveform"></i>
+                        </div>
+                        <div class="brand-text">
+                            <h3>NoisyNeuron</h3>
+                            <p>AI-powered music source separation</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Professional-grade audio source separation powered by cutting-edge AI technology.
+                        Perfect for musicians, producers, and educators.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#api-docs">API Documentation</a></li>
+                        <li><a href="#tutorials">Tutorials</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#status">Status</a></li>
+                        <li><a href="#community">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#press">Press</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <p>&copy; 2024 NoisyNeuron. All rights reserved.</p>
+                    <div class="legal-links">
+                        <a href="#privacy">Privacy Policy</a>
+                        <a href="#terms">Terms of Service</a>
+                        <a href="#cookies">Cookie Policy</a>
+                    </div>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/modern-main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Analytics (replace with your analytics code) -->
+    {% if not debug %}
+    <script>
+        // Add your analytics code here
+    </script>
+    {% endif %}
+</body>
+</html>

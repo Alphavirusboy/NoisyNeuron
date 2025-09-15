@@ -330,3 +330,102 @@ class ProcessingJobViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         return ProcessingJob.objects.filter(audio_file__project__user=self.request.user)
+
+@csrf_exempt
+@api_view(['POST'])
+def upload_audio(request):
+    """Handle file upload and start processing with options."""
+    try:
+        # Parse form data
+        audio_file = request.FILES.get('audio_file')
+        separation_options_json = request.POST.get('separation_options', '[]')
+        quality = request.POST.get('quality', 'standard')
+        
+        if not audio_file:
+            return Response({'error': 'No audio file provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Validate file type and size
+        valid_extensions = ['.mp3', '.wav', '.flac', '.m4a']
+        file_ext = os.path.splitext(audio_file.name)[1].lower()
+        
+        if file_ext not in valid_extensions:
+            return Response({'error': 'Invalid file format. Please use MP3, WAV, FLAC, or M4A.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Check file size (100MB limit)
+        max_size = 100 * 1024 * 1024  # 100MB
+        if audio_file.size > max_size:
+            return Response({'error': 'File too large. Maximum size is 100MB.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Parse separation options
+        try:
+            separation_options = json.loads(separation_options_json)
+        except json.JSONDecodeError:
+            separation_options = ['vocals', 'drums', 'bass', 'other']  # Default options
+        
+        # Create processing options
+        options = {
+            'separation_types': separation_options,
+            'quality': quality,
+            'output_format': 'wav'
+        }
+        
+        # Get or create a demo user for testing
+        from django.contrib.auth.models import User
+        demo_user, created = User.objects.get_or_create(
+            username='demo_user',
+            defaults={'email': 'demo@example.com', 'first_name': 'Demo', 'last_name': 'User'}
+        )
+        
+        # Create project
+        project_name = f"Separation {uuid.uuid4().hex[:8]}"
+        project = AudioProject.objects.create(
+            user=demo_user,
+            name=project_name,
+            description=f"Audio source separation for {audio_file.name}"
+        )
+        
+        # Save audio file
+        audio_file_obj = AudioFile.objects.create(
+            project=project,
+            original_filename=audio_file.name,
+            file=audio_file,
+            file_size=audio_file.size,
+            format=file_ext.lstrip('.'),
+            processing_status='uploaded'
+        )
+        
+        # Create processing job
+        job = ProcessingJob.objects.create(
+            audio_file=audio_file_obj,
+            job_type='source_separation',
+            status='queued',
+            parameters=options
+        )
+        
+        # Start background processing
+        try:
+            process_audio_separation.delay(job.id)
+            job_status = 'started'
+        except Exception as e:
+            logger.error(f"Failed to start background task: {str(e)}")
+            job.status = 'failed'
+            job.error_message = 'Failed to start processing'
+            job.save()
+            job_status = 'failed'
+        
+        return Response({
+            'status': 'success',
+            'message': 'File uploaded successfully',
+            'project_id': str(project.id),
+            'job_id': str(job.id),
+            'audio_file_id': str(audio_file_obj.id),
+            'job_status': job_status,
+            'options': options
+        })
+        
+    except Exception as e:
+        logger.error(f"Upload error: {str(e)}")
+        return Response(
+            {'error': f'Upload failed: {str(e)}'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
