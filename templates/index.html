@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoisyNeuron - AI Music Learning & Source Separation</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/learning.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        {% csrf_token %}
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-waveform"></i>
+                    <h1>Noisy Neuron</h1>
+                    <span class="tagline">Music Source Separation & Practice</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="#separate" class="nav-link" data-section="separate">
+                        <i class="fas fa-waveform"></i> Separate
+                    </a>
+                    <a href="#learn" class="nav-link" data-section="learn">
+                        <i class="fas fa-graduation-cap"></i> Learn
+                    </a>
+                    <a href="#practice" class="nav-link" data-section="practice">
+                        <i class="fas fa-guitar"></i> Practice
+                    </a>
+                </nav>
+                <div class="user-menu">
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/32" alt="Profile" class="profile-avatar">
+                        <span class="username">Music Learner</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="dashboard-header">
+                    <h2>Welcome to Noisy Neuron</h2>
+                    <p>Professional music source separation powered by deep learning. Isolate vocals, drums, bass, and other stems with high-quality precision for practice, production, and creative exploration.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card feature-card">
+                        <div class="card-header">
+                            <h3>Source Separation</h3>
+                            <i class="fas fa-waveform"></i>
+                        </div>
+                        <p class="card-description">Upload any song and extract individual stems - vocals, drums, bass, and other instruments with AI precision.</p>
+                        <div class="feature-stats">
+                            <div class="feature-stat">
+                                <span class="stat-number">99.2%</span>
+                                <span class="stat-label">Accuracy</span>
+                            </div>
+                            <div class="feature-stat">
+                                <span class="stat-number">4</span>
+                                <span class="stat-label">Stem Types</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-action="separate">
+                            <i class="fas fa-upload"></i>
+                            Start Separation
+                        </button>
+                    </div>
+
+                    <div class="dashboard-card feature-card">
+                        <div class="card-header">
+                            <h3>Practice Tools</h3>
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <p class="card-description">Practice with isolated backing tracks, chord learning, and real-time tuning assistance.</p>
+                        <div class="feature-stats">
+                            <div class="feature-stat">
+                                <span class="stat-number">500+</span>
+                                <span class="stat-label">Chord Library</span>
+                            </div>
+                            <div class="feature-stat">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Instruments</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" data-action="practice">
+                            <i class="fas fa-play"></i>
+                            Start Practice
+                        </button>
+                    </div>
+
+                    <div class="dashboard-card stats-card">
+                        <div class="card-header">
+                            <h3>Your Progress</h3>
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="progress-stats">
+                            <div class="stat">
+                                <i class="fas fa-music stat-icon"></i>
+                                <span class="stat-number">24</span>
+                                <span class="stat-label">Songs Processed</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-clock stat-icon"></i>
+                                <span class="stat-number">12h</span>
+                                <span class="stat-label">Practice Time</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download stat-icon"></i>
+                                <span class="stat-number">96</span>
+                                <span class="stat-label">Stems Created</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learning Section -->
+            <section id="learn" class="content-section">
+                <div class="learning-header">
+                    <h2>Interactive Music Learning</h2>
+                    <p>Master instruments with AI-powered chord substitutions and personalized learning paths.</p>
+                </div>
+
+                <div class="instrument-selector">
+                    <button class="instrument-btn active" data-instrument="guitar">
+                        <i class="fas fa-guitar"></i>
+                        <span>Guitar</span>
+                    </button>
+                    <button class="instrument-btn" data-instrument="piano">
+                        <i class="fas fa-piano"></i>
+                        <span>Piano</span>
+                    </button>
+                    <button class="instrument-btn" data-instrument="ukulele">
+                        <i class="fas fa-guitar"></i>
+                        <span>Ukulele</span>
+                    </button>
+                </div>
+
+                <div class="learning-content">
+                    <div class="chord-helper">
+                        <h3>Smart Chord Helper</h3>
+                        <p>Don't know how to play a chord? We'll suggest easier alternatives!</p>
+                        
+                        <div class="chord-input">
+                            <label>Enter the chord you want to learn:</label>
+                            <input type="text" id="chordInput" placeholder="e.g., F, Bm, C#7" maxlength="10">
+                            <button id="getSubstitutions" class="btn btn-primary">
+                                <i class="fas fa-magic"></i>
+                                Get Alternatives
+                            </button>
+                        </div>
+
+                        <div class="skill-level-selector">
+                            <label>Your skill level:</label>
+                            <div class="skill-buttons">
+                                <button class="skill-btn active" data-level="1">Beginner</button>
+                                <button class="skill-btn" data-level="2">Intermediate</button>
+                                <button class="skill-btn" data-level="3">Advanced</button>
+                            </div>
+                        </div>
+
+                        <div id="chordSubstitutions" class="substitutions-container">
+                            <!-- Chord alternatives will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="chord-library">
+                        <h3>Chord Library</h3>
+                        <div class="chord-grid" id="chordGrid">
+                            <!-- Chord diagrams will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="learning-paths">
+                        <h3>Learning Paths</h3>
+                        <div class="path-cards">
+                            <div class="path-card">
+                                <h4>Beginner Guitar Journey</h4>
+                                <p>Master basic chords and your first songs</p>
+                                <div class="path-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span>6/10 lessons completed</span>
+                                </div>
+                                <button class="btn btn-outline">Continue Path</button>
+                            </div>
+                            <div class="path-card">
+                                <h4>Piano Fundamentals</h4>
+                                <p>Learn scales, chords, and basic songs</p>
+                                <div class="path-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 25%"></div>
+                                    </div>
+                                    <span>3/12 lessons completed</span>
+                                </div>
+                                <button class="btn btn-outline">Continue Path</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Source Separation Section -->
+            <section id="separate" class="content-section">
+                <div class="separation-header">
+                    <h2>AI-Powered Source Separation</h2>
+                    <p>Upload your music and let our deep learning models isolate individual stems with professional-grade precision. Perfect for remixing, practice, and production.</p>
+                </div>
+
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Drop your audio file here</h3>
+                        <p>Supports MP3, WAV, FLAC, M4A • Maximum 100MB</p>
+                        <button class="btn btn-primary" id="fileSelectBtn">
+                            <i class="fas fa-file-audio"></i>
+                            Choose File
+                        </button>
+                        <input type="file" id="audioFileInput" accept="audio/*" hidden>
+                    </div>
+                </div>
+
+                <div class="separation-config">
+                    <div class="config-section">
+                        <h3>Separation Options</h3>
+                        <div class="stem-options">
+                            <label class="stem-option">
+                                <input type="checkbox" name="separation" value="vocals" checked>
+                                <div class="stem-content">
+                                    <i class="fas fa-microphone"></i>
+                                    <span class="stem-name">Vocals</span>
+                                    <span class="stem-desc">Lead and backing vocals</span>
+                                </div>
+                                <div class="check-indicator">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                            <label class="stem-option">
+                                <input type="checkbox" name="separation" value="drums" checked>
+                                <div class="stem-content">
+                                    <i class="fas fa-drum"></i>
+                                    <span class="stem-name">Drums</span>
+                                    <span class="stem-desc">Kick, snare, hi-hats, cymbals</span>
+                                </div>
+                                <div class="check-indicator">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                            <label class="stem-option">
+                                <input type="checkbox" name="separation" value="bass" checked>
+                                <div class="stem-content">
+                                    <i class="fas fa-guitar"></i>
+                                    <span class="stem-name">Bass</span>
+                                    <span class="stem-desc">Bass guitar and synthesizers</span>
+                                </div>
+                                <div class="check-indicator">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                            <label class="stem-option">
+                                <input type="checkbox" name="separation" value="other" checked>
+                                <div class="stem-content">
+                                    <i class="fas fa-music"></i>
+                                    <span class="stem-name">Other</span>
+                                    <span class="stem-desc">Piano, guitar, strings</span>
+                                </div>
+                                <div class="check-indicator">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Quality Settings</h3>
+                        <div class="quality-options">
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="standard" checked>
+                                <div class="quality-content">
+                                    <span class="quality-name">Standard</span>
+                                    <span class="quality-desc">Fast processing • Good quality</span>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="quality" value="high">
+                                <div class="quality-content">
+                                    <span class="quality-name">High Quality</span>
+                                    <span class="quality-desc">Slower processing • Best results</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary btn-large" id="startSeparation">
+                            <i class="fas fa-waveform"></i>
+                            Start Separation
+                        </button>
+                    </div>
+                </div>
+
+                <div class="processing-section" id="processingSection" style="display: none;">
+                    <div class="processing-header">
+                        <h3>Processing Audio...</h3>
+                        <p>Our AI is analyzing and separating your audio sources</p>
+                    </div>
+                    <div class="processing-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="processingProgress"></div>
+                        </div>
+                        <span id="processingText">Initializing...</span>
+                    </div>
+                    <div class="processing-stages">
+                        <div class="stage">
+                            <i class="fas fa-upload"></i>
+                            <span>Upload Complete</span>
+                        </div>
+                        <div class="stage">
+                            <i class="fas fa-brain"></i>
+                            <span>AI Analysis</span>
+                        </div>
+                        <div class="stage">
+                            <i class="fas fa-waveform"></i>
+                            <span>Source Separation</span>
+                        </div>
+                        <div class="stage">
+                            <i class="fas fa-check"></i>
+                            <span>Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-header">
+                        <h3>Separation Results</h3>
+                        <p class="results-sub">Preview, mix, and download your isolated stems. Analysis includes key, tempo, and chord mapping.</p>
+                    </div>
+
+                    <div class="analysis-overview" role="region" aria-label="Song Analysis Overview">
+                        <div class="analysis-metric" id="detectedKey">
+                            <span class="metric-label">Key</span>
+                            <span class="metric-value">--</span>
+                        </div>
+                        <div class="analysis-metric" id="detectedBPM">
+                            <span class="metric-label">BPM</span>
+                            <span class="metric-value">--</span>
+                        </div>
+                        <div class="analysis-metric" id="detectedScale">
+                            <span class="metric-label">Scale</span>
+                            <span class="metric-value">--</span>
+                        </div>
+                        <div class="analysis-metric" id="audioDuration">
+                            <span class="metric-label">Duration</span>
+                            <span class="metric-value">--</span>
+                        </div>
+                    </div>
+
+                    <div class="waveform-master-panel" aria-label="Master Waveform" role="group">
+                        <div class="waveform-toolbar">
+                            <button class="btn btn-secondary sm" id="masterPlay" aria-label="Play or Pause"><i class="fas fa-play"></i></button>
+                            <button class="btn btn-secondary sm" id="masterLoop" aria-pressed="false" aria-label="Toggle Loop"><i class="fas fa-repeat"></i></button>
+                            <div class="zoom-controls" aria-label="Waveform Zoom Controls">
+                                <button class="btn btn-secondary xs" id="zoomOut" aria-label="Zoom Out"><i class="fas fa-search-minus"></i></button>
+                                <button class="btn btn-secondary xs" id="zoomIn" aria-label="Zoom In"><i class="fas fa-search-plus"></i></button>
+                            </div>
+                            <div class="scrub-time"><span id="currentTime">0:00</span> / <span id="totalTime">0:00</span></div>
+                            <div class="mix-presets">
+                                <select id="mixPreset" aria-label="Mix Preset">
+                                    <option value="flat">Flat Mix</option>
+                                    <option value="karaoke">Karaoke (No Vocals)</option>
+                                    <option value="backing">Backing Track (Vocals Only)</option>
+                                    <option value="drums">Drums Focus</option>
+                                    <option value="bass">Bass Focus</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="waveform-canvas" id="masterWaveform"><canvas></canvas></div>
+                    </div>
+
+                    <div class="stems-grid" id="stemsGrid" role="list" aria-label="Separated Stems">
+                        <!-- Individual stem panels will be injected here -->
+                    </div>
+
+                    <div class="chord-timeline" aria-label="Chord Progression Timeline" id="chordTimeline">
+                        <div class="timeline-header">
+                            <h4>Chord Progression</h4>
+                            <span class="timeline-mode">Detected (AI)</span>
+                        </div>
+                        <div class="timeline-bar" id="chordTimelineBar">
+                            <!-- Chord segments dynamically inserted -->
+                        </div>
+                    </div>
+
+                    <div class="download-actions" aria-label="Download Options">
+                        <button class="btn btn-primary" id="downloadAll">
+                            <i class="fas fa-file-archive"></i>
+                            Download All Stems (.zip)
+                        </button>
+                        <button class="btn btn-secondary" id="exportMix">
+                            <i class="fas fa-sliders-h"></i>
+                            Export Current Mix
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Practice Section -->
+            <section id="practice" class="content-section">
+                <div class="practice-header">
+                    <h2>Professional Practice Studio</h2>
+                    <p>Master your craft with precision tools designed for serious musicians and producers.</p>
+                </div>
+
+                <div class="practice-tools-grid">
+                    <div class="practice-tool">
+                        <div class="tool-icon">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <h3>Precision Tuner</h3>
+                        <p>Professional-grade tuning with ±1 cent accuracy</p>
+                        <div class="tuner-interface">
+                            <div class="note-display" id="detectedNote">--</div>
+                            <div class="frequency-display" id="detectedFreq">-- Hz</div>
+                            <div class="tuning-meter">
+                                <div class="meter-scale">
+                                    <span class="scale-mark">-50</span>
+                                    <span class="scale-mark">-25</span>
+                                    <span class="scale-mark center">0</span>
+                                    <span class="scale-mark">+25</span>
+                                    <span class="scale-mark">+50</span>
+                                </div>
+                                <div class="meter-needle" id="tuningNeedle"></div>
+                            </div>
+                            <button class="btn btn-secondary" id="startTuner">
+                                <i class="fas fa-microphone"></i>
+                                Start Tuning
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="practice-tool">
+                        <div class="tool-icon">
+                            <i class="fas fa-metronome"></i>
+                        </div>
+                        <h3>Smart Metronome</h3>
+                        <p>Advanced timing with polyrhythms and subdivisions</p>
+                        <div class="metronome-interface">
+                            <div class="tempo-display">
+                                <span id="tempoValue">120</span>
+                                <span class="tempo-unit">BPM</span>
+                            </div>
+                            <div class="tempo-control">
+                                <input type="range" id="tempoSlider" min="40" max="200" value="120" class="professional-slider">
+                            </div>
+                            <div class="time-signature-control">
+                                <label>Time Signature:</label>
+                                <select id="timeSignature">
+                                    <option value="4/4">4/4</option>
+                                    <option value="3/4">3/4</option>
+                                    <option value="2/4">2/4</option>
+                                    <option value="6/8">6/8</option>
+                                    <option value="7/8">7/8</option>
+                                    <option value="5/4">5/4</option>
+                                </select>
+                            </div>
+                            <div class="beat-visualizer" id="beatVisualizer">
+                                <div class="beat-dot"></div>
+                                <div class="beat-dot"></div>
+                                <div class="beat-dot"></div>
+                                <div class="beat-dot"></div>
+                            </div>
+                            <button class="btn btn-secondary" id="metronomeToggle">
+                                <i class="fas fa-play"></i>
+                                Start
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="practice-tool">
+                        <div class="tool-icon">
+                            <i class="fas fa-repeat"></i>
+                        </div>
+                        <h3>Loop Station</h3>
+                        <p>Multi-track looping with seamless overdubs</p>
+                        <div class="loop-interface">
+                            <div class="loop-tracks">
+                                <div class="loop-track">
+                                    <span class="track-label">Track 1</span>
+                                    <div class="track-status">Empty</div>
+                                </div>
+                                <div class="loop-track">
+                                    <span class="track-label">Track 2</span>
+                                    <div class="track-status">Empty</div>
+                                </div>
+                                <div class="loop-track">
+                                    <span class="track-label">Track 3</span>
+                                    <div class="track-status">Empty</div>
+                                </div>
+                            </div>
+                            <div class="loop-controls">
+                                <button class="btn btn-secondary" id="loopRecord">
+                                    <i class="fas fa-record-vinyl"></i>
+                                    Record
+                                </button>
+                                <button class="btn btn-secondary" id="loopPlay">
+                                    <i class="fas fa-play"></i>
+                                    Play
+                                </button>
+                                <button class="btn btn-secondary" id="loopClear">
+                                    <i class="fas fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-tool">
+                        <div class="tool-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Performance Analytics</h3>
+                        <p>Track your progress with detailed metrics</p>
+                        <div class="analytics-interface">
+                            <div class="analytics-grid">
+                                <div class="metric">
+                                    <span class="metric-value">94.2%</span>
+                                    <span class="metric-label">Timing Accuracy</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">127</span>
+                                    <span class="metric-label">Practice Hours</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">23</span>
+                                    <span class="metric-label">Songs Mastered</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">89.5%</span>
+                                    <span class="metric-label">Pitch Accuracy</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-chart-bar"></i>
+                                View Detailed Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practice-session-setup">
+                    <h3>Start Practice Session</h3>
+                    <div class="session-config">
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <label for="sessionDuration">Duration:</label>
+                                <select id="sessionDuration">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="45">45 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="90">1.5 hours</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label for="sessionFocus">Focus Area:</label>
+                                <select id="sessionFocus">
+                                    <option value="technique">Technique Development</option>
+                                    <option value="repertoire">Song Learning</option>
+                                    <option value="improvisation">Improvisation</option>
+                                    <option value="theory">Music Theory</option>
+                                    <option value="ear-training">Ear Training</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label for="difficultyLevel">Difficulty:</label>
+                                <select id="difficultyLevel">
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="professional">Professional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="startPracticeSession">
+                            <i class="fas fa-play"></i>
+                            Begin Practice Session
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community" class="content-section">
+                <div class="community-header">
+                    <h2>Music Learning Community</h2>
+                    <p>Connect with fellow musicians, share your progress, and learn together.</p>
+                </div>
+
+                <div class="community-features">
+                    <div class="feature-card">
+                        <i class="fas fa-share"></i>
+                        <h3>Share Your Covers</h3>
+                        <p>Upload your practice recordings and get feedback from the community.</p>
+                        <button class="btn btn-outline">Share Recording</button>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Weekly Challenges</h3>
+                        <p>Participate in community challenges and improve your skills.</p>
+                        <button class="btn btn-outline">View Challenges</button>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Find Practice Partners</h3>
+                        <p>Connect with musicians at your skill level for virtual jam sessions.</p>
+                        <button class="btn btn-outline">Find Partners</button>
+                    </div>
+                </div>
+
+                <div class="recent-posts">
+                    <h3>Recent Community Posts</h3>
+                    <div class="post-list">
+                        <!-- Community posts will be populated here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" id="mainFab">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <button class="fab-item" data-action="upload">
+                <i class="fas fa-upload"></i>
+                <span>Upload Song</span>
+            </button>
+            <button class="fab-item" data-action="practice">
+                <i class="fas fa-guitar"></i>
+                <span>Start Practice</span>
+            </button>
+            <button class="fab-item" data-action="tune">
+                <i class="fas fa-tune"></i>
+                <span>Tune Instrument</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="tunerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Instrument Tuner</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Tuner interface will be here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/music-theory.js' %}"></script>
+    <script src="{% static 'js/audio-processor.js' %}"></script>
+    <script src="{% static 'js/practice-tools.js' %}"></script>
+</body>
+</html>

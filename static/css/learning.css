@@ -1,0 +1,1353 @@
+/* Learning Module Styles */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo i {
+    font-size: 2rem;
+    color: #667eea;
+}
+
+.logo h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+}
+
+.tagline {
+    font-size: 0.875rem;
+    color: #718096;
+    font-weight: 500;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    background: rgba(102, 126, 234, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-profile:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.profile-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.username {
+    font-weight: 500;
+    color: #2d3748;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+}
+
+.content-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dashboard Styles */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+.card-header i {
+    font-size: 1.5rem;
+    color: #667eea;
+}
+
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #718096;
+}
+
+.skill {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.skill-bar {
+    flex: 1;
+    height: 0.5rem;
+    background: #e2e8f0;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.3s ease;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item i {
+    color: #667eea;
+    font-size: 1.25rem;
+}
+
+.activity-item div {
+    flex: 1;
+}
+
+.activity-item span {
+    display: block;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.activity-item small {
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+/* Learning Interface Styles */
+.learning-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.learning-header h2 {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 1rem;
+    animation: neonGlow 3s ease-in-out infinite alternate;
+}
+
+.learning-header p {
+    font-size: 1.2rem;
+    color: #b0b0b0;
+}
+
+/* Instrument Selector */
+.instrument-selector {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.instrument-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    color: #b0b0b0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.instrument-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.instrument-btn:hover::before {
+    left: 100%;
+}
+
+.instrument-btn:hover {
+    border-color: #00ffff;
+    color: #00ffff;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    transform: translateY(-5px);
+}
+
+.instrument-btn.active {
+    border-color: #00ffff;
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.instrument-btn i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ff00ff;
+}
+
+.instrument-btn span {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Learning Content */
+.learning-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Chord Helper */
+.chord-helper {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.chord-helper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, rgba(255, 0, 255, 0.1), transparent);
+    animation: rotate 6s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chord-helper:hover::before {
+    opacity: 1;
+}
+
+.chord-helper h3 {
+    color: #ff00ff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.chord-helper p {
+    color: #b0b0b0;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.chord-input {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.chord-input label {
+    display: block;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.chord-input input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.chord-input input:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Skill Level Selector */
+.skill-level-selector {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.skill-level-selector label {
+    display: block;
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.skill-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.skill-btn {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #b0b0b0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.skill-btn:hover {
+    border-color: #00ffff;
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.skill-btn.active {
+    border-color: #00ffff;
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Chord Substitutions */
+.substitutions-container {
+    position: relative;
+    z-index: 1;
+}
+
+.chord-substitution {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.chord-substitution:hover {
+    background: rgba(0, 255, 255, 0.15);
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transform: translateX(5px);
+}
+
+.chord-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00ffff;
+}
+
+.difficulty-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.difficulty-easy {
+    background: rgba(0, 255, 0, 0.2);
+    color: #00ff00;
+    border: 1px solid #00ff00;
+}
+
+.difficulty-medium {
+    background: rgba(255, 255, 0, 0.2);
+    color: #ffff00;
+    border: 1px solid #ffff00;
+}
+
+.difficulty-hard {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff0000;
+    border: 1px solid #ff0000;
+}
+
+/* Chord Library */
+.chord-library {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.chord-library h3 {
+    color: #ff00ff;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.chord-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Chord Diagram Styles */
+.chord-diagram {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.chord-diagram::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.chord-diagram:hover::before {
+    left: 100%;
+}
+
+.chord-diagram:hover {
+    border-color: #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.chord-name-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00ffff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+/* Guitar Chord Diagram */
+.guitar-diagram {
+    width: 80px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    position: relative;
+}
+
+.fretboard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+    border-radius: 4px;
+    border: 1px solid #555;
+}
+
+.fret {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #888;
+    left: 0;
+}
+
+.fret:nth-child(1) { top: 20%; }
+.fret:nth-child(2) { top: 40%; }
+.fret:nth-child(3) { top: 60%; }
+.fret:nth-child(4) { top: 80%; }
+
+.string {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: #999;
+    top: 0;
+}
+
+.string:nth-child(1) { left: 10%; }
+.string:nth-child(2) { left: 26%; }
+.string:nth-child(3) { left: 42%; }
+.string:nth-child(4) { left: 58%; }
+.string:nth-child(5) { left: 74%; }
+.string:nth-child(6) { left: 90%; }
+
+.finger-position {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #00ffff;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    box-shadow: 0 0 5px #00ffff;
+    transform: translate(-50%, -50%);
+}
+
+.muted-string {
+    position: absolute;
+    top: -10px;
+    font-size: 12px;
+    color: #ff4444;
+    transform: translateX(-50%);
+}
+
+.open-string {
+    position: absolute;
+    top: -10px;
+    font-size: 12px;
+    color: #44ff44;
+    transform: translateX(-50%);
+}
+
+/* Piano Chord Diagram */
+.piano-diagram {
+    width: 120px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    position: relative;
+}
+
+.piano-keys {
+    display: flex;
+    height: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #555;
+}
+
+.white-key {
+    flex: 1;
+    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+    border-right: 1px solid #999;
+    position: relative;
+}
+
+.white-key.active {
+    background: linear-gradient(to bottom, #00ffff, #0099cc);
+    box-shadow: 0 0 10px #00ffff;
+}
+
+.black-key {
+    position: absolute;
+    width: 8px;
+    height: 60%;
+    background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+    border-radius: 0 0 2px 2px;
+    z-index: 2;
+}
+
+.black-key.active {
+    background: linear-gradient(to bottom, #ff00ff, #cc0099);
+    box-shadow: 0 0 8px #ff00ff;
+}
+
+/* Learning Paths */
+.learning-paths {
+    grid-column: 1 / -1;
+    margin-top: 2rem;
+}
+
+.learning-paths h3 {
+    color: #00ffff;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.path-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.path-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.path-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, rgba(255, 0, 255, 0.1), transparent);
+    animation: rotate 8s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.path-card:hover::before {
+    opacity: 1;
+}
+
+.path-card:hover {
+    border-color: #ff00ff;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.path-card h4 {
+    color: #ff00ff;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.path-card p {
+    color: #b0b0b0;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.path-progress {
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    transition: width 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .learning-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .instrument-selector {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .skill-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+.learning-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.learning-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.learning-header p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.instrument-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.instrument-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.instrument-btn:hover,
+.instrument-btn.active {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.instrument-btn i {
+    font-size: 2rem;
+}
+
+.learning-content {
+    display: grid;
+    gap: 2rem;
+}
+
+.chord-helper {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.chord-helper h3 {
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.chord-helper p {
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.chord-input {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: end;
+}
+
+.chord-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.chord-input input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.chord-input input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.skill-level-selector {
+    margin-bottom: 2rem;
+}
+
+.skill-level-selector label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.skill-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.skill-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background: white;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.skill-btn:hover,
+.skill-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+.substitutions-container {
+    margin-top: 2rem;
+}
+
+.chord-alternatives {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.alternative-card {
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background: #f7fafc;
+    transition: all 0.2s ease;
+}
+
+.alternative-card:hover {
+    border-color: #667eea;
+    background: #e6f3ff;
+}
+
+.alternative-chord {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.alternative-reason {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-indicator {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.difficulty-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #e2e8f0;
+}
+
+.difficulty-dot.filled {
+    background: #667eea;
+}
+
+/* Practice Tools Styles */
+.practice-tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tool-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tool-header i {
+    font-size: 1.5rem;
+    color: #667eea;
+}
+
+.tool-header h3 {
+    margin: 0;
+    color: #2d3748;
+}
+
+.tuner-display {
+    text-align: center;
+}
+
+.note-display {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.frequency-display {
+    font-size: 1.25rem;
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.tuning-meter {
+    position: relative;
+    height: 4rem;
+    margin: 2rem 0;
+    border: 2px solid #e2e8f0;
+    border-radius: 2rem;
+    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f);
+    overflow: hidden;
+}
+
+.meter-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 3rem;
+    background: #2d3748;
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+    transition: transform 0.1s ease;
+}
+
+.meter-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.metronome-controls {
+    text-align: center;
+}
+
+.tempo-control {
+    margin-bottom: 2rem;
+}
+
+.tempo-control label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+#tempoSlider {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#tempoValue {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.metronome-visual {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+}
+
+.beat-indicator {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #e2e8f0;
+    transition: all 0.1s ease;
+}
+
+.beat-indicator.active {
+    background: #667eea;
+    transform: scale(1.2);
+}
+
+/* Floating Action Button */
+.fab-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.fab {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
+}
+
+.fab-menu {
+    position: absolute;
+    bottom: 4rem;
+    right: 0;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transform: scale(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.fab-menu.active {
+    transform: scale(1);
+}
+
+.fab-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: none;
+    color: #4a5568;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.fab-item:hover {
+    background: #f7fafc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 1rem;
+    }
+    
+    .nav-menu {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .instrument-selector {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .chord-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .skill-buttons {
+        flex-direction: column;
+    }
+    
+    .practice-tools {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Additional animations */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.bounce {
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline {
+    border: 2px solid #667eea;
+    background: transparent;
+    color: #667eea;
+}
+
+.btn-outline:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 1rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2d3748;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #718096;
+}
+
+.modal-body {
+    padding: 2rem;
+}
