@@ -1,0 +1,273 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Learn Instruments - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.instruments-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 6rem 2rem 4rem;
+    color: white;
+    text-align: center;
+}
+
+.instruments-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.instruments-hero p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.instruments-section {
+    padding: 6rem 2rem;
+    background: #f9fafb;
+}
+
+.instruments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.instrument-card {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 1px solid #f3f4f6;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.instrument-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--instrument-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.instrument-card:hover::before {
+    transform: scaleX(1);
+}
+
+.instrument-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.instrument-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 2rem;
+    background: var(--instrument-color);
+}
+
+.instrument-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.instrument-description {
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+}
+
+.instrument-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.instrument-categories {
+    margin-bottom: 2rem;
+}
+
+.categories-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-tag {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.instrument-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    background: var(--instrument-color);
+    width: 100%;
+    justify-content: center;
+}
+
+.instrument-cta:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .instruments-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .instruments-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .instrument-card {
+        padding: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Instruments Hero -->
+<section class="instruments-hero">
+    <h1>Master Any Instrument</h1>
+    <p>
+        Choose from our comprehensive collection of instrument lessons, 
+        designed by professional musicians and powered by AI-driven learning paths.
+    </p>
+</section>
+
+<!-- Instruments Grid -->
+<section class="instruments-section">
+    <div class="instruments-grid">
+        {% for key, instrument in instruments.items %}
+        <div class="instrument-card" style="--instrument-color: {{ instrument.color }}" onclick="window.location.href='/instruments/{{ key }}/'">
+            <div class="instrument-icon">
+                <i class="{{ instrument.icon }}"></i>
+            </div>
+            
+            <h3 class="instrument-title">{{ instrument.name }}</h3>
+            
+            <p class="instrument-description">
+                {{ instrument.description }}
+            </p>
+            
+            <div class="instrument-stats">
+                <div class="stat">
+                    <span class="stat-number">{{ instrument.total_lessons }}</span>
+                    <span class="stat-label">Lessons</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">{{ instrument.categories|length }}</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">AI</span>
+                    <span class="stat-label">Powered</span>
+                </div>
+            </div>
+            
+            <div class="instrument-categories">
+                <div class="categories-label">What you'll learn:</div>
+                <div class="category-tags">
+                    {% for category in instrument.categories %}
+                    <span class="category-tag">{{ category }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <a href="/instruments/{{ key }}/" class="instrument-cta">
+                <i class="fas fa-play"></i>
+                Start Learning {{ instrument.name }}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+// Add entrance animations
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.instrument-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

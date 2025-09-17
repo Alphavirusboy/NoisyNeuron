@@ -1,0 +1,680 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}{{ data.name }} Practice Session - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.practice-hero {
+    background: linear-gradient(135deg, {{ data.color }}22 0%, {{ data.color }}11 100%);
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.practice-hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: {{ data.color }};
+    opacity: 0.05;
+    border-radius: 50%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.practice-icon {
+    width: 100px;
+    height: 100px;
+    background: {{ data.color }};
+    color: white;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.practice-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.practice-subtitle {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.session-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 3rem;
+}
+
+.practice-area {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.session-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.session-timer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f9fafb;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid #e5e7eb;
+}
+
+.timer-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: {{ data.color }};
+    min-width: 80px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-timer {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: {{ data.color }};
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-timer:hover {
+    background: {{ data.color }}dd;
+    transform: scale(1.1);
+}
+
+.practice-modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.mode-card {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-card.active,
+.mode-card:hover {
+    background: white;
+    border-color: {{ data.color }};
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.mode-icon {
+    width: 60px;
+    height: 60px;
+    background: {{ data.color }};
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+.mode-title {
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.mode-description {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.practice-content {
+    background: #111827;
+    border-radius: 16px;
+    padding: 3rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 3rem;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.practice-placeholder {
+    opacity: 0.7;
+}
+
+.practice-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: {{ data.color }};
+}
+
+.placeholder-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.placeholder-text {
+    font-size: 1rem;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+.session-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-session {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: {{ data.color }};
+    color: white;
+    border-color: {{ data.color }};
+}
+
+.btn-primary:hover {
+    background: {{ data.color }}ee;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: white;
+    color: #374151;
+    border-color: #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+    color: #374151;
+    text-decoration: none;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-title i {
+    color: {{ data.color }};
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: {{ data.color }};
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.achievement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-icon {
+    width: 30px;
+    height: 30px;
+    background: {{ data.color }};
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.achievement-text {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .session-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .practice-modes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .practice-title {
+        font-size: 2rem;
+    }
+    
+    .session-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .session-controls {
+        flex-direction: column;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Practice Hero -->
+<section class="practice-hero">
+    <div class="hero-content">
+        <div class="practice-icon">
+            <i class="{{ data.icon }}"></i>
+        </div>
+        <h1 class="practice-title">{{ data.name }} Practice Session</h1>
+        <p class="practice-subtitle">
+            Enhance your {{ data.name|lower }} skills with AI-powered practice sessions, 
+            real-time feedback, and adaptive challenges.
+        </p>
+    </div>
+</section>
+
+<!-- Session Container -->
+<section class="session-container">
+    <!-- Main Practice Area -->
+    <div class="practice-area">
+        <!-- Session Header -->
+        <div class="session-header">
+            <h2 class="session-title">Practice Session</h2>
+            <div class="session-timer">
+                <div class="timer-display" id="timerDisplay">00:00</div>
+                <div class="timer-controls">
+                    <button class="btn-timer" id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="btn-timer" id="pauseBtn" style="display: none;">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="btn-timer" id="stopBtn">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Modes -->
+        <div class="practice-modes">
+            <div class="mode-card active" data-mode="scales">
+                <div class="mode-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="mode-title">Scales Practice</div>
+                <div class="mode-description">Practice major and minor scales</div>
+            </div>
+            
+            <div class="mode-card" data-mode="chords">
+                <div class="mode-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="mode-title">Chord Training</div>
+                <div class="mode-description">Master chord progressions</div>
+            </div>
+            
+            <div class="mode-card" data-mode="technique">
+                <div class="mode-icon">
+                    <i class="fas fa-hand-paper"></i>
+                </div>
+                <div class="mode-title">Technique</div>
+                <div class="mode-description">Improve your playing technique</div>
+            </div>
+            
+            <div class="mode-card" data-mode="rhythm">
+                <div class="mode-icon">
+                    <i class="fas fa-drum"></i>
+                </div>
+                <div class="mode-title">Rhythm Training</div>
+                <div class="mode-description">Develop timing and rhythm</div>
+            </div>
+        </div>
+
+        <!-- Practice Content -->
+        <div class="practice-content">
+            <div class="practice-placeholder">
+                <i class="fas fa-microphone"></i>
+                <div class="placeholder-title">AI Practice Mode</div>
+                <div class="placeholder-text">
+                    Advanced AI-powered practice sessions with real-time feedback coming soon. 
+                    Select a practice mode above to get started with guided exercises.
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Controls -->
+        <div class="session-controls">
+            <a href="/music_theory/practice/" class="btn-session btn-primary">
+                <i class="fas fa-play"></i>
+                Start Music Theory Practice
+            </a>
+            <a href="/instruments/{{ instrument }}/" class="btn-session btn-secondary">
+                <i class="fas fa-book"></i>
+                Back to Lessons
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Today's Stats -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-chart-line"></i>
+                Today's Practice
+            </h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value">45m</span>
+                    <span class="stat-label">Practice Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Exercises</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">87%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">3</span>
+                    <span class="stat-label">Streak Days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Achievements -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-trophy"></i>
+                Recent Achievements
+            </h3>
+            <ul class="achievement-list">
+                <li class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="achievement-text">3-day practice streak!</div>
+                </li>
+                <li class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="achievement-text">Completed 10 lessons</div>
+                </li>
+                <li class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="achievement-text">1 hour practice time</div>
+                </li>
+                <li class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="achievement-text">90% accuracy achieved</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-bolt"></i>
+                Quick Actions
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="/instruments/{{ instrument }}/progress/" class="btn-session btn-secondary">
+                    <i class="fas fa-chart-bar"></i>
+                    View Progress
+                </a>
+                <a href="/audio_processor/separate/" class="btn-session btn-secondary">
+                    <i class="fas fa-cut"></i>
+                    Audio Separation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Timer functionality
+let seconds = 0;
+let isRunning = false;
+let interval = null;
+
+const timerDisplay = document.getElementById('timerDisplay');
+const playBtn = document.getElementById('playBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const stopBtn = document.getElementById('stopBtn');
+
+function updateDisplay() {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function startTimer() {
+    if (!isRunning) {
+        isRunning = true;
+        playBtn.style.display = 'none';
+        pauseBtn.style.display = 'flex';
+        interval = setInterval(() => {
+            seconds++;
+            updateDisplay();
+        }, 1000);
+    }
+}
+
+function pauseTimer() {
+    if (isRunning) {
+        isRunning = false;
+        clearInterval(interval);
+        playBtn.style.display = 'flex';
+        pauseBtn.style.display = 'none';
+    }
+}
+
+function stopTimer() {
+    isRunning = false;
+    clearInterval(interval);
+    seconds = 0;
+    updateDisplay();
+    playBtn.style.display = 'flex';
+    pauseBtn.style.display = 'none';
+}
+
+playBtn.addEventListener('click', startTimer);
+pauseBtn.addEventListener('click', pauseTimer);
+stopBtn.addEventListener('click', stopTimer);
+
+// Practice mode selection
+document.querySelectorAll('.mode-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        
+        const mode = card.dataset.mode;
+        updatePracticeContent(mode);
+    });
+});
+
+function updatePracticeContent(mode) {
+    const content = document.querySelector('.practice-placeholder');
+    const modes = {
+        scales: {
+            icon: 'fas fa-music',
+            title: 'Scales Practice Mode',
+            text: 'Practice major and minor scales with real-time feedback and tempo control.'
+        },
+        chords: {
+            icon: 'fas fa-layer-group',
+            title: 'Chord Training Mode',
+            text: 'Master chord progressions and transitions with interactive exercises.'
+        },
+        technique: {
+            icon: 'fas fa-hand-paper',
+            title: 'Technique Training Mode',
+            text: 'Improve your playing technique with targeted exercises and form correction.'
+        },
+        rhythm: {
+            icon: 'fas fa-drum',
+            title: 'Rhythm Training Mode',
+            text: 'Develop perfect timing and rhythm with metronome and beat exercises.'
+        }
+    };
+    
+    const modeData = modes[mode];
+    content.innerHTML = `
+        <i class="${modeData.icon}"></i>
+        <div class="placeholder-title">${modeData.title}</div>
+        <div class="placeholder-text">${modeData.text}</div>
+    `;
+}
+
+// Add entrance animations
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.mode-card, .sidebar-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

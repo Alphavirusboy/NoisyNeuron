@@ -20,6 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+# Create a simple dashboard view
+@login_required
+def dashboard_view(request):
+    from django.shortcuts import render
+    return render(request, 'dashboard.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +35,9 @@ urlpatterns = [
     path('api/audio/', include('audio_processor.urls')),
     path('markov_models/', include('markov_models.urls')),
     path('music_theory/', include('music_theory.urls')),
+    path('instruments/', include('instruments.urls')),
+    path('premium/', include('premium.urls')),
+    path('dashboard/', dashboard_view, name='dashboard'),
     path('api/health/', lambda request: JsonResponse({'status': 'ok'}), name='health'),
     path('', TemplateView.as_view(template_name='index-modern.html'), name='home'),
 ]

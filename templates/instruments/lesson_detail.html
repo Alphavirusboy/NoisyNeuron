@@ -1,0 +1,513 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}{{ lesson.title }} - {{ instrument_data.name }} Lesson{% endblock %}
+
+{% block extra_css %}
+<style>
+.lesson-hero {
+    background: linear-gradient(135deg, {{ instrument_data.color }}22 0%, {{ instrument_data.color }}11 100%);
+    padding: 4rem 2rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.lesson-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.lesson-number-badge {
+    width: 80px;
+    height: 80px;
+    background: {{ instrument_data.color }};
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.lesson-info {
+    flex: 1;
+}
+
+.lesson-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-meta {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.lesson-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.lesson-meta-item i {
+    color: {{ instrument_data.color }};
+}
+
+.lesson-description {
+    font-size: 1.1rem;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.lesson-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+}
+
+.main-content {
+    background: white;
+}
+
+.video-section {
+    background: #111827;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.video-placeholder {
+    background: #374151;
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.video-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.video-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.video-subtitle {
+    opacity: 0.8;
+}
+
+.video-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-video {
+    background: {{ instrument_data.color }};
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-video:hover {
+    background: {{ instrument_data.color }}dd;
+    transform: translateY(-2px);
+}
+
+.content-section {
+    margin-bottom: 3rem;
+}
+
+.content-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid {{ instrument_data.color }};
+    display: inline-block;
+}
+
+.content-text {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+.practice-exercises {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.exercises-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.exercises-title i {
+    color: {{ instrument_data.color }};
+}
+
+.exercise-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.exercise-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.exercise-item:hover {
+    background: {{ instrument_data.color }}08;
+    transform: translateY(-2px);
+}
+
+.exercise-number {
+    background: {{ instrument_data.color }};
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.exercise-content {
+    flex: 1;
+}
+
+.exercise-title {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.exercise-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.sidebar {
+    background: #f9fafb;
+}
+
+.sidebar-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-title i {
+    color: {{ instrument_data.color }};
+}
+
+.progress-bar {
+    background: #e5e7eb;
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    background: {{ instrument_data.color }};
+    height: 100%;
+    border-radius: 10px;
+    width: 25%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: center;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.btn-nav {
+    flex: 1;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-nav-primary {
+    background: {{ instrument_data.color }};
+    color: white;
+    border: 2px solid {{ instrument_data.color }};
+}
+
+.btn-nav-primary:hover {
+    background: {{ instrument_data.color }}ee;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-nav-secondary {
+    background: white;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.btn-nav-secondary:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+    color: #374151;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .lesson-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .lesson-meta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .navigation-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Lesson Hero -->
+<section class="lesson-hero">
+    <div class="lesson-header">
+        <div class="lesson-number-badge">{{ lesson.id }}</div>
+        <div class="lesson-info">
+            <h1 class="lesson-title">{{ lesson.title }}</h1>
+            <div class="lesson-meta">
+                <div class="lesson-meta-item">
+                    <i class="fas fa-clock"></i>
+                    {{ lesson.duration }}
+                </div>
+                <div class="lesson-meta-item">
+                    <i class="fas fa-signal"></i>
+                    {{ lesson.level }}
+                </div>
+                <div class="lesson-meta-item">
+                    <i class="fas fa-tag"></i>
+                    {{ lesson.category }}
+                </div>
+            </div>
+            <p class="lesson-description">{{ lesson.description }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Lesson Content -->
+<section class="lesson-content">
+    <div class="main-content">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-placeholder">
+                <i class="fas fa-play-circle"></i>
+                <div class="video-title">Lesson Video</div>
+                <div class="video-subtitle">Interactive video content coming soon</div>
+            </div>
+            <div class="video-controls">
+                <button class="btn-video">
+                    <i class="fas fa-play"></i>
+                    Play Lesson
+                </button>
+                <button class="btn-video">
+                    <i class="fas fa-closed-captioning"></i>
+                    Subtitles
+                </button>
+                <button class="btn-video">
+                    <i class="fas fa-expand"></i>
+                    Fullscreen
+                </button>
+            </div>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="content-section">
+            <h2 class="content-title">Lesson Overview</h2>
+            <p class="content-text">
+                This lesson will guide you through {{ lesson.title|lower }}. You'll learn the fundamental 
+                concepts and practice essential techniques that will help you master this important skill.
+            </p>
+            <p class="content-text">
+                Take your time with each exercise and don't hesitate to repeat sections until you feel 
+                comfortable. Remember, consistent practice is key to improvement.
+            </p>
+        </div>
+
+        <!-- Practice Exercises -->
+        <div class="practice-exercises">
+            <h3 class="exercises-title">
+                <i class="fas fa-dumbbell"></i>
+                Practice Exercises
+            </h3>
+            <ul class="exercise-list">
+                {% for exercise in lesson.practice_exercises %}
+                <li class="exercise-item">
+                    <div class="exercise-number">{{ forloop.counter }}</div>
+                    <div class="exercise-content">
+                        <div class="exercise-title">{{ exercise }}</div>
+                        <div class="exercise-description">
+                            Practice this exercise slowly at first, then gradually increase the tempo.
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="/instruments/{{ instrument }}/" class="btn-nav btn-nav-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Lessons
+            </a>
+            <a href="/instruments/{{ instrument }}/practice/" class="btn-nav btn-nav-primary">
+                <i class="fas fa-play"></i>
+                Start Practice
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Progress -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-chart-line"></i>
+                Your Progress
+            </h3>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">Lesson {{ lesson.id }} of {{ instrument_data.total_lessons }}</div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-bolt"></i>
+                Quick Actions
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="/instruments/{{ instrument }}/practice/" class="btn-nav btn-nav-primary">
+                    <i class="fas fa-dumbbell"></i>
+                    Practice Mode
+                </a>
+                <a href="/instruments/{{ instrument }}/progress/" class="btn-nav btn-nav-secondary">
+                    <i class="fas fa-chart-bar"></i>
+                    View Progress
+                </a>
+                <a href="/music_theory/practice/" class="btn-nav btn-nav-secondary">
+                    <i class="fas fa-music"></i>
+                    Theory Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- Related Lessons -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-list"></i>
+                Related Lessons
+            </h3>
+            <div style="color: #6b7280; text-align: center; padding: 2rem 0;">
+                More lessons in this category coming soon!
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Add some interactivity to exercises
+document.querySelectorAll('.exercise-item').forEach(item => {
+    item.addEventListener('click', () => {
+        // Toggle completed state
+        item.style.background = item.style.background === 'rgb(16, 185, 129)' ? 'white' : '#10b981';
+        item.style.color = item.style.color === 'white' ? '#111827' : 'white';
+    });
+});
+
+// Simulate progress update
+setTimeout(() => {
+    document.querySelector('.progress-fill').style.width = '35%';
+}, 1000);
+</script>
+{% endblock %}

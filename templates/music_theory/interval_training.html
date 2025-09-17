@@ -1,0 +1,513 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Interval Training - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.training-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.training-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.training-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.training-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.exercise-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.difficulty-selector {
+    margin-bottom: 2rem;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+.difficulty-btn:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.exercise-display {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #f7fafc;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+}
+
+.interval-display {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.note-display {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #4a5568;
+}
+
+.play-button {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 1rem;
+    transition: all 0.3s ease;
+}
+
+.play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.option-btn {
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-btn:hover {
+    border-color: #667eea;
+    background: #eff6ff;
+}
+
+.option-btn.correct {
+    background: #48bb78;
+    border-color: #48bb78;
+    color: white;
+}
+
+.option-btn.incorrect {
+    background: #f56565;
+    border-color: #f56565;
+    color: white;
+}
+
+.feedback-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: none;
+}
+
+.feedback-correct {
+    background: #c6f6d5;
+    border: 2px solid #48bb78;
+    color: #22543d;
+}
+
+.feedback-incorrect {
+    background: #fed7d7;
+    border: 2px solid #f56565;
+    color: #742a2a;
+}
+
+.score-display {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.score-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="training-container">
+    <div class="training-header">
+        <h1 class="training-title">Interval Training</h1>
+        <p class="training-subtitle">Develop your ear for musical intervals</p>
+    </div>
+    
+    <div class="exercise-card">
+        <div class="difficulty-selector">
+            <h3 style="margin-bottom: 1rem; color: #2d3748;">Choose Difficulty</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn active" onclick="setDifficulty(1)">Beginner</button>
+                <button class="difficulty-btn" onclick="setDifficulty(2)">Intermediate</button>
+                <button class="difficulty-btn" onclick="setDifficulty(3)">Advanced</button>
+                <button class="difficulty-btn" onclick="setDifficulty(4)">Expert</button>
+            </div>
+        </div>
+        
+        <div class="exercise-display" id="exerciseDisplay" style="display: none;">
+            <div class="interval-display" id="intervalDisplay">
+                Listen to the interval...
+            </div>
+            <div class="note-display" id="noteDisplay">
+                Root: C
+            </div>
+            
+            <button class="play-button" onclick="playInterval()">
+                <i class="fas fa-play"></i> Play Interval
+            </button>
+            <button class="play-button" onclick="playNotes()">
+                <i class="fas fa-music"></i> Play Notes Separately
+            </button>
+            
+            <div class="options-grid" id="optionsGrid">
+                <!-- Options will be populated here -->
+            </div>
+            
+            <div class="feedback-section" id="feedbackSection">
+                <p id="feedbackText"></p>
+            </div>
+            
+            <div class="control-buttons">
+                <button class="control-btn btn-primary" onclick="nextExercise()">Next Exercise</button>
+                <button class="control-btn btn-secondary" onclick="skipExercise()">Skip</button>
+            </div>
+        </div>
+        
+        <div id="startSection" class="control-buttons">
+            <button class="control-btn btn-primary" onclick="startTraining()">Start Training</button>
+        </div>
+    </div>
+    
+    <div class="score-display">
+        <div class="score-number" id="scoreNumber">0%</div>
+        <p style="color: #718096; margin-bottom: 1rem;">Current Score</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="streakCount">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avgTime">0s</div>
+                <div class="stat-label">Avg Time</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentDifficulty = 1;
+let currentExercise = null;
+let exerciseStartTime = null;
+let stats = {
+    correct: 0,
+    total: 0,
+    streak: 0,
+    times: []
+};
+
+// Audio context for playing intervals
+let audioContext = null;
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function setDifficulty(level) {
+    currentDifficulty = level;
+    document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function startTraining() {
+    initAudio();
+    document.getElementById('startSection').style.display = 'none';
+    document.getElementById('exerciseDisplay').style.display = 'block';
+    loadNewExercise();
+}
+
+function loadNewExercise() {
+    fetch(`/music_theory/api/generate-interval/?difficulty=${currentDifficulty}`)
+        .then(response => response.json())
+        .then(data => {
+            currentExercise = data;
+            exerciseStartTime = Date.now();
+            
+            document.getElementById('intervalDisplay').textContent = 'Listen to the interval...';
+            document.getElementById('noteDisplay').textContent = `Root: ${data.root_note}`;
+            
+            // Populate options
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            
+            data.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => selectAnswer(option);
+                optionsGrid.appendChild(button);
+            });
+            
+            // Hide feedback
+            document.getElementById('feedbackSection').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error loading exercise:', error);
+        });
+}
+
+function playInterval() {
+    if (!currentExercise || !audioContext) return;
+    
+    const now = audioContext.currentTime;
+    playNote(currentExercise.root_midi, now);
+    playNote(currentExercise.interval_midi, now);
+}
+
+function playNotes() {
+    if (!currentExercise || !audioContext) return;
+    
+    const now = audioContext.currentTime;
+    playNote(currentExercise.root_midi, now);
+    playNote(currentExercise.interval_midi, now + 0.8);
+}
+
+function playNote(midiNote, startTime) {
+    const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+    
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    
+    gainNode.gain.setValueAtTime(0, startTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.8);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.start(startTime);
+    oscillator.stop(startTime + 0.8);
+}
+
+function selectAnswer(answer) {
+    if (!currentExercise) return;
+    
+    const responseTime = (Date.now() - exerciseStartTime) / 1000;
+    
+    // Submit answer
+    fetch('/music_theory/api/submit-answer/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            exercise_type: 'interval',
+            user_answer: answer,
+            correct_answer: currentExercise.correct_answer,
+            exercise_id: currentExercise.exercise_id,
+            response_time: responseTime
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showFeedback(data, answer);
+        updateStats(data.correct, responseTime);
+    })
+    .catch(error => {
+        console.error('Error submitting answer:', error);
+    });
+}
+
+function showFeedback(data, userAnswer) {
+    const optionBtns = document.querySelectorAll('.option-btn');
+    
+    optionBtns.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === data.correct_answer) {
+            btn.classList.add('correct');
+        } else if (btn.textContent === userAnswer && !data.correct) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    const feedbackSection = document.getElementById('feedbackSection');
+    const feedbackText = document.getElementById('feedbackText');
+    
+    feedbackSection.className = `feedback-section ${data.correct ? 'feedback-correct' : 'feedback-incorrect'}`;
+    feedbackSection.style.display = 'block';
+    feedbackText.textContent = data.feedback;
+    
+    document.getElementById('intervalDisplay').textContent = `Correct Answer: ${data.correct_answer}`;
+}
+
+function updateStats(correct, responseTime) {
+    stats.total++;
+    stats.times.push(responseTime);
+    
+    if (correct) {
+        stats.correct++;
+        stats.streak++;
+    } else {
+        stats.streak = 0;
+    }
+    
+    const accuracy = Math.round((stats.correct / stats.total) * 100);
+    const avgTime = stats.times.reduce((a, b) => a + b, 0) / stats.times.length;
+    
+    document.getElementById('scoreNumber').textContent = accuracy + '%';
+    document.getElementById('correctCount').textContent = stats.correct;
+    document.getElementById('totalCount').textContent = stats.total;
+    document.getElementById('streakCount').textContent = stats.streak;
+    document.getElementById('avgTime').textContent = avgTime.toFixed(1) + 's';
+}
+
+function nextExercise() {
+    loadNewExercise();
+}
+
+function skipExercise() {
+    loadNewExercise();
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+{% csrf_token %}
+{% endblock %}

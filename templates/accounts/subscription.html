@@ -1,0 +1,660 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Subscription Management - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Subscription Dashboard Styles */
+.subscription-hero {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    padding: 4rem 2rem 3rem;
+    color: white;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.subscription-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.subscription-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.current-plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.subscription-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.subscription-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.main-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.content-section {
+    padding: 2rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.content-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: #3b82f6;
+}
+
+.plan-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+}
+
+.detail-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #3b82f6;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.detail-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.usage-bars {
+    margin-bottom: 2rem;
+}
+
+.usage-item {
+    margin-bottom: 1.5rem;
+}
+
+.usage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.usage-label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.usage-value {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.usage-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.usage-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.usage-progress.warning {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.usage-progress.danger {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quick-action {
+    display: block;
+    width: 100%;
+    background: #f3f4f6;
+    color: #374151;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.quick-action:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: #374151;
+}
+
+.quick-action.primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.quick-action.primary:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.quick-action.danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.quick-action.danger:hover {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+.billing-history {
+    margin-top: 1.5rem;
+}
+
+.billing-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    background: #fafafa;
+}
+
+.billing-date {
+    font-weight: 600;
+    color: #374151;
+}
+
+.billing-amount {
+    font-weight: 700;
+    color: #10b981;
+}
+
+.billing-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.billing-status.paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.upgrade-banner {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.upgrade-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.upgrade-description {
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+}
+
+.upgrade-button {
+    background: white;
+    color: #f59e0b;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.upgrade-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-decoration: none;
+    color: #f59e0b;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #3b82f6;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .subscription-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .plan-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .subscription-title {
+        font-size: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Subscription Hero -->
+<section class="subscription-hero">
+    <div class="hero-content">
+        <div class="current-plan-badge">
+            <i class="fas fa-{% if subscription_type == 'pro' %}crown{% elif subscription_type == 'studio' %}star{% else %}user{% endif %}"></i>
+            Current Plan: {{ subscription_type|title }}
+        </div>
+        
+        <h1 class="subscription-title">Subscription Management</h1>
+        <p class="subscription-subtitle">
+            Manage your subscription, view usage statistics, and upgrade your plan.
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="subscription-content">
+    {% if not subscription_active and subscription_type == 'free' %}
+    <!-- Upgrade Banner for Free Users -->
+    <div class="upgrade-banner">
+        <h2 class="upgrade-title">Unlock Premium Features</h2>
+        <p class="upgrade-description">
+            Get unlimited audio separations, advanced AI models, and exclusive features with our premium plans.
+        </p>
+        <a href="{% url 'premium:features' %}" class="upgrade-button">
+            <i class="fas fa-rocket"></i>
+            Upgrade Now
+        </a>
+    </div>
+    {% endif %}
+    
+    <div class="subscription-grid">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Current Plan Section -->
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Current Plan Details
+                </h2>
+                
+                <div class="plan-details">
+                    <div class="detail-item">
+                        <span class="detail-value">{{ subscription_type|title }}</span>
+                        <span class="detail-label">Plan Type</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-value">
+                            {% if subscription_active %}
+                                Active
+                            {% else %}
+                                Free
+                            {% endif %}
+                        </span>
+                        <span class="detail-label">Status</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-value">
+                            {% if subscription_expires %}
+                                {{ subscription_expires|date:"M d, Y" }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </span>
+                        <span class="detail-label">Expires</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-value">
+                            {% if subscription_type == 'pro' %}$19{% elif subscription_type == 'studio' %}$49{% else %}$0{% endif %}
+                        </span>
+                        <span class="detail-label">Monthly Cost</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usage Statistics -->
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Usage Statistics
+                </h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">{{ usage_stats.separations_this_month }}</span>
+                        <span class="stat-label">This Month</span>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <span class="stat-number">{{ usage_stats.total_processing_time|floatformat:1 }}m</span>
+                        <span class="stat-label">Processing Time</span>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <span class="stat-number">{{ usage_stats.storage_used|filesizeformat }}</span>
+                        <span class="stat-label">Storage Used</span>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <span class="stat-number">{{ usage_stats.favorite_model|title }}</span>
+                        <span class="stat-label">Favorite Model</span>
+                    </div>
+                </div>
+                
+                <div class="usage-bars">
+                    <div class="usage-item">
+                        <div class="usage-header">
+                            <span class="usage-label">Monthly Separations</span>
+                            <span class="usage-value">
+                                {{ usage_stats.separations_this_month }} / 
+                                {% if subscription_type == 'free' %}5{% else %}Unlimited{% endif %}
+                            </span>
+                        </div>
+                        <div class="usage-bar">
+                            {% if subscription_type == 'free' %}
+                                <div class="usage-progress{% if usage_stats.separations_this_month >= 4 %} warning{% endif %}{% if usage_stats.separations_this_month >= 5 %} danger{% endif %}" 
+                                     style="width: {{ usage_stats.separations_this_month|mul:20 }}%"></div>
+                            {% else %}
+                                <div class="usage-progress" style="width: 100%"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="usage-item">
+                        <div class="usage-header">
+                            <span class="usage-label">Storage Usage</span>
+                            <span class="usage-value">
+                                {{ usage_stats.storage_used|filesizeformat }} / 
+                                {% if subscription_type == 'free' %}100MB{% elif subscription_type == 'pro' %}10GB{% else %}1TB{% endif %}
+                            </span>
+                        </div>
+                        <div class="usage-bar">
+                            <div class="usage-progress" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Billing History -->
+            {% if subscription_active %}
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-receipt"></i>
+                    Billing History
+                </h2>
+                
+                <div class="billing-history">
+                    <div class="billing-item">
+                        <div>
+                            <div class="billing-date">December 2024</div>
+                            <div class="billing-status paid">Paid</div>
+                        </div>
+                        <div class="billing-amount">$19.00</div>
+                    </div>
+                    
+                    <div class="billing-item">
+                        <div>
+                            <div class="billing-date">November 2024</div>
+                            <div class="billing-status paid">Paid</div>
+                        </div>
+                        <div class="billing-amount">$19.00</div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Quick Actions -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h3>
+                
+                {% if subscription_type == 'free' %}
+                    <a href="{% url 'premium:features' %}" class="quick-action primary">
+                        <i class="fas fa-rocket"></i>
+                        Upgrade to Pro
+                    </a>
+                {% elif subscription_type == 'pro' %}
+                    <a href="{% url 'premium:features' %}" class="quick-action primary">
+                        <i class="fas fa-star"></i>
+                        Upgrade to Studio
+                    </a>
+                {% endif %}
+                
+                {% if subscription_active %}
+                    <a href="{% url 'premium:analytics' %}" class="quick-action">
+                        <i class="fas fa-chart-line"></i>
+                        View Analytics
+                    </a>
+                    
+                    <a href="{% url 'premium:cancel_subscription' %}" class="quick-action danger">
+                        <i class="fas fa-times"></i>
+                        Cancel Subscription
+                    </a>
+                {% endif %}
+                
+                <a href="{% url 'audio_processor:professional_separation' %}" class="quick-action">
+                    <i class="fas fa-music"></i>
+                    Audio Separation
+                </a>
+                
+                <a href="{% url 'instruments:learn' %}" class="quick-action">
+                    <i class="fas fa-graduation-cap"></i>
+                    Learn Instruments
+                </a>
+            </div>
+            
+            <!-- Support -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-life-ring"></i>
+                    Support
+                </h3>
+                
+                <a href="#" class="quick-action">
+                    <i class="fas fa-question-circle"></i>
+                    Help Center
+                </a>
+                
+                <a href="#" class="quick-action">
+                    <i class="fas fa-envelope"></i>
+                    Contact Support
+                </a>
+                
+                <a href="#" class="quick-action">
+                    <i class="fas fa-comments"></i>
+                    Live Chat
+                </a>
+            </div>
+            
+            <!-- Plan Benefits -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-gift"></i>
+                    Your Benefits
+                </h3>
+                
+                <div style="font-size: 0.9rem; color: #6b7280; line-height: 1.6;">
+                    {% if subscription_type == 'free' %}
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> 5 separations/month</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Basic AI models</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Community support</p>
+                    {% elif subscription_type == 'pro' %}
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Unlimited separations</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> All AI models</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Priority processing</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Advanced analytics</p>
+                    {% else %}
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Everything in Pro</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Custom AI models</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> API access</p>
+                        <p><i class="fas fa-check" style="color: #10b981; margin-right: 0.5rem;"></i> Team collaboration</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate usage bars
+    const progressBars = document.querySelectorAll('.usage-progress');
+    progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 500);
+    });
+    
+    // Add hover effects to quick actions
+    const quickActions = document.querySelectorAll('.quick-action');
+    quickActions.forEach(action => {
+        action.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        action.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

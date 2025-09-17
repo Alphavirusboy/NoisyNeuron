@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +10,8 @@ from django.utils.decorators import method_decorator
 import json
 import os
 import tempfile
+import random
+import time
 
 from .models import (
     Instrument, Chord, ChordProgression, InstrumentChord, 
@@ -404,3 +406,233 @@ class LearningPathViewSet(viewsets.ModelViewSet):
                 } for p in chord_progress
             ]
         })
+
+def learn_view(request):
+    """Music theory learning page view."""
+    from django.shortcuts import render
+    return render(request, 'music_theory/learn.html')
+
+def practice_view(request):
+    """Music theory practice page view."""
+    from django.shortcuts import render
+    return render(request, 'music_theory/practice.html')
+
+# ============ ADVANCED TRAINING FEATURES ============
+
+def interval_training_view(request):
+    """Interval training page view."""
+    return render(request, 'music_theory/interval_training.html')
+
+def scale_practice_view(request):
+    """Scale practice page view."""
+    return render(request, 'music_theory/scale_practice.html')
+
+def rhythm_training_view(request):
+    """Rhythm training page view."""
+    return render(request, 'music_theory/rhythm_training.html')
+
+@api_view(['GET'])
+@csrf_exempt
+def generate_interval_exercise(request):
+    """Generate a random interval exercise."""
+    intervals = [
+        {'name': 'Perfect Unison', 'semitones': 0, 'difficulty': 1},
+        {'name': 'Minor Second', 'semitones': 1, 'difficulty': 3},
+        {'name': 'Major Second', 'semitones': 2, 'difficulty': 2},
+        {'name': 'Minor Third', 'semitones': 3, 'difficulty': 2},
+        {'name': 'Major Third', 'semitones': 4, 'difficulty': 2},
+        {'name': 'Perfect Fourth', 'semitones': 5, 'difficulty': 1},
+        {'name': 'Tritone', 'semitones': 6, 'difficulty': 4},
+        {'name': 'Perfect Fifth', 'semitones': 7, 'difficulty': 1},
+        {'name': 'Minor Sixth', 'semitones': 8, 'difficulty': 3},
+        {'name': 'Major Sixth', 'semitones': 9, 'difficulty': 3},
+        {'name': 'Minor Seventh', 'semitones': 10, 'difficulty': 3},
+        {'name': 'Major Seventh', 'semitones': 11, 'difficulty': 4},
+        {'name': 'Perfect Octave', 'semitones': 12, 'difficulty': 1},
+    ]
+    
+    difficulty = int(request.GET.get('difficulty', 2))
+    filtered_intervals = [i for i in intervals if i['difficulty'] <= difficulty]
+    
+    interval = random.choice(filtered_intervals)
+    root_note = random.choice(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
+    
+    # Calculate MIDI note numbers (C4 = 60)
+    root_midi = 60 + ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].index(root_note)
+    interval_midi = root_midi + interval['semitones']
+    
+    # Create multiple choice options
+    options = [interval['name']]
+    while len(options) < 4:
+        random_interval = random.choice(intervals)
+        if random_interval['name'] not in options:
+            options.append(random_interval['name'])
+    
+    random.shuffle(options)
+    correct_answer = interval['name']
+    
+    return JsonResponse({
+        'interval': interval,
+        'root_note': root_note,
+        'root_midi': root_midi,
+        'interval_midi': interval_midi,
+        'options': options,
+        'correct_answer': correct_answer,
+        'exercise_id': int(time.time() * 1000)  # Unique ID
+    })
+
+@api_view(['GET'])
+@csrf_exempt
+def generate_scale_exercise(request):
+    """Generate a random scale exercise."""
+    scales = {
+        'Major': [0, 2, 4, 5, 7, 9, 11],
+        'Natural Minor': [0, 2, 3, 5, 7, 8, 10],
+        'Harmonic Minor': [0, 2, 3, 5, 7, 8, 11],
+        'Melodic Minor': [0, 2, 3, 5, 7, 9, 11],
+        'Dorian': [0, 2, 3, 5, 7, 9, 10],
+        'Phrygian': [0, 1, 3, 5, 7, 8, 10],
+        'Lydian': [0, 2, 4, 6, 7, 9, 11],
+        'Mixolydian': [0, 2, 4, 5, 7, 9, 10],
+        'Locrian': [0, 1, 3, 5, 6, 8, 10],
+        'Pentatonic Major': [0, 2, 4, 7, 9],
+        'Pentatonic Minor': [0, 3, 5, 7, 10],
+        'Blues': [0, 3, 5, 6, 7, 10],
+    }
+    
+    difficulty = int(request.GET.get('difficulty', 1))
+    
+    if difficulty == 1:
+        available_scales = ['Major', 'Natural Minor', 'Pentatonic Major', 'Pentatonic Minor']
+    elif difficulty == 2:
+        available_scales = ['Major', 'Natural Minor', 'Harmonic Minor', 'Dorian', 'Mixolydian', 'Pentatonic Major', 'Pentatonic Minor', 'Blues']
+    else:
+        available_scales = list(scales.keys())
+    
+    scale_name = random.choice(available_scales)
+    scale_intervals = scales[scale_name]
+    root_note = random.choice(['C', 'D', 'E', 'F', 'G', 'A', 'B'])
+    
+    # Calculate the scale notes
+    note_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    root_index = note_names.index(root_note)
+    
+    scale_notes = []
+    for interval in scale_intervals:
+        note_index = (root_index + interval) % 12
+        scale_notes.append(note_names[note_index])
+    
+    # Create exercise - missing note
+    missing_position = random.randint(0, len(scale_notes) - 1)
+    correct_note = scale_notes[missing_position]
+    
+    # Create options
+    options = [correct_note]
+    while len(options) < 4:
+        random_note = random.choice(note_names)
+        if random_note not in options:
+            options.append(random_note)
+    
+    random.shuffle(options)
+    
+    return JsonResponse({
+        'scale_name': scale_name,
+        'root_note': root_note,
+        'scale_notes': scale_notes,
+        'missing_position': missing_position,
+        'correct_note': correct_note,
+        'options': options,
+        'exercise_id': int(time.time() * 1000)
+    })
+
+@api_view(['GET'])
+@csrf_exempt  
+def generate_rhythm_exercise(request):
+    """Generate a random rhythm exercise."""
+    rhythms = {
+        'Whole Note': {'duration': 4, 'pattern': '◌', 'difficulty': 1},
+        'Half Notes': {'duration': 2, 'pattern': '♩ ♩', 'difficulty': 1},
+        'Quarter Notes': {'duration': 1, 'pattern': '♪ ♪ ♪ ♪', 'difficulty': 1},
+        'Eighth Notes': {'duration': 0.5, 'pattern': '♫ ♫ ♫ ♫', 'difficulty': 2},
+        'Mixed Quarter-Eighth': {'duration': [1, 0.5, 0.5, 1], 'pattern': '♪ ♫ ♪', 'difficulty': 2},
+        'Sixteenth Notes': {'duration': 0.25, 'pattern': '♬ ♬ ♬ ♬', 'difficulty': 3},
+        'Syncopated': {'duration': [0.5, 1, 0.5, 1], 'pattern': '♫ ♪ ♫ ♪', 'difficulty': 4},
+        'Triplets': {'duration': 1/3, 'pattern': '♪♪♪ ♪♪♪', 'difficulty': 4},
+    }
+    
+    difficulty = int(request.GET.get('difficulty', 1))
+    time_signature = request.GET.get('time_signature', '4/4')
+    
+    filtered_rhythms = {k: v for k, v in rhythms.items() if v['difficulty'] <= difficulty}
+    
+    rhythm_name = random.choice(list(filtered_rhythms.keys()))
+    rhythm_data = filtered_rhythms[rhythm_name]
+    
+    # Generate tempo between 60-120 BPM
+    tempo = random.randint(60, 120)
+    
+    # Create multiple choice options
+    options = [rhythm_name]
+    while len(options) < 4:
+        random_rhythm = random.choice(list(rhythms.keys()))
+        if random_rhythm not in options:
+            options.append(random_rhythm)
+    
+    random.shuffle(options)
+    
+    return JsonResponse({
+        'rhythm_name': rhythm_name,
+        'rhythm_pattern': rhythm_data['pattern'],
+        'tempo': tempo,
+        'time_signature': time_signature,
+        'options': options,
+        'correct_answer': rhythm_name,
+        'exercise_id': int(time.time() * 1000)
+    })
+
+@api_view(['POST'])
+@csrf_exempt
+def submit_training_answer(request):
+    """Submit and score a training exercise answer."""
+    data = json.loads(request.body)
+    
+    exercise_type = data.get('exercise_type')
+    user_answer = data.get('user_answer')
+    correct_answer = data.get('correct_answer')
+    exercise_id = data.get('exercise_id')
+    response_time = data.get('response_time', 0)
+    
+    is_correct = user_answer == correct_answer
+    
+    # Calculate score based on correctness and speed
+    base_score = 100 if is_correct else 0
+    time_bonus = max(0, 50 - response_time) if is_correct else 0
+    total_score = min(100, base_score + time_bonus)
+    
+    response_data = {
+        'correct': is_correct,
+        'score': total_score,
+        'correct_answer': correct_answer,
+        'feedback': get_feedback(exercise_type, is_correct, response_time)
+    }
+    
+    return JsonResponse(response_data)
+
+def get_feedback(exercise_type, is_correct, response_time):
+    """Generate feedback for training exercises."""
+    if is_correct:
+        if response_time < 3:
+            return "Excellent! Lightning fast recognition!"
+        elif response_time < 5:
+            return "Great job! Very good timing."
+        elif response_time < 10:
+            return "Correct! Keep practicing for faster recognition."
+        else:
+            return "Correct, but try to be quicker next time."
+    else:
+        feedback_map = {
+            'interval': "Not quite right. Listen carefully to the interval size and try again.",
+            'scale': "Incorrect. Review the scale pattern and note relationships.", 
+            'rhythm': "Wrong rhythm. Try counting along with the beat pattern."
+        }
+        return feedback_map.get(exercise_type, "Not correct. Keep practicing!")

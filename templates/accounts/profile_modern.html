@@ -1,0 +1,977 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Profile - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Professional Profile Styles */
+.profile-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 4rem 2rem 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    animation: backgroundMove 20s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-60px) translateY(-60px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: center;
+}
+
+.profile-avatar-section {
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.3);
+    object-fit: cover;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: white;
+    margin-bottom: 1rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.avatar-upload {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.avatar-upload:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.profile-info {
+    text-align: left;
+}
+
+.profile-name {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.profile-title {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+}
+
+.profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.meta-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.action-btn {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: rgba(255,255,255,0.3);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.action-btn.primary {
+    background: #fbbf24;
+    border-color: #fbbf24;
+    color: #111827;
+}
+
+.action-btn.primary:hover {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: #111827;
+}
+
+.profile-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 3rem;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-title i {
+    width: 40px;
+    height: 40px;
+    background: #6366f1;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.edit-btn {
+    background: #6366f1;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+/* Bio Section */
+.bio-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+.bio-empty {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Skills & Interests */
+.skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.skill-category {
+    margin-bottom: 2rem;
+}
+
+.category-title {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-title i {
+    color: #6366f1;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.skill-tag {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
+}
+
+.skill-tag.primary {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+}
+
+/* Recent Activity */
+.activity-timeline {
+    position: relative;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 3rem;
+    bottom: -2rem;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.activity-item:last-child::before {
+    display: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    background: #6366f1;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.activity-content {
+    flex: 1;
+    padding-top: 0.5rem;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.25rem;
+}
+
+.activity-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.activity-time {
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+/* Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-title i {
+    color: #6366f1;
+}
+
+/* Progress Tracking */
+.progress-item {
+    margin-bottom: 1.5rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.progress-value {
+    font-size: 0.9rem;
+    color: #6366f1;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Achievements */
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.achievement-item.earned {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+}
+
+.achievement-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background: rgba(255,255,255,0.2);
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.achievement-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Settings Quick Access */
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-item:hover {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.settings-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.settings-label i {
+    color: #6366f1;
+    width: 16px;
+    text-align: center;
+}
+
+.settings-toggle {
+    width: 40px;
+    height: 20px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.settings-toggle.active {
+    background: #6366f1;
+}
+
+.settings-toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.settings-toggle.active::before {
+    transform: translateX(20px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .profile-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .profile-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Profile Hero -->
+<section class="profile-hero">
+    <div class="hero-content">
+        <div class="profile-avatar-section">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Profile Avatar" class="profile-avatar">
+            {% else %}
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            {% endif %}
+            <button class="avatar-upload">
+                <i class="fas fa-camera"></i> Change Photo
+            </button>
+        </div>
+        
+        <div class="profile-info">
+            <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
+            <p class="profile-title">
+                {{ profile.skill_level|capfirst|default:'Beginner' }} 
+                {% if profile.primary_instrument %}{{ profile.primary_instrument|capfirst }} Player{% else %}Musician{% endif %}
+            </p>
+            
+            <div class="profile-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Joined {{ user.date_joined|date:"F Y" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ profile.timezone|default:'UTC' }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ user.email }}</span>
+                </div>
+                {% if user.is_premium %}
+                    <div class="meta-item">
+                        <i class="fas fa-star"></i>
+                        <span>Premium Member</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="profile-actions">
+            <a href="{% url 'accounts:profile_edit' %}" class="action-btn primary">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <a href="{% url 'accounts:dashboard' %}" class="action-btn">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="#" class="action-btn">
+                <i class="fas fa-share-alt"></i> Share Profile
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Content -->
+<section class="profile-container">
+    <div class="main-content">
+        <!-- About Section -->
+        <div class="profile-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-user-circle"></i>
+                    About
+                </h2>
+                <a href="{% url 'accounts:profile_edit' %}" class="edit-btn">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            </div>
+            
+            <div class="bio-content">
+                {% if profile.bio %}
+                    {{ profile.bio|linebreaks }}
+                {% else %}
+                    <p class="bio-empty">Tell us about yourself, your musical journey, and what inspires you to create.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Skills & Interests -->
+        <div class="profile-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-guitar"></i>
+                    Skills & Interests
+                </h2>
+                <a href="{% url 'accounts:profile_edit' %}" class="edit-btn">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-music"></i>
+                        Instruments
+                    </h3>
+                    <div class="skill-tags">
+                        {% if profile.primary_instrument %}
+                            <span class="skill-tag primary">{{ profile.primary_instrument|capfirst }}</span>
+                        {% endif %}
+                        <span class="skill-tag">Piano</span>
+                        <span class="skill-tag">Guitar</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-compact-disc"></i>
+                        Genres
+                    </h3>
+                    <div class="skill-tags">
+                        {% if profile.favorite_genres %}
+                            {% for genre in profile.favorite_genres %}
+                                <span class="skill-tag">{{ genre|capfirst }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="skill-tag">Rock</span>
+                            <span class="skill-tag">Jazz</span>
+                            <span class="skill-tag">Electronic</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-cog"></i>
+                        Skills
+                    </h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Audio Production</span>
+                        <span class="skill-tag">Mixing</span>
+                        <span class="skill-tag">Composition</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-brain"></i>
+                        AI Tools
+                    </h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Audio Separation</span>
+                        <span class="skill-tag">HTDemucs</span>
+                        <span class="skill-tag">Spleeter</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="profile-card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-clock"></i>
+                    Recent Activity
+                </h2>
+            </div>
+            
+            <div class="activity-timeline">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Logged into account</div>
+                        <div class="activity-description">Accessed dashboard and profile</div>
+                        <div class="activity-time">Just now</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Joined NoisyNeuron</div>
+                        <div class="activity-description">Created account and set up profile</div>
+                        <div class="activity-time">{{ user.date_joined|timesince }} ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Progress Overview -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-chart-line"></i>
+                Progress Overview
+            </h3>
+            
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-label">Profile Completion</span>
+                    <span class="progress-value">75%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-label">Learning Progress</span>
+                    <span class="progress-value">{{ profile.completed_tutorials|length|default:0 }}/10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ profile.completed_tutorials|length|default:0|mul:10 }}%"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-label">Monthly Goal</span>
+                    <span class="progress-value">12/{{ profile.practice_time_goal|default:30 }} hours</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-trophy"></i>
+                Achievements
+            </h3>
+            
+            <div class="achievements-list">
+                <div class="achievement-item earned">
+                    <div class="achievement-icon">🎵</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Welcome</div>
+                        <div class="achievement-desc">Joined the community</div>
+                    </div>
+                </div>
+                
+                <div class="achievement-item {% if total_projects >= 1 %}earned{% endif %}">
+                    <div class="achievement-icon">🚀</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">First Project</div>
+                        <div class="achievement-desc">Created your first audio project</div>
+                    </div>
+                </div>
+                
+                <div class="achievement-item {% if profile.total_separations >= 5 %}earned{% endif %}">
+                    <div class="achievement-icon">⭐</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Separator</div>
+                        <div class="achievement-desc">Completed 5 audio separations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Settings -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-cog"></i>
+                Quick Settings
+            </h3>
+            
+            <div class="settings-list">
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-bell"></i>
+                        Email Notifications
+                    </div>
+                    <div class="settings-toggle {% if profile.newsletter_subscribed %}active{% endif %}"></div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-eye"></i>
+                        Public Profile
+                    </div>
+                    <div class="settings-toggle {% if profile.public_profile %}active{% endif %}"></div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-chart-bar"></i>
+                        Show Statistics
+                    </div>
+                    <div class="settings-toggle {% if profile.show_statistics %}active{% endif %}"></div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-users"></i>
+                        Allow Collaboration
+                    </div>
+                    <div class="settings-toggle {% if profile.allow_collaboration %}active{% endif %}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Profile page interactivity
+document.addEventListener('DOMContentLoaded', function() {
+    // Settings toggles
+    const toggles = document.querySelectorAll('.settings-toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            // Here you would send an AJAX request to update the setting
+        });
+    });
+    
+    // Avatar upload
+    const avatarUpload = document.querySelector('.avatar-upload');
+    if (avatarUpload) {
+        avatarUpload.addEventListener('click', function() {
+            // Create file input
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Preview the image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const avatarImg = document.querySelector('.profile-avatar');
+                        if (avatarImg.tagName === 'IMG') {
+                            avatarImg.src = e.target.result;
+                        } else {
+                            // Replace icon with image
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'profile-avatar';
+                            avatarImg.parentNode.replaceChild(img, avatarImg);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    // Here you would upload the file to the server
+                    console.log('Upload avatar:', file);
+                }
+            });
+            
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
+        });
+    }
+    
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('.progress-fill');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressFill = entry.target;
+                const width = progressFill.style.width;
+                progressFill.style.width = '0%';
+                setTimeout(() => {
+                    progressFill.style.width = width;
+                }, 200);
+            }
+        });
+    });
+    
+    progressBars.forEach(bar => observer.observe(bar));
+});
+</script>
+{% endblock %}

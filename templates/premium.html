@@ -1,0 +1,1075 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Premium Features - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Premium Features Styles */
+.premium-hero {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    padding: 6rem 2rem 4rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M30 0l4.635 14.262L49 9.27l-9.738 11.008L54 30l-14.738 9.722L49 50.73l-14.365-4.992L30 60l-4.635-14.262L11 50.73l9.738-11.008L6 30l14.738-9.722L11 9.27l14.365 4.992z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    animation: sparkle 15s linear infinite;
+}
+
+@keyframes sparkle {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-60px) translateY(-60px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.premium-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #fef3c7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    background: white;
+    color: #f59e0b;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    text-decoration: none;
+    color: #f59e0b;
+}
+
+.cta-button.secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.cta-button.secondary:hover {
+    background: rgba(255,255,255,0.3);
+    color: white;
+}
+
+.pricing-section {
+    padding: 6rem 2rem;
+    background: #f9fafb;
+}
+
+.pricing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
+    margin-bottom: 4rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.pricing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 2px solid #e5e7eb;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.pricing-card.featured {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    transform: scale(1.05);
+}
+
+.pricing-card.featured::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.plan-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.plan-price {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+}
+
+.plan-period {
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.plan-description {
+    color: #374151;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    text-align: left;
+}
+
+.plan-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: #374151;
+}
+
+.plan-features li i {
+    color: #10b981;
+    font-size: 1rem;
+    width: 16px;
+}
+
+.plan-features li.unavailable {
+    color: #9ca3af;
+}
+
+.plan-features li.unavailable i {
+    color: #e5e7eb;
+}
+
+.plan-button {
+    width: 100%;
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan-button:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+}
+
+.plan-button.premium {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.plan-button.premium:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.features-showcase {
+    padding: 6rem 2rem;
+    background: white;
+}
+
+.features-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 4rem;
+    margin-bottom: 6rem;
+}
+
+.feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+    box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+}
+
+.feature-content {
+    flex: 1;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.feature-highlight {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #fbbf24;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.ai-models-section {
+    background: #f9fafb;
+    padding: 6rem 2rem;
+}
+
+.models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.model-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.model-card:hover {
+    border-color: #fbbf24;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
+}
+
+.model-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1.5rem;
+}
+
+.model-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.model-version {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.model-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.spec-item {
+    background: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.spec-value {
+    font-weight: 700;
+    color: #f59e0b;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.spec-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.premium-badge-small {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.comparison-section {
+    padding: 6rem 2rem;
+    background: white;
+}
+
+.comparison-table {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.comparison-table th {
+    background: #f9fafb;
+    font-weight: 700;
+    color: #111827;
+}
+
+.comparison-table .premium-col {
+    background: linear-gradient(135deg, #fef3c7, #fbbf24);
+    color: #92400e;
+}
+
+.check-icon {
+    color: #10b981;
+    font-size: 1.2rem;
+}
+
+.cross-icon {
+    color: #ef4444;
+    font-size: 1.2rem;
+}
+
+.faq-section {
+    padding: 6rem 2rem;
+    background: #f9fafb;
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #111827;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.faq-question:hover {
+    background: #f9fafb;
+}
+
+.faq-answer {
+    padding: 0 1.5rem 1.5rem;
+    color: #6b7280;
+    line-height: 1.6;
+    display: none;
+}
+
+.faq-answer.show {
+    display: block;
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+}
+
+.faq-icon.rotate {
+    transform: rotate(180deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .pricing-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .feature-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .models-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .comparison-table {
+        overflow-x: auto;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Premium Hero -->
+<section class="premium-hero">
+    <div class="hero-content">
+        <div class="premium-badge">
+            <i class="fas fa-crown"></i>
+            Premium Features
+        </div>
+        
+        <h1 class="hero-title">Unlock Your Full Creative Potential</h1>
+        
+        <p class="hero-subtitle">
+            Experience the complete power of AI-driven music production with advanced tools, 
+            unlimited processing, and exclusive features designed for professionals.
+        </p>
+        
+        <div class="hero-cta">
+            <a href="#pricing" class="cta-button">
+                <i class="fas fa-rocket"></i>
+                Start Free Trial
+            </a>
+            <a href="#features" class="cta-button secondary">
+                <i class="fas fa-play"></i>
+                Watch Demo
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing-section" id="pricing">
+    <div class="pricing-container">
+        <h2 class="section-title">Choose Your Plan</h2>
+        <p class="section-subtitle">
+            Start free and upgrade as you grow. All plans include our core AI separation tools.
+        </p>
+        
+        <div class="pricing-cards">
+            <!-- Free Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Free</div>
+                <div class="plan-price">$0</div>
+                <div class="plan-period">forever</div>
+                <div class="plan-description">
+                    Perfect for trying out our AI separation technology and basic learning features.
+                </div>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 5 audio separations per month</li>
+                    <li><i class="fas fa-check"></i> Basic AI models (Spleeter)</li>
+                    <li><i class="fas fa-check"></i> Standard quality processing</li>
+                    <li><i class="fas fa-check"></i> Basic instrument lessons</li>
+                    <li><i class="fas fa-check"></i> Community support</li>
+                    <li class="unavailable"><i class="fas fa-times"></i> Advanced AI models</li>
+                    <li class="unavailable"><i class="fas fa-times"></i> Batch processing</li>
+                    <li class="unavailable"><i class="fas fa-times"></i> Priority processing</li>
+                </ul>
+                
+                <button class="plan-button">Get Started Free</button>
+            </div>
+            
+            <!-- Pro Plan -->
+            <div class="pricing-card featured">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$19</div>
+                <div class="plan-period">per month</div>
+                <div class="plan-description">
+                    Ideal for serious musicians and producers who need professional-grade tools.
+                </div>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Unlimited audio separations</li>
+                    <li><i class="fas fa-check"></i> All AI models (HTDemucs, MDX, Spleeter)</li>
+                    <li><i class="fas fa-check"></i> High-quality processing</li>
+                    <li><i class="fas fa-check"></i> Advanced practice modes</li>
+                    <li><i class="fas fa-check"></i> Personalized learning paths</li>
+                    <li><i class="fas fa-check"></i> Batch processing</li>
+                    <li><i class="fas fa-check"></i> Priority processing</li>
+                    <li><i class="fas fa-check"></i> Analytics dashboard</li>
+                </ul>
+                
+                <button class="plan-button premium">Start Free Trial</button>
+            </div>
+            
+            <!-- Studio Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Studio</div>
+                <div class="plan-price">$49</div>
+                <div class="plan-period">per month</div>
+                <div class="plan-description">
+                    Enterprise-level features for studios and professional music production teams.
+                </div>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Everything in Pro</li>
+                    <li><i class="fas fa-check"></i> Custom AI model training</li>
+                    <li><i class="fas fa-check"></i> API access</li>
+                    <li><i class="fas fa-check"></i> Team collaboration tools</li>
+                    <li><i class="fas fa-check"></i> Cloud storage (1TB)</li>
+                    <li><i class="fas fa-check"></i> White-label solutions</li>
+                    <li><i class="fas fa-check"></i> Dedicated support</li>
+                    <li><i class="fas fa-check"></i> Custom integrations</li>
+                </ul>
+                
+                <button class="plan-button">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Showcase -->
+<section class="features-showcase" id="features">
+    <div class="features-container">
+        <h2 class="section-title">Premium Features</h2>
+        <p class="section-subtitle">
+            Discover the advanced capabilities that set our premium plans apart from the competition.
+        </p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Advanced AI Models</h3>
+                    <p class="feature-description">
+                        Access cutting-edge AI models including HTDemucs v4, MDX-Net, and custom-trained networks 
+                        for superior audio separation quality.
+                    </p>
+                    <div class="feature-highlight">
+                        🎯 Up to 99.2% separation accuracy with HTDemucs
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Batch Processing</h3>
+                    <p class="feature-description">
+                        Process multiple audio files simultaneously with queue management, 
+                        progress tracking, and automated quality optimization.
+                    </p>
+                    <div class="feature-highlight">
+                        ⚡ Process up to 50 files simultaneously
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Personalized Learning</h3>
+                    <p class="feature-description">
+                        AI-powered learning paths that adapt to your skill level, practice habits, 
+                        and musical goals for accelerated progress.
+                    </p>
+                    <div class="feature-highlight">
+                        📈 Learn 3x faster with adaptive AI coaching
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Advanced Analytics</h3>
+                    <p class="feature-description">
+                        Comprehensive insights into your practice sessions, progress tracking, 
+                        and performance analytics with detailed reports.
+                    </p>
+                    <div class="feature-highlight">
+                        📊 Real-time performance insights and recommendations
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Cloud Storage & Sync</h3>
+                    <p class="feature-description">
+                        Secure cloud storage for all your projects with seamless device synchronization 
+                        and collaborative sharing capabilities.
+                    </p>
+                    <div class="feature-highlight">
+                        ☁️ Up to 1TB storage with instant sync
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Team Collaboration</h3>
+                    <p class="feature-description">
+                        Work together on projects with real-time collaboration, version control, 
+                        and integrated communication tools.
+                    </p>
+                    <div class="feature-highlight">
+                        👥 Collaborate with unlimited team members
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Models Section -->
+<section class="ai-models-section">
+    <div class="features-container">
+        <h2 class="section-title">Professional AI Models</h2>
+        <p class="section-subtitle">
+            Access the most advanced audio separation models available, exclusively for premium users.
+        </p>
+        
+        <div class="models-grid">
+            <div class="model-card">
+                <div class="model-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="model-name">HTDemucs v4</div>
+                <div class="model-version">Hybrid Transformer</div>
+                <div class="premium-badge-small">Pro & Studio</div>
+                
+                <div class="model-specs">
+                    <div class="spec-item">
+                        <span class="spec-value">99.2%</span>
+                        <span class="spec-label">Accuracy</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">4 Stems</span>
+                        <span class="spec-label">Output</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">48kHz</span>
+                        <span class="spec-label">Quality</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">~2 min</span>
+                        <span class="spec-label">Speed</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="model-name">MDX-Net v2</div>
+                <div class="model-version">Optimized Efficiency</div>
+                <div class="premium-badge-small">Pro & Studio</div>
+                
+                <div class="model-specs">
+                    <div class="spec-item">
+                        <span class="spec-value">96.8%</span>
+                        <span class="spec-label">Accuracy</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">2 Stems</span>
+                        <span class="spec-label">Output</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">44kHz</span>
+                        <span class="spec-label">Quality</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">~45 sec</span>
+                        <span class="spec-label">Speed</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="model-name">Custom Models</div>
+                <div class="model-version">Trained for You</div>
+                <div class="premium-badge-small">Studio Only</div>
+                
+                <div class="model-specs">
+                    <div class="spec-item">
+                        <span class="spec-value">Custom</span>
+                        <span class="spec-label">Accuracy</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">2-6 Stems</span>
+                        <span class="spec-label">Output</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">96kHz</span>
+                        <span class="spec-label">Quality</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-value">Variable</span>
+                        <span class="spec-label">Speed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="comparison-section">
+    <div class="features-container">
+        <h2 class="section-title">Feature Comparison</h2>
+        <p class="section-subtitle">
+            See exactly what's included in each plan to make the best choice for your needs.
+        </p>
+        
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free</th>
+                        <th class="premium-col">Pro</th>
+                        <th>Studio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Audio Separations/Month</td>
+                        <td>5</td>
+                        <td class="premium-col">Unlimited</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>AI Models</td>
+                        <td>Spleeter</td>
+                        <td class="premium-col">All Models</td>
+                        <td>All + Custom</td>
+                    </tr>
+                    <tr>
+                        <td>Processing Quality</td>
+                        <td>Standard</td>
+                        <td class="premium-col">High</td>
+                        <td>Ultra High</td>
+                    </tr>
+                    <tr>
+                        <td>Batch Processing</td>
+                        <td><i class="fas fa-times cross-icon"></i></td>
+                        <td class="premium-col"><i class="fas fa-check check-icon"></i></td>
+                        <td><i class="fas fa-check check-icon"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Priority Processing</td>
+                        <td><i class="fas fa-times cross-icon"></i></td>
+                        <td class="premium-col"><i class="fas fa-check check-icon"></i></td>
+                        <td><i class="fas fa-check check-icon"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Cloud Storage</td>
+                        <td>100MB</td>
+                        <td class="premium-col">10GB</td>
+                        <td>1TB</td>
+                    </tr>
+                    <tr>
+                        <td>API Access</td>
+                        <td><i class="fas fa-times cross-icon"></i></td>
+                        <td class="premium-col"><i class="fas fa-times cross-icon"></i></td>
+                        <td><i class="fas fa-check check-icon"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Team Collaboration</td>
+                        <td><i class="fas fa-times cross-icon"></i></td>
+                        <td class="premium-col"><i class="fas fa-times cross-icon"></i></td>
+                        <td><i class="fas fa-check check-icon"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="faq-container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">
+            Everything you need to know about our premium features and pricing.
+        </p>
+        
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)">
+                Can I upgrade or downgrade my plan anytime?
+                <i class="fas fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+                Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, 
+                and you'll be charged or credited proportionally for the remaining billing period.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)">
+                Is there a free trial for premium plans?
+                <i class="fas fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+                Absolutely! We offer a 14-day free trial for both Pro and Studio plans. 
+                No credit card required to start your trial.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)">
+                What happens to my projects if I cancel?
+                <i class="fas fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+                Your projects remain accessible for 30 days after cancellation. You can download 
+                all your files during this period. After 30 days, projects are permanently deleted.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)">
+                Can I use premium features commercially?
+                <i class="fas fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+                Yes! All premium plans include commercial usage rights. You can use the separated 
+                audio for any commercial purposes including music production, podcasts, and content creation.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)">
+                Is my data secure and private?
+                <i class="fas fa-chevron-down faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+                Absolutely. We use enterprise-grade encryption for all data storage and transmission. 
+                Your audio files are processed securely and never shared with third parties.
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// FAQ toggle functionality
+function toggleFAQ(button) {
+    const answer = button.nextElementSibling;
+    const icon = button.querySelector('.faq-icon');
+    
+    if (answer.classList.contains('show')) {
+        answer.classList.remove('show');
+        icon.classList.remove('rotate');
+    } else {
+        // Close all other FAQs
+        document.querySelectorAll('.faq-answer.show').forEach(item => {
+            item.classList.remove('show');
+        });
+        document.querySelectorAll('.faq-icon.rotate').forEach(item => {
+            item.classList.remove('rotate');
+        });
+        
+        // Open clicked FAQ
+        answer.classList.add('show');
+        icon.classList.add('rotate');
+    }
+}
+
+// Smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Animate pricing cards on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    });
+    
+    document.querySelectorAll('.pricing-card, .feature-card, .model-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

@@ -1,327 +1,500 @@
-<<<<<<< HEAD
-# 🎧 Noisy Neuron
+# NoisyNeuron 🎵# 🎧 NoisyNeuron - Professional Music Source Separation Platform
 
-**Noisy Neuron** is a music source separation and practice tool that helps creators, learners, and producers explore, remix, and master music by isolating individual stems — vocals, drums, bass, and more.
 
-Whether you're a musician breaking down complex arrangements or a student learning a new instrument, Noisy Neuron brings clarity to every note.
+
+**Advanced AI-Powered Music Platform for Professional Audio Processing & Learning****NoisyNeuron** is a market-ready, professional AI-powered music source separation platform built with Django. Transform any music track into isolated stems with studio-quality results using industry-standard Spleeter technology.
+
+
+
+A comprehensive Django-based platform that combines cutting-edge AI audio separation with interactive music education, designed for musicians, producers, and music enthusiasts.Perfect for musicians, producers, DJs, students, and audio professionals who need reliable stem separation with a modern, intuitive interface.
+
+
+
+## 🌟 Key Features---
+
+
+
+### 🎯 Professional Audio Separation## 🚀 Latest Updates (September 2025)
+
+- **Spleeter 2.3.2 Integration**: Industry-standard AI model by Facebook Research
+
+- **Multi-stem Separation**: Extract vocals, drums, bass, and other instruments✅ **Spleeter Integration** - Now powered by Facebook's industry-standard Spleeter for professional-grade separation  
+
+- **High-Quality Output**: 16kHz optimized processing for professional results✅ **Python 3.10 Optimized** - Fully compatible and optimized for stability  
+
+- **Real-time Progress**: WebSocket-powered live updates during processing✅ **4-Stem Separation** - Vocals, Drums, Bass, and Other instruments  
+
+- **Multiple Format Support**: WAV, MP3, FLAC audio processing✅ **Production Ready** - Professional UI/UX designed for commercial use  
+
+✅ **Market Ready** - Complete platform ready for deployment and monetization  
+
+### 🎸 Interactive Instrument Learning
+
+- **Comprehensive Instrument Guide**: Piano, guitar, violin, drums, and more---
+
+- **Progressive Difficulty Levels**: Beginner to advanced techniques
+
+- **Interactive Tutorials**: Step-by-step learning modules## 🌟 Key Features
+
+- **Practice Exercises**: Structured skill-building activities
+
+- **Progress Tracking**: Monitor your musical journey### 🎵 Professional Audio Processing
+
+- **Spleeter 2.3.2** - Industry-standard AI source separation by Facebook Research
+
+### 👤 Advanced User Management- **4-Stem Separation** - Vocals, Drums, Bass, Other (instruments/harmony)
+
+- **Secure Authentication**: Email verification and password reset- **Multiple Formats** - Support for WAV, MP3, FLAC, OGG, M4A, AAC
+
+- **User Profiles**: Personalized learning dashboards- **Real-time Progress** - Live processing updates with WebSocket technology
+
+- **Premium Subscriptions**: Enhanced features for serious musicians- **High-Quality Output** - Studio-grade separation results
+
+- **Project Management**: Save and organize your audio projects- **Batch Processing** - Handle multiple files efficiently
+
+
+
+### 🧠 AI-Powered Music Theory### 🎓 Complete Music Learning Platform
+
+- **Markov Chain Models**: Generate musical patterns and compositions- **Interactive Music Theory** - Comprehensive lessons and exercises
+
+- **Theory Engine**: Advanced harmonic analysis and suggestions- **Instrument Learning** - Guitar, Piano, Drums, Bass tutorials
+
+- **Pattern Recognition**: Identify musical structures and progressions- **Practice Tools** - Metronome, chord progressions, scale practice
+
+- **Markov Chain Generation** - AI-powered music composition
+
+## 🚀 Technology Stack- **Progress Tracking** - Detailed analytics and learning paths
+
+
+
+### Backend### 👥 Professional User System
+
+- **Django 5.2.6**: Modern Python web framework- **User Authentication** - Secure login/registration system
+
+- **Python 3.10**: Optimized for audio processing libraries- **Premium Subscriptions** - Tiered pricing with advanced features
+
+- **Spleeter 2.3.2**: Facebook Research's audio separation model- **Project Management** - Save, organize, and share separated tracks
+
+- **TensorFlow 2.13.0**: Machine learning backend- **User Profiles** - Personalized dashboards and settings
+
+- **Librosa 0.8.1**: Advanced audio analysis- **File Management** - Secure upload, processing, and download
+
+- **Celery**: Asynchronous task processing
+
+### 🎨 Modern Professional UI
+
+### Frontend- **Responsive Design** - Works perfectly on desktop, tablet, and mobile
+
+- **Modern CSS**: Custom properties and animations- **Professional Interface** - Clean, intuitive design suitable for commercial use
+
+- **Responsive Design**: Mobile-first approach- **Real-time Updates** - Live progress indicators and notifications
+
+- **JavaScript**: Interactive user experiences- **Accessibility** - WCAG compliant with keyboard navigation
+
+- **WebSocket**: Real-time communication- **Modern CSS** - Custom properties, animations, and modern layouts
+
+
+
+### Audio Processing---
+
+- **NumPy 1.23.5**: Numerical computing
+
+- **SciPy**: Scientific computing## 🛠 Tech Stack
+
+- **Soundfile**: Audio I/O
+
+- **Pydub**: Audio manipulation| Component      | Technology                                 |
+
+|----------------|--------------------------------------------|
+
+## 📦 Installation| **Backend**    | Django 5.2.6, Django REST Framework      |
+
+| **Frontend**   | Modern HTML5, CSS3, JavaScript ES6+      |
+
+### Prerequisites| **Audio AI**   | Spleeter 2.3.2, TensorFlow 2.13.0       |
+
+- Python 3.10 (Required for Spleeter compatibility)| **Processing** | librosa 0.8.1, soundfile, pydub, numpy   |
+
+- Git| **AI/ML**      | scikit-learn, music21, pandas            |
+
+- Virtual environment support| **Real-time**  | Django Channels, WebSockets, Redis       |
+
+| **Database**   | SQLite (dev), PostgreSQL (production)    |
+
+### Quick Setup| **Queue**      | Celery, Redis                            |
+
+| **Python**     | Python 3.10 (Optimized)                  |
+
+1. **Clone the Repository**
+
+   ```bash---
+
+   git clone https://github.com/Alphavirusboy/NoisyNeuron.git
+
+   cd NoisyNeuron## 🎯 Use Cases
+
+   ```
+
+- 🎵 **Music Production** - Extract stems for remixing and re-arrangement
+
+2. **Create Virtual Environment**- 🎤 **Vocal Isolation** - Create karaoke tracks and a cappella versions
+
+   ```bash- 🎚️ **Audio Mastering** - Isolate instruments for better mixing
+
+   python3.10 -m venv .venv- 🎧 **Practice & Learning** - Play along with individual instrument tracks
+
+   source .venv/bin/activate  # On macOS/Linux- 🎓 **Music Education** - Study arrangements and instrument techniques
+
+   # or- 🔬 **Audio Research** - Analyze musical compositions and structures
+
+   .venv\Scripts\activate     # On Windows- 💼 **Commercial Use** - Professional-grade platform ready for monetization
+
+   ```
 
 ---
 
-## 🌟 Key Features
+3. **Install Dependencies**
 
-- 🎙️ Extract vocals or instruments from any song
-- 🥁 Isolate drums, basslines, guitar, piano, and more
-- 🎧 Loop, slow down, or solo stems for focused practice
-- 🎚️ High-quality output with minimal audio artifacts
-- 🖥️ User-friendly interface suitable for beginners and pros alike
+   ```bash## 🚀 Quick Start
 
----
+   pip install --upgrade pip
 
-## 🎓 Learn by Listening
+   pip install -r requirements.txt### Prerequisites
 
-- 🎼 Practice along with isolated instrument tracks
-- 🎹 Understand musical structure through stem breakdowns
-- 🎸 Create DIY backing tracks for solo rehearsal
-- 🎻 Ideal for music teachers, students, and autodidacts
+   ```- **Python 3.10** (Required for Spleeter compatibility)
 
----
-
-## 🧰 Tech Stack
-
-| Layer        | Tools / Frameworks                        |
-|--------------|--------------------------------------------|
-| Frontend     | React / Next.js / Flutter (customizable)   |
-| Backend      | Python (FastAPI / Flask), Torch / TensorFlow |
-| Audio Models | Demucs, Spleeter, or custom-trained models |
-| Infra        | Docker, GitHub Actions, Cloud Deployment   |
-
----
-
-## 🎯 Use Cases
-
-- 🎵 Music remixing and re-arrangement
-- 🎤 Karaoke and vocal removal
-- 🎚️ Audio mastering and editing
-- 🎧 Instrument practice and solo training
-- 🎓 Music education and teaching
-
-
-Setup guide and deployment instructions coming soon.
-
-
-- Parth Patil 
-
-
-> _Reimagine the way you listen, play, and learn music — one stem at a time._
-=======
-# NoisyNeuron: AI-Powered Audio Source Separation
-
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
-[![Django](https://img.shields.io/badge/Django-5.2-green.svg)](https://djangoproject.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-NoisyNeuron is an advanced AI-powered audio source separation application that uses **Markov Chain models** combined with spectral analysis to isolate individual instruments and vocals from mixed audio tracks. This project is designed as a comprehensive university-level implementation demonstrating machine learning concepts in audio processing.
-
-## 🎵 Features
-
-### Core Functionality
-- **AI-Powered Source Separation**: Advanced Markov chain models analyze audio patterns for intelligent separation
-- **Multi-Instrument Support**: Separate vocals, drums, bass, and other instruments
-- **High-Quality Output**: Enhanced audio processing with noise reduction and quality improvement
-- **Real-Time Processing**: Asynchronous processing with live progress updates
-- **Multiple Format Support**: Input/output support for MP3, WAV, FLAC, OGG, M4A, AAC
-
-### Advanced Features
-- **Markov Chain Analysis**: Probabilistic modeling of audio characteristics for improved separation accuracy
-- **Spectral Processing**: Combined frequency and time domain analysis
-- **Quality Enhancement**: Post-processing algorithms for artifact reduction
-- **User Management**: Authentication, project management, and processing history
-- **RESTful API**: Complete API for integration and automation
-- **Real-time Updates**: WebSocket connections for live processing status
-
-## 🧠 How Markov Models Work in Audio Separation
-
-### Theoretical Foundation
-
-This project implements **Hidden Markov Models (HMM)** adapted for audio source separation:
-
-1. **State Representation**: Audio features (MFCC, spectral characteristics) are quantized into discrete states
-2. **Transition Modeling**: Markov chains model how audio characteristics evolve over time
-3. **Pattern Recognition**: Different instruments exhibit unique transition patterns
-4. **Probabilistic Separation**: Use learned patterns to identify and separate instrument-specific components
-
-### Implementation Details
-
-```python
-# Simplified example of the Markov chain approach
-class AudioMarkovChain:
-    def __init__(self, order=2, n_states=16):
-        self.order = order  # Memory length (n-gram)
-        self.n_states = n_states  # Discrete states
-        self.transition_matrix = np.zeros((n_states**order, n_states))
-    
-    def train(self, audio_files, instrument_type):
-        # Extract features (MFCC, spectral)
-        # Quantize into discrete states
-        # Build transition matrix
-        # Learn instrument-specific patterns
-    
-    def separate(self, mixed_audio):
-        # Analyze input with trained model
-        # Generate separation mask
-        # Apply probabilistic filtering
-        # Return separated audio
-```
-
-### Key Advantages
-
-- **Pattern Learning**: Adapts to different musical styles and instruments
-- **Context Awareness**: Considers temporal dependencies in audio
-- **Probabilistic Approach**: Handles uncertainty and noise gracefully
-- **Interpretable Results**: Provides confidence scores and pattern analysis
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.8+
-- Redis server
-- FFmpeg
 - Virtual environment (recommended)
 
-### Installation
+4. **Install Spleeter**- Git
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/noisyneuron.git
-cd noisyneuron
-```
+   ```bash- FFmpeg (for audio processing)
 
-2. **Create virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+   pip install spleeter==2.3.2
+
+   ```### Installation
+
+
+
+5. **Database Setup**1. **Clone the repository**
+
+   ```bash   ```bash
+
+   python manage.py migrate   git clone https://github.com/Alphavirusboy/NoisyNeuron.git
+
+   python manage.py createsuperuser   cd NoisyNeuron
+
+   ```   ```
+
+
+
+6. **Run the Server**2. **Create and activate virtual environment with Python 3.10**
+
+   ```bash   ```bash
+
+   python manage.py runserver   python3.10 -m venv .venv
+
+   ```   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+   ```
+
+Visit `http://127.0.0.1:8000` to access the platform.
 
 3. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
 
-4. **Setup database**
-```bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py createsuperuser
-```
+## 🎵 Usage   ```bash
 
-5. **Start Redis server**
-```bash
-redis-server
-```
+   pip install --upgrade pip
 
-6. **Start Celery worker** (in a new terminal)
-```bash
-celery -A noisyneuron worker --loglevel=info
-```
+### Audio Separation   pip install -r requirements.txt
 
-7. **Run development server**
-```bash
-python manage.py runserver
-```
+1. Upload your audio file (WAV, MP3, FLAC)   ```
 
-Visit `http://localhost:8000` to access the application.
+2. Select separation model (2-stem or 4-stem)
 
-## 📁 Project Structure
+3. Monitor real-time progress4. **Install Spleeter (if not included in requirements)**
 
-```
-noisyneuron/
-├── accounts/                 # User management
-│   ├── models.py            # Custom user model
-│   ├── views.py             # Authentication views
-│   └── urls.py              # Auth routes
-├── audio_processor/         # Core audio processing
-│   ├── models.py            # Audio file models
-│   ├── views.py             # Processing API views
-│   ├── tasks.py             # Celery background tasks
-│   ├── audio_service.py     # Audio processing service
-│   ├── consumers.py         # WebSocket consumers
-│   └── urls.py              # Processing routes
-├── markov_models/           # Markov chain implementation
-│   ├── models.py            # Model storage
-│   ├── markov_chain.py      # Core algorithm
-│   └── views.py             # Analysis endpoints
-├── templates/               # HTML templates
-│   └── index.html           # Main application UI
-├── static/                  # Static assets
-│   ├── css/main.css         # Application styles
-│   ├── js/main.js           # Main JavaScript
-│   └── js/audio-processor.js # Audio processing UI
-├── media/                   # File uploads
-│   ├── audio/uploads/       # Input audio files
-│   └── audio/outputs/       # Separated tracks
-├── noisyneuron/             # Django project settings
-│   ├── settings.py          # Main configuration
-│   ├── urls.py              # URL routing
-│   ├── celery.py            # Celery configuration
-│   └── asgi.py              # ASGI configuration
-├── requirements.txt         # Python dependencies
-└── README.md                # This file
-```
+4. Download separated tracks   ```bash
 
-## 🔧 Configuration
+   pip install spleeter==2.3.2
 
-### Environment Variables
+### Instrument Learning   ```
 
-Create a `.env` file in the project root:
+1. Choose your instrument
 
-```bash
-# Database
-DATABASE_URL=sqlite:///db.sqlite3
+2. Select difficulty level5. **Environment setup**
 
-# Redis
-REDIS_URL=redis://localhost:6379
+3. Follow interactive tutorials   Create a `.env` file in the project root:
 
-# Security
-SECRET_KEY=your-secret-key-here
+4. Complete practice exercises   ```env
+
+5. Track your progress   SECRET_KEY=your-secret-key-here
+
+   DEBUG=True
+
+### Premium Features   ALLOWED_HOSTS=localhost,127.0.0.1
+
+- Advanced separation models   ```
+
+- Unlimited processing time
+
+- Priority queue access6. **Database setup**
+
+- Extended file format support   ```bash
+
+- Professional-grade exports   python manage.py migrate
+
+   python manage.py collectstatic --noinput
+
+## 🔧 Configuration   ```
+
+
+
+### Environment Variables7. **Create media directories**
+
+Create a `.env` file based on `.env.example`:   ```bash
+
+   mkdir -p media/separated media/temp
+
+```bash   ```
+
 DEBUG=True
 
-# Audio Processing
-MAX_AUDIO_DURATION=600
-MAX_FILE_SIZE=104857600
+SECRET_KEY=your-secret-key8. **Run the development server**
 
-# Celery
-CELERY_BROKER_URL=redis://localhost:6379
-CELERY_RESULT_BACKEND=redis://localhost:6379
-```
+DATABASE_URL=sqlite:///db.sqlite3   ```bash
 
-### Production Settings
+SPLEETER_MODEL_PATH=path/to/spleeter/models   python manage.py runserver
 
-For production deployment:
+```   ```
 
-1. Set `DEBUG=False`
-2. Configure proper database (PostgreSQL recommended)
-3. Setup proper Redis server
-4. Configure static files serving
-5. Setup process manager (systemd, supervisor)
 
-## 🎯 API Usage
 
-### Authentication
+### Spleeter Models9. **Access the application**
 
-```bash
-# Login and get token
-curl -X POST http://localhost:8000/api/auth/login/ \
-  -H "Content-Type: application/json" \
-  -d '{"username": "user", "password": "pass"}'
+The platform automatically downloads required models on first use:   Open your browser and navigate to `http://127.0.0.1:8000/`
+
+- `spleeter:2stems-16kHz` (vocals/accompaniment)
+
+- `spleeter:4stems-16kHz` (vocals/drums/bass/other)---
+
+
+
+## 📂 Project Structure## 📁 Project Structure
+
+
+
+``````
+
+NoisyNeuron/NoisyNeuron/
+
+├── accounts/           # User authentication & profiles├── accounts/              # User authentication & profiles
+
+├── audio_processor/    # Spleeter integration & audio processing├── audio_processor/       # Core audio separation functionality
+
+├── instruments/        # Interactive learning modules├── instruments/           # Music learning platform
+
+├── music_theory/       # AI-powered theory engine├── markov_models/         # AI music generation
+
+├── premium/           # Subscription & payment handling├── music_theory/          # Music theory engine
+
+├── static/            # CSS, JS, images├── noisyneuron/          # Django project settings
+
+├── templates/         # HTML templates├── static/               # Static files (CSS, JS, images)
+
+├── media/             # User uploads & processed files├── templates/            # HTML templates
+
+└── noisyneuron/       # Django project settings├── media/                # User uploads & processed files
+
+```├── requirements.txt      # Python dependencies
+
+├── manage.py            # Django management script
+
+## 🌐 API Endpoints└── README.md           # This file
+
 ```
 
 ### Audio Processing
 
-```bash
-# Upload and process audio file
-curl -X POST http://localhost:8000/api/audio/process/ \
-  -H "Authorization: Token your-token-here" \
-  -F "audio_file=@song.mp3" \
-  -F 'options={"separate_vocals": true, "markov_order": 2}'
+- `POST /api/audio/separate/` - Start audio separation---
 
-# Check processing status
-curl http://localhost:8000/api/audio/status/{job_id}/ \
-  -H "Authorization: Token your-token-here"
+- `GET /api/audio/status/<id>/` - Check processing status
 
-# Download separated track
-curl http://localhost:8000/api/audio/download/{track_id}/ \
-  -H "Authorization: Token your-token-here" \
-  -o vocals.wav
+- `GET /api/audio/download/<id>/` - Download results## 🎵 Audio Separation Usage
+
+
+
+### User Management1. **Upload Audio File**
+
+- `POST /api/auth/register/` - User registration   - Navigate to the audio separation page
+
+- `POST /api/auth/login/` - User authentication   - Upload WAV, MP3, FLAC, OGG, M4A, or AAC files
+
+- `GET /api/user/profile/` - User profile data   - Maximum file size: 100MB
+
+
+
+### Instruments2. **Processing**
+
+- `GET /api/instruments/` - List available instruments   - Spleeter automatically processes the file
+
+- `GET /api/instruments/<id>/lessons/` - Get lessons for instrument   - Real-time progress updates via WebSocket
+
+   - Processing time varies based on file length
+
+## 🔍 Testing
+
+3. **Download Results**
+
+Run the test suite:   - Download individual stems (Vocals, Drums, Bass, Other)
+
+```bash   - High-quality WAV format output
+
+python manage.py test   - Preview stems before downloading
+
 ```
 
-## 🧪 Testing
+---
 
-Run the test suite:
+For specific app testing:
+
+```bash## 🔧 Configuration
+
+python manage.py test audio_processor
+
+python manage.py test instruments### Spleeter Models
+
+python manage.py test accountsThe platform uses Spleeter's pre-trained models:
+
+```- **4stems-16kHz** - Separates into Vocals, Drums, Bass, Other
+
+- **2stems-16kHz** - Separates into Vocals, Accompaniment (fallback)
+
+## 🚀 Deployment
+
+### Audio Settings
+
+### Production Setup- **Sample Rate**: 44.1kHz (default)
+
+1. Set `DEBUG=False` in settings- **Bit Depth**: 16-bit
+
+2. Configure static file serving- **Format**: WAV (lossless output)
+
+3. Set up proper database (PostgreSQL recommended)- **Channels**: Mono/Stereo (auto-detected)
+
+4. Configure Celery with Redis/RabbitMQ
+
+5. Set up nginx/Apache for file serving---
+
+
+
+### Docker Support## 🚀 Deployment
 
 ```bash
-# Run all tests
-python manage.py test
 
-# Run with coverage
-coverage run --source='.' manage.py test
-coverage report
-coverage html
+docker build -t noisyneuron .### Production Setup
+
+docker run -p 8000:8000 noisyneuron
+
+```1. **Environment Variables**
+
+   ```env
+
+## 🤝 Contributing   SECRET_KEY=production-secret-key
+
+   DEBUG=False
+
+1. Fork the repository   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+
+2. Create a feature branch   DATABASE_URL=postgresql://user:pass@localhost/dbname
+
+3. Make your changes   REDIS_URL=redis://localhost:6379/1
+
+4. Add tests for new functionality   ```
+
+5. Submit a pull request
+
+2. **Static Files**
+
+## 📄 License   ```bash
+
+   python manage.py collectstatic --noinput
+
+This project is licensed under the MIT License - see the LICENSE file for details.   ```
+
+
+
+## 🔮 Roadmap3. **Database Migration**
+
+   ```bash
+
+### Upcoming Features   python manage.py migrate
+
+- **Real-time Collaboration**: Multi-user project editing   ```
+
+- **Mobile App**: Native iOS/Android applications
+
+- **VST Plugin**: Direct integration with DAWs4. **Celery Worker** (for background processing)
+
+- **AI Mastering**: Automated audio mastering   ```bash
+
+- **Cloud Storage**: Secure project backup and sync   celery -A noisyneuron worker -l info
+
+   ```
+
+### Audio Processing Enhancements
+
+- **Custom Model Training**: User-specific separation models### Docker Deployment
+
+- **Advanced Preprocessing**: Noise reduction and enhancement
+
+- **Format Conversion**: Professional audio format support```dockerfile
+
+- **Batch Processing**: Multiple file processingFROM python:3.10-slim
+
+WORKDIR /app
+
+## 📞 SupportCOPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+- **Documentation**: [Wiki](https://github.com/Alphavirusboy/NoisyNeuron/wiki)COPY . .
+
+- **Issues**: [GitHub Issues](https://github.com/Alphavirusboy/NoisyNeuron/issues)EXPOSE 8000
+
+- **Email**: support@noisyneuron.comCMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
 ```
 
-## 📊 Performance
+## 🏆 Acknowledgments
 
-### Benchmarks
+---
 
-- **Processing Speed**: ~2-4x real-time (depends on complexity)
-- **Memory Usage**: ~500MB-2GB per concurrent job
-- **Quality Scores**: 70-95% separation accuracy (varies by content)
-- **Supported Formats**: WAV, MP3, FLAC, OGG, M4A, AAC
+- **Spleeter Team**: Facebook Research for the audio separation models
 
-### Optimization Tips
+- **Django Community**: For the robust web framework## 🧪 Testing
 
-1. **Use balanced quality mode** for best speed/quality ratio
-2. **Limit concurrent processing** to available CPU cores
-3. **Use WAV output** for best quality
-4. **Process shorter segments** for faster turnaround
+- **TensorFlow Team**: For machine learning infrastructure
 
-## 🔬 Academic Context
+- **Open Source Community**: For the amazing libraries and toolsRun the test suite:
 
-### Research Applications
+```bash
 
-This project demonstrates several key concepts:
+---python manage.py test
 
-- **Machine Learning**: Markov models, clustering, feature extraction
-- **Signal Processing**: STFT, spectral analysis, filtering
-- **Software Engineering**: REST APIs, async processing, real-time updates
-- **Data Science**: Pattern recognition, statistical modeling
+```
 
-### Educational Value
+**Made with ❤️ for the music community**
 
-- **Practical ML Implementation**: Real-world application of theoretical concepts
-- **Audio DSP**: Hands-on experience with audio processing
-- **System Design**: Full-stack application architecture
-- **Performance Optimization**: Efficient algorithms and processing
+Run specific app tests:
+
+*Transform your audio, elevate your music*```bash
+python manage.py test audio_processor
+python manage.py test accounts
+python manage.py test instruments
+```
+
+---
 
 ## 🤝 Contributing
 
@@ -331,64 +504,58 @@ This project demonstrates several key concepts:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Guidelines
+---
 
-- Follow PEP 8 for Python code
-- Add tests for new features
-- Update documentation
-- Use meaningful commit messages
+## 📋 Requirements
 
-## 📚 References
+### System Requirements
+- Python 3.10+
+- FFmpeg
+- Redis (for real-time features)
+- PostgreSQL (production)
 
-### Academic Papers
+### Python Dependencies
+- Django 5.2.6
+- Spleeter 2.3.2
+- TensorFlow 2.13.0
+- librosa 0.8.1
+- soundfile
+- pydub
+- numpy
+- scipy
+- celery
+- redis
+- django-channels
 
-1. Rafii, Z., et al. "An Overview of Lead and Accompaniment Separation in Music" (2018)
-2. Huang, P-S., et al. "Deep Learning for Monaural Source Separation" (2014)
-3. Ozerov, A., et al. "Multichannel Nonnegative Matrix Factorization in Convolutive Mixtures" (2010)
-
-### Technical Resources
-
-- [Librosa Documentation](https://librosa.org/)
-- [Django REST Framework](https://www.django-rest-framework.org/)
-- [Celery Documentation](https://docs.celeryproject.org/)
-- [Audio Processing with Python](https://realpython.com/python-scipy-fft/)
+---
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+
 ## 🙏 Acknowledgments
 
-- **Librosa**: Excellent audio analysis library
-- **Django**: Robust web framework
-- **Scikit-learn**: Machine learning utilities
-- **Music Information Retrieval Community**: Research and inspiration
-
-## 💡 Future Enhancements
-
-### Planned Features
-
-- [ ] **GPU Acceleration**: CUDA support for faster processing
-- [ ] **Advanced Models**: Deep learning integration (U-Net, transformer models)
-- [ ] **Real-time Processing**: Live audio separation
-- [ ] **Batch Processing**: Multiple file processing
-- [ ] **Cloud Integration**: AWS/GCP deployment options
-- [ ] **Mobile App**: iOS/Android applications
-- [ ] **Plugin Support**: VST/AU plugin development
-
-### Research Directions
-
-- [ ] **Attention Mechanisms**: Transformer-based separation
-- [ ] **Multi-modal Learning**: Combined audio-visual separation
-- [ ] **Few-shot Learning**: Adaptation to new instruments
-- [ ] **Perceptual Quality**: Advanced quality metrics
+- **Spleeter** by Facebook Research for audio source separation
+- **Django** framework for robust web development
+- **TensorFlow** for machine learning capabilities
+- **librosa** for audio analysis tools
 
 ---
 
-**Author**: [Your Name]  
-**Institution**: [Your University]  
-**Course**: [Course Code] - [Course Name]  
-**Academic Year**: 2024-2025
+## 📞 Support & Contact
 
-For questions or support, please contact [your.email@university.edu]
->>>>>>> 6d07299 (Initial commit: NoisyNeuron project)
+- **GitHub Issues**: [Report bugs and feature requests](https://github.com/Alphavirusboy/NoisyNeuron/issues)
+- **Documentation**: [Wiki](https://github.com/Alphavirusboy/NoisyNeuron/wiki)
+- **Email**: support@noisyneuron.com
+
+---
+
+## 🌟 Show Your Support
+
+If you find NoisyNeuron useful, please ⭐ star this repository and share it with fellow musicians and developers!
+
+---
+
+**NoisyNeuron** - *Professional Music Source Separation Made Simple* 🎵

@@ -1,538 +1,606 @@
-<!DOCTYPE html>
+{% extends "base_modern.html" %}
 {% load static %}
-<html lang="en" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoisyNeuron - The Music Platform</title>
-    <meta name="description" content="AI-powered music source separation, practice tools, and music theory learning platform">
-    <meta name="csrf-token" content="{{ csrf_token }}">
+
+{% block title %}NoisyNeuron - Professional AI Music Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+.btn-hero {
+    padding: 1.25rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.btn-primary-hero {
+    background: white;
+    color: #6366f1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.btn-primary-hero:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    color: #6366f1;
+    text-decoration: none;
+}
+
+.btn-secondary-hero {
+    background: transparent;
+    color: white;
+    border-color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary-hero:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+    transform: translateY(-3px);
+    color: white;
+    text-decoration: none;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease 1s both;
+}
+
+.hero-stat {
+    text-align: center;
+}
+
+.hero-stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.hero-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Features Section */
+.features-section {
+    padding: 8rem 2rem;
+    background: #f9fafb;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.section-badge {
+    display: inline-block;
+    background: #6366f1;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.section-subtitle {
+    font-size: 1.3rem;
+    color: #4b5563;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 1px solid #f3f4f6;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.feature-icon.ai-separation {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.feature-icon.learning {
+    background: linear-gradient(135deg, #ec4899, #be185d);
+}
+
+.feature-icon.practice {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.feature-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+}
+
+.feature-list li i {
+    color: #10b981;
+    font-size: 0.9rem;
+}
+
+.feature-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6366f1;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 2px solid #6366f1;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.feature-cta:hover {
+    background: #6366f1;
+    color: white;
+    transform: translateY(-2px);
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    .section-title {
+        font-size: 2.5rem;
+    }
     
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    .feature-card {
+        padding: 2rem;
+    }
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E">
-</head>
-<body>
-    <div id="app" class="min-h-screen bg-primary">
-        {% csrf_token %}
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-hero {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-star"></i>
+            Trusted by 15,000+ Musicians Worldwide
+        </div>
         
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <!-- Logo -->
-                <a href="#" class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-waveform-lines"></i>
-                    </div>
-                    <div class="logo-text">
-                        <h1 class="logo-title">NoisyNeuron</h1>
-                        <span class="logo-subtitle">The Music Platform</span>
-                    </div>
-                </a>
-                
-                <!-- Navigation -->
-                <nav class="nav-menu">
-                    <a href="#" class="nav-link active" data-section="dashboard">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="#" class="nav-link" data-section="separate">
-                        <i class="fas fa-waveform-lines"></i>
-                        <span>Separate</span>
-                    </a>
-                    <a href="#" class="nav-link" data-section="practice">
-                        <i class="fas fa-guitar"></i>
-                        <span>Practice</span>
-                    </a>
-                    <a href="#" class="nav-link" data-section="theory">
-                        <i class="fas fa-music"></i>
-                        <span>Theory</span>
-                    </a>
-                    <a href="#" class="nav-link" data-section="library">
-                        <i class="fas fa-folder-music"></i>
-                        <span>Library</span>
-                    </a>
-                </nav>
-                
-                <!-- User Menu -->
-                <div class="user-menu">
-                    <!-- Theme Toggle -->
-                    <button class="btn btn-ghost btn-icon" id="theme-toggle" title="Toggle Theme">
-                        <i class="fas fa-sun"></i>
-                    </button>
-                    
-                    <!-- Notifications -->
-                    <button class="btn btn-ghost btn-icon" title="Notifications">
-                        <i class="fas fa-bell"></i>
-                    </button>
-                    
-                    <!-- User Profile -->
-                    <div class="user-profile">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" 
-                             alt="Profile" class="profile-avatar">
-                        <span class="username">Music Learner</span>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </div>
-                </div>
+        <h1 class="hero-title">Master Music with AI-Powered Intelligence</h1>
+        
+        <p class="hero-subtitle">
+            The most advanced music learning and production platform. Separate audio sources with 99.2% accuracy, 
+            learn any instrument with interactive lessons, and master music theory with intelligent practice tools.
+        </p>
+        
+        <div class="hero-cta">
+            <a href="/accounts/register/" class="btn-hero btn-primary-hero">
+                <i class="fas fa-rocket"></i>
+                Start Free Trial
+            </a>
+            <a href="#features" class="btn-hero btn-secondary-hero">
+                <i class="fas fa-play"></i>
+                Watch Demo
+            </a>
+        </div>
+        
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">99.2%</span>
+                <span class="hero-stat-label">AI Accuracy</span>
             </div>
-        </header>
-        
-        <!-- Main Content -->
-        <main class="container py-8">
-            <!-- Connection Status -->
-            <div class="flex items-center justify-end gap-4 mb-6">
-                <div class="status-indicator">
-                    <div class="status-dot connected" id="wsStatus"></div>
-                    <span>WebSocket</span>
-                </div>
-                <div class="status-indicator">
-                    <div class="status-dot connected" id="serverStatus"></div>
-                    <span>Server</span>
-                </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">15K+</span>
+                <span class="hero-stat-label">Active Users</span>
             </div>
-            
-            <!-- Dashboard Section -->
-            <section id="dashboard-section" class="content-section">
-                <!-- Hero Section -->
-                <div class="section-header">
-                    <h1 class="section-title">
-                        Welcome to <span class="gradient-text">NoisyNeuron</span>
-                    </h1>
-                    <p class="section-subtitle">
-                        Professional AI-powered music source separation, practice tools, and music theory learning. 
-                        Transform your musical journey with cutting-edge technology.
-                    </p>
-                </div>
-                
-                <!-- Stats Dashboard -->
-                <div class="dashboard-stats stagger-children">
-                    <div class="stat-card">
-                        <span class="stat-number">1,247</span>
-                        <span class="stat-label">Songs Processed</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">89h</span>
-                        <span class="stat-label">Practice Time</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">156</span>
-                        <span class="stat-label">Skills Learned</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">98%</span>
-                        <span class="stat-label">Accuracy Rate</span>
-                    </div>
-                </div>
-                
-                <!-- Feature Cards -->
-                <div class="dashboard-grid stagger-children">
-                    <!-- Audio Separation Card -->
-                    <div class="card feature-card animate-scale-in">
-                        <div class="card-header">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="card-title gradient-text">
-                                    <i class="fas fa-waveform-lines text-primary-500 mr-2"></i>
-                                    Audio Source Separation
-                                </h3>
-                                <span class="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full font-medium">
-                                    AI Powered
-                                </span>
-                            </div>
-                            <p class="card-description">
-                                Extract vocals, drums, bass, and other instruments from any song with state-of-the-art AI models. 
-                                Perfect for practice, remixing, and music education.
-                            </p>
-                        </div>
-                        <div class="card-body">
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-primary-500">99.2%</div>
-                                    <div class="text-sm text-secondary">Accuracy</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-primary-500">4+</div>
-                                    <div class="text-sm text-secondary">Stem Types</div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary w-full" data-action="separate">
-                                <i class="fas fa-upload"></i>
-                                Start Separation
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Practice Tools Card -->
-                    <div class="card feature-card animate-scale-in">
-                        <div class="card-header">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="card-title gradient-text">
-                                    <i class="fas fa-guitar text-secondary-500 mr-2"></i>
-                                    Interactive Practice
-                                </h3>
-                                <span class="text-xs bg-secondary-100 text-secondary-700 px-2 py-1 rounded-full font-medium">
-                                    Enhanced
-                                </span>
-                            </div>
-                            <p class="card-description">
-                                Practice with isolated tracks, chord detection, tempo control, and real-time feedback. 
-                                Learn at your own pace with adaptive difficulty.
-                            </p>
-                        </div>
-                        <div class="card-body">
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-secondary-500">200+</div>
-                                    <div class="text-sm text-secondary">Exercises</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-secondary-500">12</div>
-                                    <div class="text-sm text-secondary">Instruments</div>
-                                </div>
-                            </div>
-                            <button class="btn btn-success w-full" data-action="practice">
-                                <i class="fas fa-play"></i>
-                                Start Practice
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Music Theory Card -->
-                    <div class="card feature-card animate-scale-in">
-                        <div class="card-header">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="card-title gradient-text">
-                                    <i class="fas fa-music text-info mr-2"></i>
-                                    Music Theory Engine
-                                </h3>
-                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-                                    Advanced
-                                </span>
-                            </div>
-                            <p class="card-description">
-                                Comprehensive music theory lessons, chord progressions, scale analysis, and harmonic understanding. 
-                                From beginner to advanced concepts.
-                            </p>
-                        </div>
-                        <div class="card-body">
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-500">150+</div>
-                                    <div class="text-sm text-secondary">Lessons</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-500">25</div>
-                                    <div class="text-sm text-secondary">Topics</div>
-                                </div>
-                            </div>
-                            <button class="btn btn-outline w-full" data-action="theory">
-                                <i class="fas fa-book"></i>
-                                Explore Theory
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Recent Activity -->
-                <div class="mt-12">
-                    <h2 class="text-2xl font-semibold mb-6">Recent Activity</h2>
-                    <div class="grid gap-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-waveform-lines text-primary-500"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium">Separated "Bohemian Rhapsody"</h4>
-                                            <p class="text-sm text-secondary">Extracted 4 stems with 98.5% accuracy</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-tertiary">2 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-guitar text-secondary-500"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium">Completed Guitar Practice Session</h4>
-                                            <p class="text-sm text-secondary">45 minutes • Chord progressions</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-tertiary">5 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-music text-blue-500"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium">Learned Jazz Harmony</h4>
-                                            <p class="text-sm text-secondary">Completed advanced chord substitutions</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-tertiary">1 day ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Audio Separation Section -->
-            <section id="separate-section" class="content-section hidden">
-                <div class="section-header">
-                    <h1 class="section-title">Audio Source Separation</h1>
-                    <p class="section-subtitle">
-                        Upload any audio file and separate it into individual stems using our advanced AI models.
-                    </p>
-                </div>
-                
-                <!-- Upload Area -->
-                <div class="card max-w-2xl mx-auto">
-                    <div class="card-body">
-                        <div class="border-2 border-dashed border-border-medium rounded-xl p-12 text-center transition-colors hover:border-primary-300 hover:bg-primary-50">
-                            <div class="mb-4">
-                                <i class="fas fa-cloud-upload-alt text-4xl text-primary-500"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold mb-2">Drop your audio file here</h3>
-                            <p class="text-secondary mb-4">or click to browse files</p>
-                            <p class="text-sm text-tertiary">Supports MP3, WAV, FLAC, M4A (max 100MB)</p>
-                            <input type="file" class="hidden" id="audio-upload" accept="audio/*">
-                            <button class="btn btn-primary mt-4" onclick="document.getElementById('audio-upload').click()">
-                                <i class="fas fa-plus"></i>
-                                Choose File
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Processing Options -->
-                <div class="card max-w-2xl mx-auto mt-8">
-                    <div class="card-header">
-                        <h3 class="card-title">Separation Options</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="grid gap-6">
-                            <div class="form-group">
-                                <label class="form-label">Model Quality</label>
-                                <select class="form-input form-select">
-                                    <option value="fast">Fast (3x speed, good quality)</option>
-                                    <option value="balanced" selected>Balanced (1x speed, great quality)</option>
-                                    <option value="high">High Quality (0.5x speed, best quality)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Output Stems</label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <label class="flex items-center gap-2">
-                                        <input type="checkbox" checked class="rounded">
-                                        <span>Vocals</span>
-                                    </label>
-                                    <label class="flex items-center gap-2">
-                                        <input type="checkbox" checked class="rounded">
-                                        <span>Drums</span>
-                                    </label>
-                                    <label class="flex items-center gap-2">
-                                        <input type="checkbox" checked class="rounded">
-                                        <span>Bass</span>
-                                    </label>
-                                    <label class="flex items-center gap-2">
-                                        <input type="checkbox" checked class="rounded">
-                                        <span>Other</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Practice Section -->
-            <section id="practice-section" class="content-section hidden">
-                <div class="section-header">
-                    <h1 class="section-title">Interactive Practice</h1>
-                    <p class="section-subtitle">
-                        Practice with isolated tracks, real-time feedback, and adaptive learning.
-                    </p>
-                </div>
-                
-                <!-- Practice Tools Grid -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="card feature-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-guitar text-secondary-500 mr-2"></i>
-                                Chord Practice
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-description mb-4">
-                                Learn and practice chord progressions with visual feedback and timing assistance.
-                            </p>
-                            <button class="btn btn-secondary w-full" data-action="chord-practice">
-                                Start Chord Practice
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="card feature-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-metronome text-primary-500 mr-2"></i>
-                                Rhythm Training
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-description mb-4">
-                                Improve your timing with interactive rhythm exercises and metronome practice.
-                            </p>
-                            <button class="btn btn-secondary w-full" data-action="rhythm-training">
-                                Start Rhythm Training
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="card feature-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-ear-listen text-warning mr-2"></i>
-                                Ear Training
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-description mb-4">
-                                Develop your musical ear with interval, chord, and scale recognition exercises.
-                            </p>
-                            <button class="btn btn-secondary w-full" data-action="ear-training">
-                                Start Ear Training
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Music Theory Section -->
-            <section id="theory-section" class="content-section hidden">
-                <div class="section-header">
-                    <h1 class="section-title">Music Theory</h1>
-                    <p class="section-subtitle">
-                        Comprehensive music theory education from basics to advanced concepts.
-                    </p>
-                </div>
-                
-                <!-- Theory Topics -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Fundamentals</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul class="space-y-2 text-sm">
-                                <li>• Notes and Intervals</li>
-                                <li>• Scales and Modes</li>
-                                <li>• Key Signatures</li>
-                                <li>• Time Signatures</li>
-                            </ul>
-                            <button class="btn btn-outline w-full mt-4" data-action="learn-fundamentals">
-                                Learn Fundamentals
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Harmony</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul class="space-y-2 text-sm">
-                                <li>• Chord Construction</li>
-                                <li>• Progressions</li>
-                                <li>• Voice Leading</li>
-                                <li>• Modulation</li>
-                            </ul>
-                            <button class="btn btn-outline w-full mt-4" data-action="study-harmony">
-                                Study Harmony
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Analysis</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul class="space-y-2 text-sm">
-                                <li>• Song Analysis</li>
-                                <li>• Form and Structure</li>
-                                <li>• Style Recognition</li>
-                                <li>• Compositional Techniques</li>
-                            </ul>
-                            <button class="btn btn-outline w-full mt-4" data-action="analyze-music">
-                                Analyze Music
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Library Section -->
-            <section id="library-section" class="content-section hidden">
-                <div class="section-header">
-                    <h1 class="section-title">Your Music Library</h1>
-                    <p class="section-subtitle">
-                        Manage your processed tracks, practice sessions, and learning progress.
-                    </p>
-                </div>
-                
-                <div class="text-center py-12">
-                    <i class="fas fa-folder-open text-6xl text-neutral-300 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Your library is empty</h3>
-                    <p class="text-secondary mb-6">Start by separating some audio files or creating practice sessions.</p>
-                    <button class="btn btn-primary" data-action="separate">
-                        <i class="fas fa-plus"></i>
-                        Add First Track
-                    </button>
-                </div>
-            </section>
-        </main>
-        
-        <!-- Loading Overlay -->
-        <div id="loading-overlay" class="fixed inset-0 bg-overlay z-modal hidden items-center justify-center">
-            <div class="bg-surface p-6 rounded-2xl shadow-2xl text-center">
-                <div class="loading-spinner mx-auto mb-4"></div>
-                <h3 class="font-semibold mb-2">Processing Audio</h3>
-                <p class="text-secondary text-sm">This may take a few minutes...</p>
+            <div class="hero-stat">
+                <span class="hero-stat-number">4.9</span>
+                <span class="hero-stat-label">User Rating</span>
             </div>
         </div>
     </div>
-    
-    <!-- Scripts -->
-    <script src="{% static 'js/app-modern.js' %}"></script>
-    <script src="{% static 'js/websocket-modern.js' %}"></script>
-    <script src="{% static 'js/audio-separation.js' %}"></script>
-</body>
-</html>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-badge">Core Features</div>
+            <h2 class="section-title">Everything You Need to Master Music</h2>
+            <p class="section-subtitle">
+                Professional-grade tools powered by cutting-edge AI and machine learning, 
+                designed for musicians, producers, and educators of all skill levels.
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon ai-separation">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">AI Audio Separation</h3>
+                <p class="feature-description">
+                    Extract vocals, drums, bass, and instruments from any song using state-of-the-art AI models. 
+                    Perfect quality for practice, remixing, and professional production.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> 4+ stem separation (vocals, drums, bass, other)</li>
+                    <li><i class="fas fa-check"></i> Multiple AI models (HTDemucs, MDX, Spleeter)</li>
+                    <li><i class="fas fa-check"></i> Professional audio formats (WAV, FLAC, MP3)</li>
+                    <li><i class="fas fa-check"></i> Batch processing & cloud storage</li>
+                </ul>
+                <a href="/audio_processor/separate/" class="feature-cta">
+                    <i class="fas fa-upload"></i>
+                    Try Audio Separation
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon learning">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="feature-title">Interactive Instrument Learning</h3>
+                <p class="feature-description">
+                    Learn piano, guitar, drums, violin, and more with interactive lessons, 
+                    real-time feedback, and personalized learning paths powered by AI.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> 12+ instruments with video lessons</li>
+                    <li><i class="fas fa-check"></i> Real-time audio feedback & correction</li>
+                    <li><i class="fas fa-check"></i> Adaptive difficulty & personalized paths</li>
+                    <li><i class="fas fa-check"></i> Progress tracking & achievements</li>
+                </ul>
+                <a href="/music_theory/learn/" class="feature-cta">
+                    <i class="fas fa-play"></i>
+                    Start Learning
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon practice">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3 class="feature-title">Advanced Practice Tools</h3>
+                <p class="feature-description">
+                    Master your skills with ear training, chord recognition, rhythm practice, 
+                    and music theory exercises that adapt to your skill level.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Ear training & interval recognition</li>
+                    <li><i class="fas fa-check"></i> Chord progression practice</li>
+                    <li><i class="fas fa-check"></i> Rhythm & timing exercises</li>
+                    <li><i class="fas fa-check"></i> Music theory fundamentals</li>
+                </ul>
+                <a href="/music_theory/practice/" class="feature-cta">
+                    <i class="fas fa-dumbbell"></i>
+                    Start Practice
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Advanced Training Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Advanced Training Modules</h2>
+            <p class="section-subtitle">
+                Specialized training programs designed to enhance specific musical skills
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon practice">
+                    <i class="fas fa-ear-listen"></i>
+                </div>
+                <h3 class="feature-title">Interval Training</h3>
+                <p class="feature-description">
+                    Develop perfect pitch recognition with our AI-powered interval training system. 
+                    Master the foundation of musical ear training.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Perfect Unison to Octave intervals</li>
+                    <li><i class="fas fa-check"></i> Adaptive difficulty levels</li>
+                    <li><i class="fas fa-check"></i> Real-time audio playback</li>
+                    <li><i class="fas fa-check"></i> Progress tracking & statistics</li>
+                </ul>
+                <a href="/music_theory/interval-training/" class="feature-cta">
+                    <i class="fas fa-play"></i>
+                    Start Interval Training
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon learn">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3 class="feature-title">Scale Practice</h3>
+                <p class="feature-description">
+                    Master major, minor, and modal scales with interactive practice sessions. 
+                    Learn scale patterns and their applications.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Major, Minor & Modal scales</li>
+                    <li><i class="fas fa-check"></i> Visual piano keyboard</li>
+                    <li><i class="fas fa-check"></i> Scale pattern recognition</li>
+                    <li><i class="fas fa-check"></i> Multiple difficulty levels</li>
+                </ul>
+                <a href="/music_theory/scale-practice/" class="feature-cta">
+                    <i class="fas fa-piano"></i>
+                    Practice Scales
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon separate">
+                    <i class="fas fa-drum"></i>
+                </div>
+                <h3 class="feature-title">Rhythm Training</h3>
+                <p class="feature-description">
+                    Develop precise timing and rhythm skills with our metronome-based training. 
+                    Perfect for all instruments and skill levels.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Interactive metronome practice</li>
+                    <li><i class="fas fa-check"></i> Multiple time signatures</li>
+                    <li><i class="fas fa-check"></i> Rhythm pattern recognition</li>
+                    <li><i class="fas fa-check"></i> Tempo accuracy tracking</li>
+                </ul>
+                <a href="/music_theory/rhythm-training/" class="feature-cta">
+                    <i class="fas fa-drum"></i>
+                    Train Rhythm
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe all feature cards
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.feature-card');
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,507 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Learn Music Theory - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.learn-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.learn-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.learn-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.learn-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.topic-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.topic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.topic-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-size: 2rem;
+}
+
+.topic-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.topic-description {
+    color: #718096;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.topic-lessons {
+    margin-bottom: 1.5rem;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+.lesson-item i {
+    color: #667eea;
+    width: 16px;
+}
+
+.topic-progress {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-label {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+.learning-path {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: #667eea;
+}
+
+.path-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.step-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.step-card.completed {
+    background: #f0fff4;
+    border-color: #68d391;
+}
+
+.step-card.current {
+    background: #ebf8ff;
+    border-color: #667eea;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.step-card.completed .step-number {
+    background: #38a169;
+    color: white;
+}
+
+.step-card.current .step-number {
+    background: #667eea;
+    color: white;
+}
+
+.step-title {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.step-description {
+    color: #718096;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .learn-title {
+        font-size: 2rem;
+    }
+    
+    .topics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .path-steps {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="learn-container">
+    <div class="learn-header">
+        <h1 class="learn-title">Learn Music Theory</h1>
+        <p class="learn-subtitle">Master the fundamentals of music theory with our interactive lessons and practical exercises. Build your understanding step by step.</p>
+    </div>
+
+    <div class="learning-path">
+        <h2 class="section-title">
+            <i class="fas fa-route"></i>
+            Your Learning Path
+        </h2>
+        <div class="path-steps">
+            <div class="step-card completed">
+                <div class="step-number">1</div>
+                <div class="step-title">Music Basics</div>
+                <div class="step-description">Notes, scales, and rhythm</div>
+            </div>
+            <div class="step-card current">
+                <div class="step-number">2</div>
+                <div class="step-title">Intervals & Chords</div>
+                <div class="step-description">Building blocks of harmony</div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-title">Progressions</div>
+                <div class="step-description">Chord sequences and movement</div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-title">Advanced Theory</div>
+                <div class="step-description">Complex harmonies and analysis</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="topics-grid">
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h3 class="topic-title">Music Fundamentals</h3>
+            <p class="topic-description">Learn the basic building blocks of music including notes, scales, key signatures, and time signatures.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>The Musical Alphabet</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Major and Minor Scales</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Time Signatures and Rhythm</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Key Signatures</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 75%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-play"></i>
+                Continue Learning
+            </a>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <h3 class="topic-title">Intervals & Harmony</h3>
+            <p class="topic-description">Understand the relationships between notes and how they combine to create chords and harmonies.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Perfect and Major Intervals</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Minor and Diminished Intervals</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Building Triads</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Seventh Chords</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 25%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-play"></i>
+                Start Learning
+            </a>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <h3 class="topic-title">Chord Progressions</h3>
+            <p class="topic-description">Explore how chords move and connect to create the harmonic foundation of songs.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Roman Numeral Analysis</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Common Progressions</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Voice Leading</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Modulation Techniques</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-lock"></i>
+                Unlock with Progress
+            </a>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-guitar"></i>
+            </div>
+            <h3 class="topic-title">Instrument Specific</h3>
+            <p class="topic-description">Apply music theory concepts to your instrument with specialized lessons and exercises.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Piano Chord Shapes</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Guitar Chord Forms</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Bass Line Construction</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Drum Pattern Theory</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 40%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-play"></i>
+                Continue Learning
+            </a>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="topic-title">Ear Training</h3>
+            <p class="topic-description">Develop your musical ear with interval recognition, chord identification, and pitch exercises.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Interval Recognition</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-play"></i>
+                    <span>Chord Quality Identification</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Scale Degree Recognition</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Rhythm Dictation</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 15%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 15%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-play"></i>
+                Continue Training
+            </a>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-icon">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <h3 class="topic-title">Music Analysis</h3>
+            <p class="topic-description">Learn to analyze songs and understand how theory applies to real music from different genres.</p>
+            <div class="topic-lessons">
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Form and Structure</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Harmonic Analysis</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Genre Characteristics</span>
+                </div>
+                <div class="lesson-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Songwriting Techniques</span>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="progress-label">Progress: 0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-lock"></i>
+                Unlock with Progress
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

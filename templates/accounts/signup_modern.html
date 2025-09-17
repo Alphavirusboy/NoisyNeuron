@@ -1,0 +1,755 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Sign Up - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Professional Signup Styles */
+.signup-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.signup-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.signup-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='m40 20c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20zm0 5c-8.284 0-15 6.716-15 15s6.716 15 15 15 15-6.716 15-15-6.716-15-15-15z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    animation: backgroundMove 25s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-80px) translateY(-80px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    max-width: 500px;
+}
+
+.hero-logo {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.signup-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f9fafb;
+}
+
+.signup-form-container {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+    width: 100%;
+    max-width: 500px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 2.25rem;
+    color: #9ca3af;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.form-input:focus + .input-icon {
+    color: #6366f1;
+}
+
+.form-select {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.terms-agreement {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.terms-agreement input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+    margin-top: 0.25rem;
+}
+
+.terms-text {
+    font-size: 0.9rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.terms-text a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+.signup-button {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.signup-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.signup-button:active {
+    transform: translateY(0);
+}
+
+.signup-button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.social-signup {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.social-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.social-divider::before,
+.social-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.social-divider span {
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.social-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    color: #374151;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.social-button:hover {
+    border-color: #6366f1;
+    background: #f9fafb;
+    text-decoration: none;
+    color: #6366f1;
+}
+
+.social-button i {
+    font-size: 1.1rem;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.login-link a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.password-strength {
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.strength-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.strength-fill {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-weak { background: #ef4444; width: 25%; }
+.strength-fair { background: #f59e0b; width: 50%; }
+.strength-good { background: #eab308; width: 75%; }
+.strength-strong { background: #10b981; width: 100%; }
+
+.strength-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .signup-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .signup-hero {
+        display: none;
+    }
+    
+    .signup-form-section {
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .signup-form-container {
+        padding: 2rem;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <!-- Hero Section -->
+    <div class="signup-hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <i class="fas fa-rocket"></i>
+            </div>
+            
+            <h1 class="hero-title">Join NoisyNeuron</h1>
+            <p class="hero-subtitle">
+                Start your journey in AI-powered music production. Create, learn, and innovate with cutting-edge tools.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">10K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">50K+</div>
+                    <div class="stat-label">Tracks Separated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">100+</div>
+                    <div class="stat-label">Lessons</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Form Section -->
+    <div class="signup-form-section">
+        <div class="signup-form-container">
+            <div class="form-header">
+                <h2 class="form-title">Create Your Account</h2>
+                <p class="form-subtitle">Start creating amazing music with AI today</p>
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" class="signup-form" id="signupForm">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input 
+                            type="text" 
+                            id="first_name" 
+                            name="first_name" 
+                            class="form-input" 
+                            placeholder="Your first name"
+                            required
+                            value="{{ form.first_name.value|default:'' }}"
+                        >
+                        <i class="input-icon fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="last_name" 
+                            name="last_name" 
+                            class="form-input" 
+                            placeholder="Your last name"
+                            required
+                            value="{{ form.last_name.value|default:'' }}"
+                        >
+                        <i class="input-icon fas fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                        value="{{ form.email.value|default:'' }}"
+                    >
+                    <i class="input-icon fas fa-envelope"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Choose a username"
+                        required
+                        value="{{ form.username.value|default:'' }}"
+                    >
+                    <i class="input-icon fas fa-at"></i>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primary_instrument" class="form-label">Primary Instrument</label>
+                        <select id="primary_instrument" name="primary_instrument" class="form-select">
+                            <option value="">Select an instrument</option>
+                            <option value="guitar">Guitar</option>
+                            <option value="piano">Piano</option>
+                            <option value="drums">Drums</option>
+                            <option value="bass">Bass</option>
+                            <option value="vocals">Vocals</option>
+                            <option value="violin">Violin</option>
+                            <option value="saxophone">Saxophone</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <i class="input-icon fas fa-guitar"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skill_level" class="form-label">Skill Level</label>
+                        <select id="skill_level" name="skill_level" class="form-select">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="professional">Professional</option>
+                        </select>
+                        <i class="input-icon fas fa-chart-line"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password1" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password1" 
+                        name="password1" 
+                        class="form-input" 
+                        placeholder="Create a strong password"
+                        required
+                    >
+                    <i class="input-icon fas fa-lock"></i>
+                    
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">Password strength: Weak</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password2" class="form-label">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="password2" 
+                        name="password2" 
+                        class="form-input" 
+                        placeholder="Confirm your password"
+                        required
+                    >
+                    <i class="input-icon fas fa-lock"></i>
+                </div>
+
+                <div class="terms-agreement">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <div class="terms-text">
+                        By creating an account, you agree to our <a href="#">Terms of Service</a> 
+                        and acknowledge that you have read our <a href="#">Privacy Policy</a>. 
+                        You also consent to receive product updates and marketing communications.
+                    </div>
+                </div>
+
+                <button type="submit" class="signup-button" id="submitButton">
+                    Create My Account
+                </button>
+            </form>
+
+            <!-- Social Signup -->
+            <div class="social-signup">
+                <div class="social-divider">
+                    <span>or sign up with</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <a href="#" class="social-button">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </a>
+                    <a href="#" class="social-button">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+
+            <!-- Login Link -->
+            <div class="login-link">
+                <p>Already have an account? 
+                    <a href="{% url 'accounts:login' %}">Sign in here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced form interactions and validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('signupForm');
+    const inputs = document.querySelectorAll('.form-input, .form-select');
+    const passwordInput = document.getElementById('password1');
+    const confirmPasswordInput = document.getElementById('password2');
+    const strengthIndicator = document.getElementById('passwordStrength');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthText = document.getElementById('strengthText');
+    const submitButton = document.getElementById('submitButton');
+    
+    // Input focus effects
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+            validateInput(this);
+        });
+    });
+    
+    // Password strength checker
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        const strength = calculatePasswordStrength(password);
+        
+        if (password.length > 0) {
+            strengthIndicator.style.display = 'block';
+            updatePasswordStrength(strength);
+        } else {
+            strengthIndicator.style.display = 'none';
+        }
+    });
+    
+    // Password confirmation validation
+    confirmPasswordInput.addEventListener('input', function() {
+        const password = passwordInput.value;
+        const confirm = this.value;
+        
+        if (confirm.length > 0) {
+            if (password === confirm) {
+                this.style.borderColor = '#10b981';
+            } else {
+                this.style.borderColor = '#ef4444';
+            }
+        } else {
+            this.style.borderColor = '#e5e7eb';
+        }
+    });
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        const password = passwordInput.value;
+        const confirm = confirmPasswordInput.value;
+        
+        if (password !== confirm) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+            return;
+        }
+        
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+        submitButton.disabled = true;
+    });
+    
+    function calculatePasswordStrength(password) {
+        let score = 0;
+        
+        // Length check
+        if (password.length >= 8) score += 1;
+        if (password.length >= 12) score += 1;
+        
+        // Character variety
+        if (/[a-z]/.test(password)) score += 1;
+        if (/[A-Z]/.test(password)) score += 1;
+        if (/[0-9]/.test(password)) score += 1;
+        if (/[^A-Za-z0-9]/.test(password)) score += 1;
+        
+        return Math.min(score, 4);
+    }
+    
+    function updatePasswordStrength(score) {
+        const classes = ['strength-weak', 'strength-fair', 'strength-good', 'strength-strong'];
+        const texts = ['Weak', 'Fair', 'Good', 'Strong'];
+        
+        strengthFill.className = 'strength-fill ' + classes[score];
+        strengthText.textContent = 'Password strength: ' + texts[score];
+    }
+    
+    function validateInput(input) {
+        if (input.checkValidity()) {
+            input.style.borderColor = '#10b981';
+        } else {
+            input.style.borderColor = '#ef4444';
+        }
+    }
+});
+</script>
+{% endblock %}

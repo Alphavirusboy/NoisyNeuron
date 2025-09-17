@@ -1,0 +1,656 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Scale Practice - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.training-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.training-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.training-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.scale-exercise {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.scale-display {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #f7fafc;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+}
+
+.scale-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.scale-notes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.note-card {
+    padding: 1rem 1.5rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a5568;
+    min-width: 50px;
+    text-align: center;
+}
+
+.note-card.missing {
+    background: #fed7d7;
+    border-color: #f56565;
+    color: #c53030;
+}
+
+.note-card.question {
+    background: #feebc8;
+    border-color: #ed8936;
+    color: #dd6b20;
+    font-size: 2rem;
+}
+
+.piano-keyboard {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    background: #2d3748;
+    padding: 1rem;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.piano-key {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.white-key {
+    width: 40px;
+    height: 150px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.black-key {
+    width: 25px;
+    height: 100px;
+    background: #2d3748;
+    color: white;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    font-size: 0.8rem;
+    margin-left: -12.5px;
+}
+
+.piano-key:hover {
+    background: #667eea !important;
+    color: white !important;
+}
+
+.piano-key.active {
+    background: #48bb78 !important;
+    color: white !important;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.option-btn {
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-btn:hover {
+    border-color: #f093fb;
+    background: #fdf2f8;
+}
+
+.option-btn.correct {
+    background: #48bb78;
+    border-color: #48bb78;
+    color: white;
+}
+
+.option-btn.incorrect {
+    background: #f56565;
+    border-color: #f56565;
+    color: white;
+}
+
+.difficulty-selector {
+    margin-bottom: 2rem;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn.active {
+    background: #f093fb;
+    border-color: #f093fb;
+    color: white;
+}
+
+.play-scale-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 1rem;
+    transition: all 0.3s ease;
+}
+
+.play-scale-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.feedback-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: none;
+}
+
+.feedback-correct {
+    background: #c6f6d5;
+    border: 2px solid #48bb78;
+    color: #22543d;
+}
+
+.feedback-incorrect {
+    background: #fed7d7;
+    border: 2px solid #f56565;
+    color: #742a2a;
+}
+
+.stats-display {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.score-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f093fb;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #f093fb;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="training-container">
+    <div class="training-header">
+        <h1 class="training-title">Scale Practice</h1>
+        <p class="training-subtitle">Master musical scales and their patterns</p>
+    </div>
+    
+    <div class="scale-exercise">
+        <div class="difficulty-selector">
+            <h3 style="margin-bottom: 1rem; color: #2d3748;">Choose Difficulty</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn active" onclick="setDifficulty(1)">Beginner</button>
+                <button class="difficulty-btn" onclick="setDifficulty(2)">Intermediate</button>
+                <button class="difficulty-btn" onclick="setDifficulty(3)">Advanced</button>
+            </div>
+        </div>
+        
+        <div id="exerciseDisplay" style="display: none;">
+            <div class="scale-display">
+                <div class="scale-name" id="scaleName">C Major Scale</div>
+                
+                <div class="scale-notes" id="scaleNotes">
+                    <!-- Scale notes will be populated here -->
+                </div>
+                
+                <button class="play-scale-btn" onclick="playScale()">
+                    <i class="fas fa-play"></i> Play Scale
+                </button>
+                
+                <div style="margin: 2rem 0;">
+                    <p style="color: #4a5568; font-size: 1.1rem;">Which note is missing?</p>
+                </div>
+                
+                <!-- Piano keyboard for visual reference -->
+                <div class="piano-keyboard" id="pianoKeyboard">
+                    <!-- Piano keys will be generated here -->
+                </div>
+                
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options will be populated here -->
+                </div>
+                
+                <div class="feedback-section" id="feedbackSection">
+                    <p id="feedbackText"></p>
+                </div>
+                
+                <div class="control-buttons">
+                    <button class="control-btn btn-primary" onclick="nextExercise()">Next Scale</button>
+                    <button class="control-btn btn-secondary" onclick="skipExercise()">Skip</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="startSection" class="control-buttons">
+            <button class="control-btn btn-primary" onclick="startPractice()">Start Practice</button>
+        </div>
+    </div>
+    
+    <div class="stats-display">
+        <div class="score-number" id="scoreNumber">0%</div>
+        <p style="color: #718096; margin-bottom: 1rem;">Current Score</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="streakCount">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avgTime">0s</div>
+                <div class="stat-label">Avg Time</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentDifficulty = 1;
+let currentExercise = null;
+let exerciseStartTime = null;
+let audioContext = null;
+let stats = {
+    correct: 0,
+    total: 0,
+    streak: 0,
+    times: []
+};
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function setDifficulty(level) {
+    currentDifficulty = level;
+    document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function startPractice() {
+    initAudio();
+    document.getElementById('startSection').style.display = 'none';
+    document.getElementById('exerciseDisplay').style.display = 'block';
+    generatePianoKeyboard();
+    loadNewExercise();
+}
+
+function generatePianoKeyboard() {
+    const keyboard = document.getElementById('pianoKeyboard');
+    keyboard.innerHTML = '';
+    
+    const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const blackKeys = {'C#': 1, 'D#': 2, 'F#': 4, 'G#': 5, 'A#': 6};
+    
+    whiteKeys.forEach((note, index) => {
+        const whiteKey = document.createElement('div');
+        whiteKey.className = 'piano-key white-key';
+        whiteKey.textContent = note;
+        whiteKey.onclick = () => selectNoteFromPiano(note);
+        keyboard.appendChild(whiteKey);
+        
+        // Add black key after this white key if it exists
+        const blackNote = Object.keys(blackKeys).find(key => blackKeys[key] === index + 1);
+        if (blackNote) {
+            const blackKey = document.createElement('div');
+            blackKey.className = 'piano-key black-key';
+            blackKey.textContent = blackNote;
+            blackKey.onclick = () => selectNoteFromPiano(blackNote);
+            whiteKey.appendChild(blackKey);
+        }
+    });
+}
+
+function loadNewExercise() {
+    fetch(`/music_theory/api/generate-scale/?difficulty=${currentDifficulty}`)
+        .then(response => response.json())
+        .then(data => {
+            currentExercise = data;
+            exerciseStartTime = Date.now();
+            
+            document.getElementById('scaleName').textContent = `${data.root_note} ${data.scale_name}`;
+            
+            // Display scale notes with missing note
+            const scaleNotesDiv = document.getElementById('scaleNotes');
+            scaleNotesDiv.innerHTML = '';
+            
+            data.scale_notes.forEach((note, index) => {
+                const noteCard = document.createElement('div');
+                noteCard.className = 'note-card';
+                
+                if (index === data.missing_position) {
+                    noteCard.textContent = '?';
+                    noteCard.classList.add('question');
+                } else {
+                    noteCard.textContent = note;
+                }
+                
+                scaleNotesDiv.appendChild(noteCard);
+            });
+            
+            // Populate options
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            
+            data.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => selectAnswer(option);
+                optionsGrid.appendChild(button);
+            });
+            
+            // Hide feedback
+            document.getElementById('feedbackSection').style.display = 'none';
+            
+            // Reset piano keys
+            document.querySelectorAll('.piano-key').forEach(key => {
+                key.classList.remove('active');
+            });
+        })
+        .catch(error => {
+            console.error('Error loading exercise:', error);
+        });
+}
+
+function playScale() {
+    if (!currentExercise || !audioContext) return;
+    
+    const baseNote = 60; // C4
+    const noteMap = {'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11};
+    const rootOffset = noteMap[currentExercise.root_note];
+    
+    currentExercise.scale_notes.forEach((note, index) => {
+        const noteOffset = noteMap[note];
+        const midiNote = baseNote + rootOffset + (noteOffset >= rootOffset ? noteOffset - rootOffset : noteOffset - rootOffset + 12);
+        const startTime = audioContext.currentTime + index * 0.5;
+        playNote(midiNote, startTime);
+    });
+}
+
+function playNote(midiNote, startTime) {
+    const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+    
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    
+    gainNode.gain.setValueAtTime(0, startTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.4);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.start(startTime);
+    oscillator.stop(startTime + 0.5);
+}
+
+function selectNoteFromPiano(note) {
+    // Visual feedback
+    document.querySelectorAll('.piano-key').forEach(key => {
+        key.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Submit answer
+    selectAnswer(note);
+}
+
+function selectAnswer(answer) {
+    if (!currentExercise) return;
+    
+    const responseTime = (Date.now() - exerciseStartTime) / 1000;
+    
+    // Submit answer
+    fetch('/music_theory/api/submit-answer/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            exercise_type: 'scale',
+            user_answer: answer,
+            correct_answer: currentExercise.correct_note,
+            exercise_id: currentExercise.exercise_id,
+            response_time: responseTime
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showFeedback(data, answer);
+        updateStats(data.correct, responseTime);
+    })
+    .catch(error => {
+        console.error('Error submitting answer:', error);
+    });
+}
+
+function showFeedback(data, userAnswer) {
+    const optionBtns = document.querySelectorAll('.option-btn');
+    
+    optionBtns.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === data.correct_answer) {
+            btn.classList.add('correct');
+        } else if (btn.textContent === userAnswer && !data.correct) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    const feedbackSection = document.getElementById('feedbackSection');
+    const feedbackText = document.getElementById('feedbackText');
+    
+    feedbackSection.className = `feedback-section ${data.correct ? 'feedback-correct' : 'feedback-incorrect'}`;
+    feedbackSection.style.display = 'block';
+    feedbackText.textContent = data.feedback;
+    
+    // Update scale display with correct answer
+    const scaleNotesDiv = document.getElementById('scaleNotes');
+    const questionCard = scaleNotesDiv.querySelector('.question');
+    if (questionCard) {
+        questionCard.textContent = data.correct_answer;
+        questionCard.classList.remove('question');
+        questionCard.classList.add(data.correct ? 'correct' : 'missing');
+    }
+}
+
+function updateStats(correct, responseTime) {
+    stats.total++;
+    stats.times.push(responseTime);
+    
+    if (correct) {
+        stats.correct++;
+        stats.streak++;
+    } else {
+        stats.streak = 0;
+    }
+    
+    const accuracy = Math.round((stats.correct / stats.total) * 100);
+    const avgTime = stats.times.reduce((a, b) => a + b, 0) / stats.times.length;
+    
+    document.getElementById('scoreNumber').textContent = accuracy + '%';
+    document.getElementById('correctCount').textContent = stats.correct;
+    document.getElementById('totalCount').textContent = stats.total;
+    document.getElementById('streakCount').textContent = stats.streak;
+    document.getElementById('avgTime').textContent = avgTime.toFixed(1) + 's';
+}
+
+function nextExercise() {
+    loadNewExercise();
+}
+
+function skipExercise() {
+    loadNewExercise();
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+{% csrf_token %}
+{% endblock %}

@@ -1,0 +1,960 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Audio Separation - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.separation-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.separation-header {
+    background: linear-gradient(135deg, #805ad5 0%, #553c9a 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.separation-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.separation-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.upload-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    border: 1px solid #e2e8f0;
+}
+
+.upload-area {
+    border: 3px dashed #805ad5;
+    border-radius: 16px;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.upload-area:hover, .upload-area.dragover {
+    border-color: #553c9a;
+    background: #f0f4ff;
+    transform: translateY(-2px);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    color: #805ad5;
+    margin-bottom: 1.5rem;
+}
+
+.upload-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtext {
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-btn {
+    background: linear-gradient(135deg, #805ad5 0%, #553c9a 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(128, 90, 213, 0.3);
+}
+
+.file-info {
+    background: #f0f4ff;
+    border: 2px solid #805ad5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    display: none;
+}
+
+.file-info.show {
+    display: block;
+}
+
+.file-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1.1rem;
+}
+
+.file-size {
+    color: #718096;
+}
+
+.remove-file {
+    background: #f56565;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.remove-file:hover {
+    background: #e53e3e;
+}
+
+.separation-options {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    border: 1px solid #e2e8f0;
+}
+
+.options-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.model-selection {
+    margin-bottom: 2rem;
+}
+
+.model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.model-option {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.model-option:hover {
+    border-color: #805ad5;
+    background: #f8fafc;
+}
+
+.model-option.selected {
+    border-color: #805ad5;
+    background: #f0f4ff;
+}
+
+.model-name {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.model-description {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.model-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.feature-tag {
+    background: #805ad5;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.quality-selection {
+    margin-bottom: 2rem;
+}
+
+.quality-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quality-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.quality-btn:hover {
+    border-color: #805ad5;
+    background: #f8fafc;
+}
+
+.quality-btn.selected {
+    border-color: #805ad5;
+    background: #805ad5;
+    color: white;
+}
+
+.process-section {
+    text-align: center;
+}
+
+.process-btn {
+    background: linear-gradient(135deg, #38a169 0%, #22543d 100%);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 16px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.process-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(56, 161, 105, 0.3);
+}
+
+.process-btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+}
+
+.progress-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    border: 1px solid #e2e8f0;
+    display: none;
+}
+
+.progress-section.show {
+    display: block;
+}
+
+.progress-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.progress-bar {
+    background: #f1f5f9;
+    border-radius: 10px;
+    height: 20px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(135deg, #805ad5 0%, #553c9a 100%);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    text-align: center;
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.progress-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #718096;
+}
+
+.step-icon.active {
+    background: #805ad5;
+    color: white;
+}
+
+.step-icon.completed {
+    background: #38a169;
+    color: white;
+}
+
+.step-text {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.results-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    border: 1px solid #e2e8f0;
+    display: none;
+}
+
+.results-section.show {
+    display: block;
+}
+
+.results-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.stems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.stem-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.stem-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #805ad5, #553c9a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+}
+
+.stem-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.audio-player {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.download-btn {
+    background: #805ad5;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.download-btn:hover {
+    background: #553c9a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .separation-title {
+        font-size: 2rem;
+    }
+    
+    .upload-area {
+        padding: 2rem 1rem;
+    }
+    
+    .separation-options {
+        padding: 2rem;
+    }
+    
+    .model-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quality-options {
+        flex-direction: column;
+    }
+    
+    .process-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="separation-container">
+    <div class="separation-header">
+        <h1 class="separation-title">Audio Source Separation</h1>
+        <p class="separation-subtitle">Upload your music and separate it into individual stems using advanced AI models. Get vocals, drums, bass, and other instruments as separate tracks.</p>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="upload-text">Drop your audio file here</div>
+            <div class="upload-subtext">Or click to browse your files</div>
+            <button class="upload-btn">Choose File</button>
+            <input type="file" id="file-input" class="file-input" accept="audio/*" onchange="handleFileSelect(event)">
+        </div>
+
+        <div id="file-info" class="file-info">
+            <div class="file-details">
+                <div>
+                    <div class="file-name" id="file-name"></div>
+                    <div class="file-size" id="file-size"></div>
+                </div>
+                <button class="remove-file" onclick="removeFile()">
+                    <i class="fas fa-trash"></i>
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Separation Options -->
+    <div class="separation-options">
+        <h2 class="options-title">Separation Options</h2>
+
+        <div class="model-selection">
+            <h3 style="margin-bottom: 1rem; color: #2d3748;">Choose AI Model</h3>
+            <div class="model-grid">
+                <div class="model-option selected" onclick="selectModel(this, 'htdemucs')">
+                    <div class="model-name">HTDemucs (Recommended)</div>
+                    <div class="model-description">Latest hybrid transformer model with superior quality and speed.</div>
+                    <div class="model-features">
+                        <span class="feature-tag">4 Stems</span>
+                        <span class="feature-tag">High Quality</span>
+                        <span class="feature-tag">Fast</span>
+                    </div>
+                </div>
+                <div class="model-option" onclick="selectModel(this, 'mdx')">
+                    <div class="model-name">MDX</div>
+                    <div class="model-description">Music demixing model optimized for music production.</div>
+                    <div class="model-features">
+                        <span class="feature-tag">4 Stems</span>
+                        <span class="feature-tag">Studio Quality</span>
+                    </div>
+                </div>
+                <div class="model-option" onclick="selectModel(this, 'spleeter')">
+                    <div class="model-name">Spleeter</div>
+                    <div class="model-description">Classic Deezer model, reliable for most music types.</div>
+                    <div class="model-features">
+                        <span class="feature-tag">2-5 Stems</span>
+                        <span class="feature-tag">Stable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quality-selection">
+            <h3 style="margin-bottom: 1rem; color: #2d3748; text-align: center;">Output Quality</h3>
+            <div class="quality-options">
+                <button class="quality-btn" onclick="selectQuality(this, 'mp3')">MP3 (Faster)</button>
+                <button class="quality-btn selected" onclick="selectQuality(this, 'flac')">FLAC (Best Quality)</button>
+                <button class="quality-btn" onclick="selectQuality(this, 'wav')">WAV (Uncompressed)</button>
+            </div>
+        </div>
+
+        <div class="process-section">
+            <button class="process-btn" id="process-btn" onclick="startSeparation()" disabled>
+                <i class="fas fa-magic"></i>
+                Start Separation
+            </button>
+            <div style="color: #718096; font-size: 0.9rem;">
+                Estimated processing time: 2-5 minutes
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div id="progress-section" class="progress-section">
+        <h2 class="progress-title">Processing Your Audio...</h2>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Initializing...</div>
+        
+        <div class="progress-steps">
+            <div class="step-item">
+                <div class="step-icon active" id="step-1">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="step-text">Upload Complete</div>
+            </div>
+            <div class="step-item">
+                <div class="step-icon" id="step-2">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="step-text">Processing Audio</div>
+            </div>
+            <div class="step-item">
+                <div class="step-icon" id="step-3">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <div class="step-text">AI Separation</div>
+            </div>
+            <div class="step-item">
+                <div class="step-icon" id="step-4">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="step-text">Preparing Results</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="results-section">
+        <h2 class="results-title">Separation Complete!</h2>
+        <div class="stems-grid">
+            <div class="stem-card">
+                <div class="stem-icon">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <h3 class="stem-title">Vocals</h3>
+                <audio class="audio-player" controls>
+                    <source src="#" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Vocals
+                </button>
+            </div>
+
+            <div class="stem-card">
+                <div class="stem-icon">
+                    <i class="fas fa-drum"></i>
+                </div>
+                <h3 class="stem-title">Drums</h3>
+                <audio class="audio-player" controls>
+                    <source src="#" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Drums
+                </button>
+            </div>
+
+            <div class="stem-card">
+                <div class="stem-icon">
+                    <i class="fas fa-guitar"></i>
+                </div>
+                <h3 class="stem-title">Bass</h3>
+                <audio class="audio-player" controls>
+                    <source src="#" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Bass
+                </button>
+            </div>
+
+            <div class="stem-card">
+                <div class="stem-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3 class="stem-title">Other</h3>
+                <audio class="audio-player" controls>
+                    <source src="#" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Other
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="process-btn" onclick="resetForm()">
+                <i class="fas fa-plus"></i>
+                Process Another File
+            </button>
+        </div>
+    </div>
+</div>
+
+{% csrf_token %}
+
+<script>
+let selectedModel = 'htdemucs';
+let selectedQuality = 'flac';
+let uploadedFile = null;
+
+// File upload handling
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        uploadedFile = file;
+        displayFileInfo(file);
+        enableProcessButton();
+    }
+}
+
+function displayFileInfo(file) {
+    const fileInfo = document.getElementById('file-info');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    
+    fileName.textContent = file.name;
+    fileSize.textContent = formatFileSize(file.size);
+    fileInfo.classList.add('show');
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function removeFile() {
+    uploadedFile = null;
+    document.getElementById('file-info').classList.remove('show');
+    document.getElementById('file-input').value = '';
+    disableProcessButton();
+}
+
+function enableProcessButton() {
+    const btn = document.getElementById('process-btn');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-magic"></i> Start Separation';
+}
+
+function disableProcessButton() {
+    const btn = document.getElementById('process-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-magic"></i> Start Separation';
+}
+
+// Model and quality selection
+function selectModel(element, model) {
+    document.querySelectorAll('.model-option').forEach(opt => opt.classList.remove('selected'));
+    element.classList.add('selected');
+    selectedModel = model;
+}
+
+function selectQuality(element, quality) {
+    document.querySelectorAll('.quality-btn').forEach(btn => btn.classList.remove('selected'));
+    element.classList.add('selected');
+    selectedQuality = quality;
+}
+
+// Drag and drop
+const uploadArea = document.getElementById('upload-area');
+
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        const file = files[0];
+        if (file.type.startsWith('audio/')) {
+            uploadedFile = file;
+            displayFileInfo(file);
+            enableProcessButton();
+        } else {
+            alert('Please upload an audio file.');
+        }
+    }
+});
+
+// Processing simulation
+function startSeparation() {
+    if (!uploadedFile) {
+        alert('Please upload a file first.');
+        return;
+    }
+    
+    // Hide options and show progress
+    document.querySelector('.upload-section').style.display = 'none';
+    document.querySelector('.separation-options').style.display = 'none';
+    document.getElementById('progress-section').classList.add('show');
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('audio_file', uploadedFile);
+    formData.append('model_type', selectedModel);
+    formData.append('quality', selectedQuality);
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Start actual processing
+    processWithAPI(formData, csrfToken);
+}
+
+function processWithAPI(formData, csrfToken) {
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    
+    // Simulate progress while waiting for response
+    let progress = 0;
+    let currentStep = 0;
+    const steps = ['step-1', 'step-2', 'step-3', 'step-4'];
+    
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 5 + 2;
+        if (progress > 90) progress = 90; // Don't complete until we get response
+        
+        if (progress >= 25 && currentStep === 0) {
+            updateStep(1, 'Analyzing audio structure...');
+            currentStep = 1;
+        } else if (progress >= 50 && currentStep === 1) {
+            updateStep(2, 'Applying AI model...');
+            currentStep = 2;
+        } else if (progress >= 75 && currentStep === 2) {
+            updateStep(3, 'Finalizing separation...');
+            currentStep = 3;
+        }
+        
+        progressFill.style.width = progress + '%';
+        progressText.textContent = Math.round(progress) + '% complete';
+    }, 300);
+    
+    // Make API call
+    fetch('/audio_processor/professional-separate/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        clearInterval(progressInterval);
+        
+        console.log('Received response:', data);
+        
+        // Complete progress
+        progressFill.style.width = '100%';
+        progressText.textContent = 'Complete!';
+        updateStep(4, 'Complete!');
+        
+        setTimeout(() => {
+            document.getElementById('progress-section').classList.remove('show');
+            if (data.success && data.results) {
+                console.log('Results:', data.results);
+                showResults(data.results);
+            } else {
+                console.error('Error in response:', data);
+                alert('Error: ' + (data.error || 'Processing failed'));
+                resetForm();
+            }
+        }, 1000);
+    })
+    .catch(error => {
+        clearInterval(progressInterval);
+        console.error('Error:', error);
+        alert('Network error occurred. Please try again.');
+        resetForm();
+    });
+}
+
+function showResults(results) {
+    console.log('showResults called with:', results);
+    
+    // Update results section with real data
+    const resultsSection = document.getElementById('results-section');
+    const stemCards = resultsSection.querySelectorAll('.stem-card');
+    
+    console.log('Found stem cards:', stemCards.length);
+    
+    // Map of track types to their data
+    const trackMap = {
+        'Vocals': results.vocals,
+        'Drums': results.drums,
+        'Bass': results.bass,
+        'Other': results.other
+    };
+    
+    console.log('Track map:', trackMap);
+    
+    stemCards.forEach((card, index) => {
+        const title = card.querySelector('.stem-title').textContent;
+        const audio = card.querySelector('audio source');
+        const downloadBtn = card.querySelector('.download-btn');
+        const audioElement = card.querySelector('audio');
+        
+        console.log(`Processing card ${index}: ${title}, has data: ${!!trackMap[title]}`);
+        
+        if (trackMap[title]) {
+            // Set audio source
+            audio.src = trackMap[title];
+            console.log(`Set audio source for ${title}:`, trackMap[title]);
+            
+            // Set download functionality
+            downloadBtn.onclick = () => downloadFile(trackMap[title], `${title.toLowerCase()}.wav`);
+            
+            // Reload audio element to use new source
+            audioElement.load();
+            
+            // Enable the card
+            card.style.opacity = '1';
+            downloadBtn.disabled = false;
+        } else {
+            console.log(`No data for ${title}`);
+            // Disable cards without data
+            card.style.opacity = '0.5';
+            downloadBtn.disabled = true;
+            audio.src = '';
+        }
+    });
+    
+    resultsSection.classList.add('show');
+}
+
+function downloadFile(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function updateStep(stepNumber, text) {
+    const stepIcon = document.getElementById(`step-${stepNumber}`);
+    const progressText = document.getElementById('progress-text');
+    
+    // Mark previous steps as completed
+    for (let i = 1; i < stepNumber; i++) {
+        const prevStep = document.getElementById(`step-${i}`);
+        prevStep.classList.remove('active');
+        prevStep.classList.add('completed');
+    }
+    
+    // Mark current step as active
+    stepIcon.classList.add('active');
+    progressText.textContent = text;
+}
+
+function resetForm() {
+    // Reset all sections
+    document.querySelector('.upload-section').style.display = 'block';
+    document.querySelector('.separation-options').style.display = 'block';
+    document.getElementById('progress-section').classList.remove('show');
+    document.getElementById('results-section').classList.remove('show');
+    
+    // Reset form state
+    removeFile();
+    
+    // Reset progress
+    document.getElementById('progress-fill').style.width = '0%';
+    document.getElementById('progress-text').textContent = 'Initializing...';
+    
+    // Reset steps
+    document.querySelectorAll('.step-icon').forEach(step => {
+        step.classList.remove('active', 'completed');
+    });
+    document.getElementById('step-1').classList.add('active');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    disableProcessButton();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,526 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}{{ data.name }} Lessons - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.instrument-hero {
+    background: linear-gradient(135deg, {{ data.color }}22 0%, {{ data.color }}11 100%);
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.instrument-hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Font Awesome 5 Free';
+    content: '\f001';
+    font-size: 20rem;
+    color: {{ data.color }};
+    opacity: 0.03;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.instrument-icon-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    color: white;
+    margin: 0 auto 2rem;
+    background: {{ data.color }};
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.instrument-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.instrument-subtitle {
+    font-size: 1.3rem;
+    color: #4b5563;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero-stat {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.hero-stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: {{ data.color }};
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.hero-stat-label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.content-section {
+    padding: 6rem 2rem;
+    background: white;
+}
+
+.section-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-item {
+    padding: 1rem 2rem;
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-item.active,
+.nav-item:hover {
+    color: {{ data.color }};
+    border-bottom-color: {{ data.color }};
+    text-decoration: none;
+}
+
+.tab-content {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.lesson-card {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.lesson-card:hover {
+    background: white;
+    border-color: {{ data.color }};
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.lesson-header {
+    display: flex;
+    justify-content: between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.lesson-number {
+    background: {{ data.color }};
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.lesson-info {
+    flex: 1;
+}
+
+.lesson-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.lesson-duration,
+.lesson-level {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.lesson-description {
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.lesson-exercises {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lesson-exercises li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.lesson-exercises li i {
+    color: #10b981;
+    font-size: 0.8rem;
+}
+
+.practice-section {
+    text-align: center;
+    background: #f9fafb;
+    padding: 4rem 2rem;
+    border-radius: 24px;
+    margin: 2rem 0;
+}
+
+.practice-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.practice-subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.practice-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.practice-feature {
+    text-align: center;
+}
+
+.practice-feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: {{ data.color }};
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+.practice-feature-title {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.practice-feature-desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.btn-practice {
+    background: {{ data.color }};
+    color: white;
+    padding: 1.25rem 3rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-practice:hover {
+    background: {{ data.color }}ee;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .instrument-title {
+        font-size: 2.5rem;
+    }
+    
+    .lessons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-item {
+        padding: 0.75rem 1rem;
+    }
+    
+    .practice-features {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Instrument Hero -->
+<section class="instrument-hero">
+    <div class="hero-content">
+        <div class="instrument-icon-large">
+            <i class="{{ data.icon }}"></i>
+        </div>
+        
+        <h1 class="instrument-title">{{ data.name }} Lessons</h1>
+        
+        <p class="instrument-subtitle">
+            {{ data.description }}
+        </p>
+        
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">{{ data.total_lessons }}</span>
+                <span class="hero-stat-label">Total Lessons</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">{{ data.categories|length }}</span>
+                <span class="hero-stat-label">Categories</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">AI</span>
+                <span class="hero-stat-label">Powered</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="content-section">
+    <!-- Navigation -->
+    <div class="section-nav">
+        <div class="nav-item active" onclick="showTab('lessons')">Lessons</div>
+        <div class="nav-item" onclick="showTab('practice')">Practice</div>
+        <div class="nav-item" onclick="showTab('progress')">Progress</div>
+    </div>
+    
+    <!-- Lessons Tab -->
+    <div id="lessons-tab" class="tab-content active">
+        {% if data.lessons %}
+        <div class="lessons-grid">
+            {% for lesson in data.lessons %}
+            <div class="lesson-card" onclick="window.location.href='/instruments/{{ instrument }}/lesson/{{ lesson.id }}/'">
+                <div class="lesson-header">
+                    <div class="lesson-number">{{ lesson.id }}</div>
+                    <div class="lesson-info">
+                        <h3 class="lesson-title">{{ lesson.title }}</h3>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="fas fa-clock"></i>
+                                {{ lesson.duration }}
+                            </div>
+                            <div class="lesson-level">
+                                <i class="fas fa-signal"></i>
+                                {{ lesson.level }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="lesson-description">{{ lesson.description }}</p>
+                
+                <ul class="lesson-exercises">
+                    {% for exercise in lesson.practice_exercises %}
+                    <li>
+                        <i class="fas fa-check"></i>
+                        {{ exercise }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <i class="fas fa-tools" style="font-size: 4rem; color: #d1d5db; margin-bottom: 2rem;"></i>
+            <h3 style="color: #111827; font-size: 1.5rem; margin-bottom: 1rem;">Lessons Coming Soon</h3>
+            <p style="color: #6b7280;">We're currently developing comprehensive lessons for {{ data.name }}. Check back soon!</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Practice Tab -->
+    <div id="practice-tab" class="tab-content">
+        <div class="practice-section">
+            <h2 class="practice-title">Interactive Practice</h2>
+            <p class="practice-subtitle">
+                Enhance your {{ data.name }} skills with AI-powered practice sessions, 
+                real-time feedback, and adaptive difficulty levels.
+            </p>
+            
+            <div class="practice-features">
+                <div class="practice-feature">
+                    <div class="practice-feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="practice-feature-title">Audio Recognition</div>
+                    <div class="practice-feature-desc">Real-time analysis of your playing</div>
+                </div>
+                
+                <div class="practice-feature">
+                    <div class="practice-feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="practice-feature-title">AI Feedback</div>
+                    <div class="practice-feature-desc">Intelligent correction and tips</div>
+                </div>
+                
+                <div class="practice-feature">
+                    <div class="practice-feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="practice-feature-title">Progress Tracking</div>
+                    <div class="practice-feature-desc">Monitor your improvement</div>
+                </div>
+                
+                <div class="practice-feature">
+                    <div class="practice-feature-icon">
+                        <i class="fas fa-target"></i>
+                    </div>
+                    <div class="practice-feature-title">Adaptive Difficulty</div>
+                    <div class="practice-feature-desc">Challenges that match your skill</div>
+                </div>
+            </div>
+            
+            <a href="/instruments/{{ instrument }}/practice/" class="btn-practice">
+                <i class="fas fa-play"></i>
+                Start Practice Session
+            </a>
+        </div>
+    </div>
+    
+    <!-- Progress Tab -->
+    <div id="progress-tab" class="tab-content">
+        <div class="practice-section">
+            <h2 class="practice-title">Track Your Progress</h2>
+            <p class="practice-subtitle">
+                Monitor your learning journey with detailed analytics, 
+                achievements, and personalized insights.
+            </p>
+            
+            <a href="/instruments/{{ instrument }}/progress/" class="btn-practice">
+                <i class="fas fa-chart-bar"></i>
+                View Progress Dashboard
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Remove active class from all nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(tabName + '-tab').classList.add('active');
+    
+    // Add active class to clicked nav item
+    event.target.classList.add('active');
+}
+
+// Add entrance animations
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.lesson-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

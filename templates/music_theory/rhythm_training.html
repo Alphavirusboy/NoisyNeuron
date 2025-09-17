@@ -1,0 +1,750 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Rhythm Training - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.training-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.training-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.training-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.rhythm-exercise {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.rhythm-display {
+    margin: 2rem 0;
+    padding: 3rem;
+    background: #f7fafc;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+}
+
+.rhythm-pattern {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.2em;
+}
+
+.tempo-display {
+    font-size: 1.5rem;
+    color: #4a5568;
+    margin-bottom: 2rem;
+}
+
+.metronome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.metronome-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.2s ease;
+}
+
+.metronome-circle.beat {
+    background: #4facfe;
+    color: white;
+    transform: scale(1.1);
+}
+
+.beat-counter {
+    font-size: 1.2rem;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.rhythm-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.rhythm-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.stop-btn {
+    background: linear-gradient(135deg, #f56565, #e53e3e);
+    color: white;
+}
+
+.tap-btn {
+    background: linear-gradient(135deg, #ed8936, #dd6b20);
+    color: white;
+    font-size: 1.5rem;
+    padding: 1.5rem 3rem;
+}
+
+.rhythm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tap-btn:active {
+    transform: scale(0.95);
+}
+
+.time-signature-selector {
+    margin: 2rem 0;
+}
+
+.time-sig-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.time-sig-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-sig-btn.active {
+    background: #4facfe;
+    border-color: #4facfe;
+    color: white;
+}
+
+.difficulty-selector {
+    margin-bottom: 2rem;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn.active {
+    background: #4facfe;
+    border-color: #4facfe;
+    color: white;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.option-btn {
+    padding: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: white;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.option-btn .pattern {
+    font-size: 1.5rem;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 0.5rem;
+}
+
+.option-btn .name {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.option-btn:hover {
+    border-color: #4facfe;
+    background: #eff6ff;
+}
+
+.option-btn.correct {
+    background: #48bb78;
+    border-color: #48bb78;
+    color: white;
+}
+
+.option-btn.incorrect {
+    background: #f56565;
+    border-color: #f56565;
+    color: white;
+}
+
+.tap-display {
+    background: #fef5e7;
+    border: 2px solid #ed8936;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.tap-instruction {
+    font-size: 1.2rem;
+    color: #744210;
+    margin-bottom: 1rem;
+}
+
+.tap-feedback {
+    font-size: 1rem;
+    color: #975a16;
+}
+
+.feedback-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: none;
+}
+
+.feedback-correct {
+    background: #c6f6d5;
+    border: 2px solid #48bb78;
+    color: #22543d;
+}
+
+.feedback-incorrect {
+    background: #fed7d7;
+    border: 2px solid #f56565;
+    color: #742a2a;
+}
+
+.stats-display {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.score-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4facfe;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #4facfe;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="training-container">
+    <div class="training-header">
+        <h1 class="training-title">Rhythm Training</h1>
+        <p class="training-subtitle">Develop your sense of rhythm and timing</p>
+    </div>
+    
+    <div class="rhythm-exercise">
+        <div class="difficulty-selector">
+            <h3 style="margin-bottom: 1rem; color: #2d3748;">Choose Difficulty</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn active" onclick="setDifficulty(1)">Beginner</button>
+                <button class="difficulty-btn" onclick="setDifficulty(2)">Intermediate</button>
+                <button class="difficulty-btn" onclick="setDifficulty(3)">Advanced</button>
+                <button class="difficulty-btn" onclick="setDifficulty(4)">Expert</button>
+            </div>
+        </div>
+        
+        <div class="time-signature-selector">
+            <h3 style="margin-bottom: 1rem; color: #2d3748;">Time Signature</h3>
+            <div class="time-sig-buttons">
+                <button class="time-sig-btn active" onclick="setTimeSignature('4/4')">4/4</button>
+                <button class="time-sig-btn" onclick="setTimeSignature('3/4')">3/4</button>
+                <button class="time-sig-btn" onclick="setTimeSignature('2/4')">2/4</button>
+                <button class="time-sig-btn" onclick="setTimeSignature('6/8')">6/8</button>
+            </div>
+        </div>
+        
+        <div id="exerciseDisplay" style="display: none;">
+            <div class="rhythm-display">
+                <div class="rhythm-pattern" id="rhythmPattern">♪ ♪ ♪ ♪</div>
+                <div class="tempo-display" id="tempoDisplay">♩ = 100 BPM</div>
+                
+                <div class="metronome">
+                    <div class="metronome-circle" id="metronomeCircle">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="beat-counter" id="beatCounter">Beat: 1</div>
+                </div>
+                
+                <div class="rhythm-controls">
+                    <button class="rhythm-btn play-btn" onclick="playRhythm()">
+                        <i class="fas fa-play"></i> Play Rhythm
+                    </button>
+                    <button class="rhythm-btn stop-btn" onclick="stopRhythm()">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                </div>
+                
+                <div class="tap-display">
+                    <div class="tap-instruction">Listen to the rhythm, then tap it back:</div>
+                    <button class="rhythm-btn tap-btn" onclick="tapRhythm()" onmousedown="startTap()" onmouseup="endTap()">
+                        <i class="fas fa-hand-pointer"></i> TAP HERE
+                    </button>
+                    <div class="tap-feedback" id="tapFeedback">Tap along with the rhythm...</div>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <p style="color: #4a5568; font-size: 1.1rem;">Which rhythm pattern did you hear?</p>
+                </div>
+                
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options will be populated here -->
+                </div>
+                
+                <div class="feedback-section" id="feedbackSection">
+                    <p id="feedbackText"></p>
+                </div>
+                
+                <div class="control-buttons">
+                    <button class="control-btn btn-primary" onclick="nextExercise()">Next Rhythm</button>
+                    <button class="control-btn btn-secondary" onclick="skipExercise()">Skip</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="startSection" class="control-buttons">
+            <button class="control-btn btn-primary" onclick="startTraining()">Start Training</button>
+        </div>
+    </div>
+    
+    <div class="stats-display">
+        <div class="score-number" id="scoreNumber">0%</div>
+        <p style="color: #718096; margin-bottom: 1rem;">Current Score</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="streakCount">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avgTempo">0</div>
+                <div class="stat-label">Avg Tempo</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentDifficulty = 1;
+let timeSignature = '4/4';
+let currentExercise = null;
+let exerciseStartTime = null;
+let audioContext = null;
+let rhythmInterval = null;
+let currentBeat = 1;
+let tapTimes = [];
+let stats = {
+    correct: 0,
+    total: 0,
+    streak: 0,
+    tempos: []
+};
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function setDifficulty(level) {
+    currentDifficulty = level;
+    document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function setTimeSignature(sig) {
+    timeSignature = sig;
+    document.querySelectorAll('.time-sig-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function startTraining() {
+    initAudio();
+    document.getElementById('startSection').style.display = 'none';
+    document.getElementById('exerciseDisplay').style.display = 'block';
+    loadNewExercise();
+}
+
+function loadNewExercise() {
+    fetch(`/music_theory/api/generate-rhythm/?difficulty=${currentDifficulty}&time_signature=${timeSignature}`)
+        .then(response => response.json())
+        .then(data => {
+            currentExercise = data;
+            exerciseStartTime = Date.now();
+            
+            document.getElementById('rhythmPattern').textContent = data.rhythm_pattern;
+            document.getElementById('tempoDisplay').textContent = `♩ = ${data.tempo} BPM`;
+            
+            // Populate options
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            
+            data.options.forEach(option => {
+                const button = document.createElement('div');
+                button.className = 'option-btn';
+                button.onclick = () => selectAnswer(option);
+                
+                const patternDiv = document.createElement('div');
+                patternDiv.className = 'pattern';
+                patternDiv.textContent = getRhythmPattern(option);
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'name';
+                nameDiv.textContent = option;
+                
+                button.appendChild(patternDiv);
+                button.appendChild(nameDiv);
+                optionsGrid.appendChild(button);
+            });
+            
+            // Reset state
+            document.getElementById('feedbackSection').style.display = 'none';
+            document.getElementById('beatCounter').textContent = 'Beat: 1';
+            document.getElementById('tapFeedback').textContent = 'Tap along with the rhythm...';
+            tapTimes = [];
+            currentBeat = 1;
+            
+            // Auto-play rhythm once
+            setTimeout(() => playRhythm(), 500);
+        })
+        .catch(error => {
+            console.error('Error loading exercise:', error);
+        });
+}
+
+function getRhythmPattern(rhythmName) {
+    const patterns = {
+        'Whole Note': '◌',
+        'Half Notes': '♩ ♩',
+        'Quarter Notes': '♪ ♪ ♪ ♪',
+        'Eighth Notes': '♫ ♫ ♫ ♫',
+        'Mixed Quarter-Eighth': '♪ ♫ ♪',
+        'Sixteenth Notes': '♬ ♬ ♬ ♬',
+        'Syncopated': '♫ ♪ ♫ ♪',
+        'Triplets': '♪♪♪ ♪♪♪'
+    };
+    return patterns[rhythmName] || '♪ ♪ ♪ ♪';
+}
+
+function playRhythm() {
+    if (!currentExercise || !audioContext) return;
+    
+    stopRhythm(); // Stop any existing rhythm
+    
+    const tempo = currentExercise.tempo;
+    const beatDuration = 60 / tempo; // Duration of one beat in seconds
+    const beatsPerMeasure = parseInt(timeSignature.split('/')[0]);
+    
+    currentBeat = 1;
+    
+    rhythmInterval = setInterval(() => {
+        // Visual metronome
+        const circle = document.getElementById('metronomeCircle');
+        circle.classList.add('beat');
+        setTimeout(() => circle.classList.remove('beat'), 200);
+        
+        // Update beat counter
+        document.getElementById('beatCounter').textContent = `Beat: ${currentBeat}`;
+        
+        // Play click sound
+        playClick(currentBeat === 1);
+        
+        currentBeat++;
+        if (currentBeat > beatsPerMeasure) {
+            currentBeat = 1;
+        }
+    }, beatDuration * 1000);
+}
+
+function stopRhythm() {
+    if (rhythmInterval) {
+        clearInterval(rhythmInterval);
+        rhythmInterval = null;
+    }
+}
+
+function playClick(isDownbeat) {
+    if (!audioContext) return;
+    
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(isDownbeat ? 1000 : 800, audioContext.currentTime);
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+}
+
+function startTap() {
+    tapTimes.push(Date.now());
+    updateTapFeedback();
+}
+
+function endTap() {
+    // Visual feedback for tap
+    event.target.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        event.target.style.transform = '';
+    }, 100);
+}
+
+function updateTapFeedback() {
+    const feedback = document.getElementById('tapFeedback');
+    if (tapTimes.length === 1) {
+        feedback.textContent = 'Good! Keep tapping the rhythm...';
+    } else if (tapTimes.length < 4) {
+        feedback.textContent = `Tap ${4 - tapTimes.length} more times...`;
+    } else {
+        // Calculate tempo from taps
+        const intervals = [];
+        for (let i = 1; i < tapTimes.length; i++) {
+            intervals.push(tapTimes[i] - tapTimes[i-1]);
+        }
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const tappedTempo = Math.round(60000 / avgInterval);
+        
+        feedback.textContent = `Your tempo: ${tappedTempo} BPM (Target: ${currentExercise.tempo} BPM)`;
+    }
+}
+
+function selectAnswer(answer) {
+    if (!currentExercise) return;
+    
+    const responseTime = (Date.now() - exerciseStartTime) / 1000;
+    
+    // Submit answer
+    fetch('/music_theory/api/submit-answer/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            exercise_type: 'rhythm',
+            user_answer: answer,
+            correct_answer: currentExercise.correct_answer,
+            exercise_id: currentExercise.exercise_id,
+            response_time: responseTime
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        stopRhythm();
+        showFeedback(data, answer);
+        updateStats(data.correct, responseTime);
+    })
+    .catch(error => {
+        console.error('Error submitting answer:', error);
+    });
+}
+
+function showFeedback(data, userAnswer) {
+    const optionBtns = document.querySelectorAll('.option-btn');
+    
+    optionBtns.forEach(btn => {
+        btn.style.pointerEvents = 'none';
+        const nameDiv = btn.querySelector('.name');
+        if (nameDiv.textContent === data.correct_answer) {
+            btn.classList.add('correct');
+        } else if (nameDiv.textContent === userAnswer && !data.correct) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    const feedbackSection = document.getElementById('feedbackSection');
+    const feedbackText = document.getElementById('feedbackText');
+    
+    feedbackSection.className = `feedback-section ${data.correct ? 'feedback-correct' : 'feedback-incorrect'}`;
+    feedbackSection.style.display = 'block';
+    feedbackText.textContent = data.feedback;
+}
+
+function updateStats(correct, responseTime) {
+    stats.total++;
+    stats.tempos.push(currentExercise.tempo);
+    
+    if (correct) {
+        stats.correct++;
+        stats.streak++;
+    } else {
+        stats.streak = 0;
+    }
+    
+    const accuracy = Math.round((stats.correct / stats.total) * 100);
+    const avgTempo = Math.round(stats.tempos.reduce((a, b) => a + b, 0) / stats.tempos.length);
+    
+    document.getElementById('scoreNumber').textContent = accuracy + '%';
+    document.getElementById('correctCount').textContent = stats.correct;
+    document.getElementById('totalCount').textContent = stats.total;
+    document.getElementById('streakCount').textContent = stats.streak;
+    document.getElementById('avgTempo').textContent = avgTempo;
+}
+
+function nextExercise() {
+    loadNewExercise();
+}
+
+function skipExercise() {
+    stopRhythm();
+    loadNewExercise();
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Cleanup when leaving page
+window.addEventListener('beforeunload', () => {
+    stopRhythm();
+});
+</script>
+
+{% csrf_token %}
+{% endblock %}

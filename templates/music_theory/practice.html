@@ -1,0 +1,692 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Practice Music Theory - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --primary-color: #667eea;
+    --primary-dark: #5a67d8;
+    --success-color: #48bb78;
+    --warning-color: #ed8936;
+    --error-color: #f56565;
+    --bg-white: #ffffff;
+    --bg-gray-50: #f9fafb;
+    --bg-gray-100: #f7fafc;
+    --text-gray-600: #718096;
+    --text-gray-700: #4a5568;
+    --text-gray-900: #1a202c;
+    --border-gray-200: #e2e8f0;
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.practice-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: calc(100vh - 80px);
+}
+
+.practice-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-radius: 24px;
+    padding: 4rem 2rem;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+}
+
+.practice-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
+}
+
+.practice-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.stats-overview {
+    background: var(--bg-white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 3rem;
+    border: 1px solid var(--border-gray-200);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bg-gray-50);
+    border-radius: 16px;
+    border: 1px solid var(--border-gray-200);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--text-gray-600);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.practice-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.mode-card {
+    background: var(--bg-white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+}
+
+.mode-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.mode-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-size: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.mode-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-gray-900);
+    margin-bottom: 1rem;
+}
+
+.mode-description {
+    color: var(--text-gray-600);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.mode-features {
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-gray-700);
+    font-size: 0.9rem;
+}
+
+.feature-item i {
+    color: var(--success-color);
+    width: 16px;
+    font-size: 0.8rem;
+}
+
+.btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 rgba(102, 126, 234, 0.35);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: var(--bg-white);
+    color: var(--text-gray-700);
+    border: 2px solid var(--border-gray-200);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-gray-50);
+    border-color: var(--primary-color);
+    color: var(--text-gray-700);
+    text-decoration: none;
+}
+
+/* Practice Session Styles */
+.practice-session {
+    background: var(--bg-white);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: var(--shadow-xl);
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-gray-200);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.practice-session.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.session-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-gray-900);
+}
+
+.session-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.exercise-area {
+    background: var(--bg-gray-50);
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-gray-200);
+}
+
+.exercise-question {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-gray-900);
+    margin-bottom: 2rem;
+}
+
+.chord-display {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 2rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    text-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+}
+
+.answer-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.option-btn {
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: var(--bg-white);
+    border: 2px solid var(--border-gray-200);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: var(--text-gray-700);
+    font-size: 0.95rem;
+}
+
+.option-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-gray-50);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.option-btn.correct {
+    background: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+    box-shadow: 0 4px 14px 0 rgba(72, 187, 120, 0.25);
+}
+
+.option-btn.incorrect {
+    background: var(--error-color);
+    color: white;
+    border-color: var(--error-color);
+    box-shadow: 0 4px 14px 0 rgba(245, 101, 101, 0.25);
+}
+
+/* Hide practice modes when session is active */
+.practice-modes.hidden {
+    display: none;
+}
+
+.stats-overview.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .practice-container {
+        padding: 1rem;
+    }
+    
+    .practice-title {
+        font-size: 2.5rem;
+    }
+    
+    .practice-modes {
+        grid-template-columns: 1fr;
+    }
+    
+    .session-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .session-controls {
+        justify-content: center;
+    }
+    
+    .answer-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .exercise-area {
+        padding: 2rem 1rem;
+    }
+    
+    .chord-display {
+        font-size: 3rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="practice-container">
+    <div class="practice-header">
+        <h1 class="practice-title">Practice Music Theory</h1>
+        <p class="practice-subtitle">Sharpen your skills with interactive exercises, ear training, and practice tools. Build muscle memory and improve your musical intuition through structured practice.</p>
+    </div>
+
+    <div id="stats-overview" class="stats-overview">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: var(--text-gray-900); font-size: 1.5rem; font-weight: 700;">Today's Practice Stats</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">25</div>
+                <div class="stat-label">Minutes Practiced</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">9/10</div>
+                <div class="stat-label">Accuracy Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Streak Days</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">128</div>
+                <div class="stat-label">Total Exercises</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="practice-modes" class="practice-modes">
+        <div class="mode-card">
+            <div class="mode-icon">
+                <i class="fas fa-ear-listen"></i>
+            </div>
+            <h3 class="mode-title">Interval Training</h3>
+            <p class="mode-description">Train your ear to recognize intervals between notes. Essential for developing musical hearing and improving your ability to transcribe music.</p>
+            <div class="mode-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>All interval types (unison to octave)</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Ascending & descending intervals</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Progress tracking & analytics</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Adaptive difficulty system</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="startIntervalTraining()">
+                <i class="fas fa-play"></i>
+                Start Interval Training
+            </button>
+        </div>
+
+        <div class="mode-card">
+            <div class="mode-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <h3 class="mode-title">Chord Recognition</h3>
+            <p class="mode-description">Identify chord qualities and progressions to improve your harmonic understanding. Perfect for piano players and composers.</p>
+            <div class="mode-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Major & minor triads</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Seventh chords & extensions</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Inversions & voicings</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Context-based exercises</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="startChordTraining()">
+                <i class="fas fa-play"></i>
+                Start Chord Training
+            </button>
+        </div>
+
+        <div class="mode-card">
+            <div class="mode-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h3 class="mode-title">Scale Practice</h3>
+            <p class="mode-description">Master scales and modes with guided practice sessions and pattern recognition. Build technical proficiency and theoretical knowledge.</p>
+            <div class="mode-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>All major & minor scales</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Modes and exotic scales</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Fingering patterns & exercises</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Speed building & metronome</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="startScalePractice()">
+                <i class="fas fa-play"></i>
+                Start Scale Practice
+            </button>
+        </div>
+
+        <div class="mode-card">
+            <div class="mode-icon">
+                <i class="fas fa-drum"></i>
+            </div>
+            <h3 class="mode-title">Rhythm Training</h3>
+            <p class="mode-description">Develop your sense of timing with rhythm exercises and metronome practice. Essential for all musicians and producers.</p>
+            <div class="mode-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Clapping exercises & patterns</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Complex rhythms & polyrhythms</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Subdivision practice</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Interactive metronome & click track</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="startRhythmTraining()">
+                <i class="fas fa-play"></i>
+                Start Rhythm Training
+            </button>
+        </div>
+    </div>
+
+    <!-- Practice Session -->
+    <div id="practice-session" class="practice-session">
+        <div class="session-header">
+            <h2 class="session-title">Chord Recognition Practice</h2>
+            <div class="session-controls">
+                <button class="btn btn-secondary" onclick="endSession()">
+                    <i class="fas fa-stop"></i>
+                    End Session
+                </button>
+                <button class="btn btn-secondary" onclick="skipQuestion()">
+                    <i class="fas fa-forward"></i>
+                    Skip Question
+                </button>
+            </div>
+        </div>
+
+        <div class="exercise-area">
+            <div class="exercise-question">What type of chord is this?</div>
+            <div class="chord-display">Cmaj7</div>
+            <div class="answer-options">
+                <button class="option-btn" onclick="selectAnswer(this, true)">Major 7th</button>
+                <button class="option-btn" onclick="selectAnswer(this, false)">Minor 7th</button>
+                <button class="option-btn" onclick="selectAnswer(this, false)">Dominant 7th</button>
+                <button class="option-btn" onclick="selectAnswer(this, false)">Diminished 7th</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function startIntervalTraining() {
+    showNotification('Interval training will be available soon! This is a demo interface.', 'info');
+}
+
+function startChordTraining() {
+    hideMainContent();
+    showPracticeSession();
+}
+
+function startScalePractice() {
+    showNotification('Scale practice will be available soon! This is a demo interface.', 'info');
+}
+
+function startRhythmTraining() {
+    showNotification('Rhythm training will be available soon! This is a demo interface.', 'info');
+}
+
+function hideMainContent() {
+    document.getElementById('stats-overview').classList.add('hidden');
+    document.getElementById('practice-modes').classList.add('hidden');
+}
+
+function showMainContent() {
+    document.getElementById('stats-overview').classList.remove('hidden');
+    document.getElementById('practice-modes').classList.remove('hidden');
+}
+
+function showPracticeSession() {
+    document.getElementById('practice-session').classList.add('active');
+}
+
+function hidePracticeSession() {
+    document.getElementById('practice-session').classList.remove('active');
+}
+
+function endSession() {
+    hidePracticeSession();
+    setTimeout(() => {
+        showMainContent();
+    }, 400);
+}
+
+function skipQuestion() {
+    // Reset all option buttons
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.className = 'option-btn';
+        btn.style.pointerEvents = 'auto';
+    });
+    
+    // Generate new question (demo)
+    const chords = ['Cmaj7', 'Dmin7', 'G7', 'Am7', 'Fmaj7', 'Bdim7', 'Cmaj9', 'Em7', 'F#dim7'];
+    const randomChord = chords[Math.floor(Math.random() * chords.length)];
+    document.querySelector('.chord-display').textContent = randomChord;
+}
+
+function selectAnswer(button, isCorrect) {
+    // Disable all buttons temporarily
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.style.pointerEvents = 'none';
+    });
+    
+    if (isCorrect) {
+        button.classList.add('correct');
+        showNotification('Correct! Well done!', 'success');
+        setTimeout(() => {
+            skipQuestion();
+        }, 1500);
+    } else {
+        button.classList.add('incorrect');
+        // Show correct answer
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            if (btn.textContent.toLowerCase().includes('major 7th')) {
+                btn.classList.add('correct');
+            }
+        });
+        showNotification('Incorrect. The correct answer is highlighted.', 'error');
+        setTimeout(() => {
+            skipQuestion();
+        }, 2500);
+    }
+}
+
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+        max-width: 300px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    `;
+    
+    // Set background color based on type
+    switch(type) {
+        case 'success':
+            notification.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+            break;
+        case 'error':
+            notification.style.background = 'linear-gradient(135deg, #f56565, #e53e3e)';
+            break;
+        case 'info':
+            notification.style.background = 'linear-gradient(135deg, #667eea, #5a67d8)';
+            break;
+        default:
+            notification.style.background = 'linear-gradient(135deg, #667eea, #5a67d8)';
+    }
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after delay
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Any initialization code here
+});
+</script>
+{% endblock %}

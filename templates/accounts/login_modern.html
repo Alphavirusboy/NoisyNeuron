@@ -1,0 +1,540 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Login - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Professional Login Styles */
+.login-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 30c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20zm0 5c-8.284 0-15 6.716-15 15s6.716 15 15 15 15-6.716 15-15-6.716-15-15-15z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    animation: backgroundMove 20s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-100px) translateY(-100px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    max-width: 500px;
+}
+
+.hero-logo {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.hero-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.hero-feature {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.hero-feature i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fbbf24;
+}
+
+.feature-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.login-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f9fafb;
+}
+
+.login-form-container {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+    width: 100%;
+    max-width: 450px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 2.25rem;
+    color: #9ca3af;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.form-input:focus + .input-icon {
+    color: #6366f1;
+}
+
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+}
+
+.remember-me label {
+    color: #374151;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #6366f1;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-button {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.social-login {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.social-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.social-divider::before,
+.social-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.social-divider span {
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.social-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    color: #374151;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.social-button:hover {
+    border-color: #6366f1;
+    background: #f9fafb;
+    text-decoration: none;
+    color: #6366f1;
+}
+
+.social-button i {
+    font-size: 1.1rem;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.signup-link a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .login-hero {
+        display: none;
+    }
+    
+    .login-form-section {
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-form-container {
+        padding: 2rem;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .social-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <!-- Hero Section -->
+    <div class="login-hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <i class="fas fa-brain"></i>
+            </div>
+            
+            <h1 class="hero-title">NoisyNeuron</h1>
+            <p class="hero-subtitle">
+                AI-powered music production tools for creators, musicians, and audio professionals worldwide.
+            </p>
+            
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <i class="fas fa-magic"></i>
+                    <div class="feature-text">AI Audio Separation</div>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-guitar"></i>
+                    <div class="feature-text">Instrument Learning</div>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="feature-text">Progress Tracking</div>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-users"></i>
+                    <div class="feature-text">Community</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Form Section -->
+    <div class="login-form-section">
+        <div class="login-form-container">
+            <div class="form-header">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="form-subtitle">Sign in to your account to continue creating</p>
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                        value="{{ request.POST.email|default:'' }}"
+                    >
+                    <i class="input-icon fas fa-envelope"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <i class="input-icon fas fa-lock"></i>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Sign In to Dashboard
+                </button>
+            </form>
+
+            <!-- Social Login -->
+            <div class="social-login">
+                <div class="social-divider">
+                    <span>or continue with</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <a href="#" class="social-button">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </a>
+                    <a href="#" class="social-button">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+
+            <!-- Signup Link -->
+            <div class="signup-link">
+                <p>Don't have an account? 
+                    <a href="{% url 'accounts:signup' %}">Create one here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced form interactions
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('.form-input');
+    
+    inputs.forEach(input => {
+        // Focus effects
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+        });
+        
+        // Real-time validation
+        input.addEventListener('input', function() {
+            if (this.checkValidity()) {
+                this.style.borderColor = '#10b981';
+            } else {
+                this.style.borderColor = '#e5e7eb';
+            }
+        });
+    });
+    
+    // Form submission enhancement
+    const form = document.querySelector('.login-form');
+    const submitButton = document.querySelector('.login-button');
+    
+    form.addEventListener('submit', function(e) {
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+        submitButton.disabled = true;
+    });
+});
+</script>
+{% endblock %}

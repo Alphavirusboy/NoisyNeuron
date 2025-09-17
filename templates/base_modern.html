@@ -95,6 +95,12 @@
                             <span>Practice</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'premium:features' %}" class="nav-link premium-link {% if 'premium' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-crown"></i>
+                            <span>Premium</span>
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>

@@ -1,0 +1,1240 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Professional AI Audio Separation - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Enhanced Professional Audio Separation Styles */
+.audio-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 6rem 2rem 4rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.audio-hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.3; }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-icon {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    margin: 0 auto 2rem;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.hero-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.hero-feature {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.hero-feature i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fbbf24;
+}
+
+.feature-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.feature-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.separation-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+}
+
+.main-section {
+    background: white;
+}
+
+.section-card {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.section-title i {
+    width: 50px;
+    height: 50px;
+    background: #6366f1;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Enhanced Upload Zone */
+.upload-zone {
+    border: 3px dashed #d1d5db;
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.upload-zone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    transition: left 1.5s ease;
+}
+
+.upload-zone:hover::before {
+    left: 100%;
+}
+
+.upload-zone.dragover {
+    border-color: #6366f1;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    width: 80px;
+    height: 80px;
+    background: #6366f1;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.upload-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.upload-subtitle {
+    color: #6b7280;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.upload-formats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.format-tag {
+    background: #6366f1;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.btn-upload {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-upload:hover {
+    background: #4f46e5;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* AI Model Selection */
+.model-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.model-card {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.model-card.selected {
+    background: white;
+    border-color: #6366f1;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+}
+
+.model-card::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.model-card.selected::before {
+    background: #6366f1;
+    border-color: #6366f1;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-8.5 8.5a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L5 11.293l8.146-8.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+}
+
+.model-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.model-icon {
+    width: 50px;
+    height: 50px;
+    background: #6366f1;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.model-info {
+    flex: 1;
+}
+
+.model-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.25rem;
+}
+
+.model-version {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.model-description {
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.model-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.spec-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.spec-value {
+    font-weight: 700;
+    color: #6366f1;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.spec-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Quality Settings */
+.quality-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.quality-option {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quality-option.selected {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+}
+
+.quality-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.quality-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.quality-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Advanced Options */
+.advanced-toggle {
+    background: #f3f4f6;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.advanced-toggle:hover {
+    background: #e5e7eb;
+}
+
+.advanced-options {
+    display: none;
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.advanced-options.show {
+    display: block;
+}
+
+.option-group {
+    margin-bottom: 2rem;
+}
+
+.option-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.option-slider {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    outline: none;
+    margin-bottom: 0.5rem;
+}
+
+.option-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #6366f1;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-value {
+    text-align: center;
+    font-weight: 600;
+    color: #6366f1;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+}
+
+/* Process Button */
+.process-section {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.btn-process {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    padding: 1.5rem 4rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.btn-process:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.btn-process:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-title i {
+    color: #6366f1;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.comparison-table th {
+    font-weight: 600;
+    color: #374151;
+    background: #f9fafb;
+}
+
+.comparison-table td {
+    color: #6b7280;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list li i {
+    color: #10b981;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .separation-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .model-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .quality-settings {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .comparison-table {
+        font-size: 0.9rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<!-- Audio Separation Hero -->
+<section class="audio-hero">
+    <div class="hero-content">
+        <div class="hero-icon">
+            <i class="fas fa-brain"></i>
+        </div>
+        
+        <h1 class="hero-title">Professional AI Audio Separation</h1>
+        
+        <p class="hero-subtitle">
+            Extract vocals, instruments, and stems from any audio track using state-of-the-art AI models. 
+            Perfect for musicians, producers, DJs, and music enthusiasts.
+        </p>
+        
+        <div class="hero-features">
+            <div class="hero-feature">
+                <i class="fas fa-rocket"></i>
+                <div class="feature-title">99.2% Accuracy</div>
+                <div class="feature-desc">Industry-leading separation quality</div>
+            </div>
+            <div class="hero-feature">
+                <i class="fas fa-layer-group"></i>
+                <div class="feature-title">4+ Stem Types</div>
+                <div class="feature-desc">Vocals, drums, bass, and instruments</div>
+            </div>
+            <div class="hero-feature">
+                <i class="fas fa-bolt"></i>
+                <div class="feature-title">Lightning Fast</div>
+                <div class="feature-desc">Process in under 2 minutes</div>
+            </div>
+            <div class="hero-feature">
+                <i class="fas fa-cog"></i>
+                <div class="feature-title">Multiple Models</div>
+                <div class="feature-desc">HTDemucs, MDX, Spleeter, and more</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Separation Interface -->
+<section class="separation-container">
+    <div class="main-section">
+        <!-- File Upload Section -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-upload"></i>
+                Upload Your Audio
+            </h2>
+            
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3 class="upload-title">Drag & Drop Your Audio File</h3>
+                <p class="upload-subtitle">or click to browse from your computer</p>
+                
+                <div class="upload-formats">
+                    <span class="format-tag">MP3</span>
+                    <span class="format-tag">WAV</span>
+                    <span class="format-tag">FLAC</span>
+                    <span class="format-tag">M4A</span>
+                    <span class="format-tag">OGG</span>
+                </div>
+                
+                <button class="btn-upload">
+                    <i class="fas fa-plus"></i>
+                    Choose File
+                </button>
+                
+                <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+            </div>
+        </div>
+
+        <!-- AI Model Selection -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-brain"></i>
+                Choose AI Model
+            </h2>
+            
+            <div class="model-selector">
+                <div class="model-card selected" data-model="htdemucs">
+                    <div class="model-header">
+                        <div class="model-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="model-info">
+                            <div class="model-name">HTDemucs</div>
+                            <div class="model-version">v4.0 (Recommended)</div>
+                        </div>
+                    </div>
+                    <p class="model-description">
+                        State-of-the-art hybrid transformer model with superior separation quality 
+                        for vocals, drums, bass, and other instruments.
+                    </p>
+                    <div class="model-specs">
+                        <div class="spec-item">
+                            <span class="spec-value">99.2%</span>
+                            <span class="spec-label">Accuracy</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">4 Stems</span>
+                            <span class="spec-label">Output</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">~2 min</span>
+                            <span class="spec-label">Processing</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">44.1kHz</span>
+                            <span class="spec-label">Sample Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-card" data-model="mdx">
+                    <div class="model-header">
+                        <div class="model-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="model-info">
+                            <div class="model-name">MDX-Net</div>
+                            <div class="model-version">v2.1</div>
+                        </div>
+                    </div>
+                    <p class="model-description">
+                        Efficient model optimized for speed while maintaining high quality separation. 
+                        Great for quick processing and batch operations.
+                    </p>
+                    <div class="model-specs">
+                        <div class="spec-item">
+                            <span class="spec-value">96.8%</span>
+                            <span class="spec-label">Accuracy</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">2 Stems</span>
+                            <span class="spec-label">Output</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">~45 sec</span>
+                            <span class="spec-label">Processing</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">44.1kHz</span>
+                            <span class="spec-label">Sample Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-card" data-model="spleeter">
+                    <div class="model-header">
+                        <div class="model-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div class="model-info">
+                            <div class="model-name">Spleeter</div>
+                            <div class="model-version">v2.3</div>
+                        </div>
+                    </div>
+                    <p class="model-description">
+                        Google's pioneering separation model. Reliable and battle-tested, 
+                        perfect for research and educational purposes.
+                    </p>
+                    <div class="model-specs">
+                        <div class="spec-item">
+                            <span class="spec-value">93.5%</span>
+                            <span class="spec-label">Accuracy</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">2-5 Stems</span>
+                            <span class="spec-label">Output</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">~1 min</span>
+                            <span class="spec-label">Processing</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">22kHz</span>
+                            <span class="spec-label">Sample Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quality Settings -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                Quality Settings
+            </h2>
+            
+            <div class="quality-settings">
+                <div class="quality-option selected" data-quality="high">
+                    <div class="quality-icon">🏆</div>
+                    <div class="quality-name">High Quality</div>
+                    <div class="quality-desc">Best results, slower processing</div>
+                </div>
+                <div class="quality-option" data-quality="balanced">
+                    <div class="quality-icon">⚖️</div>
+                    <div class="quality-name">Balanced</div>
+                    <div class="quality-desc">Good quality, faster processing</div>
+                </div>
+                <div class="quality-option" data-quality="fast">
+                    <div class="quality-icon">⚡</div>
+                    <div class="quality-name">Fast</div>
+                    <div class="quality-desc">Quick results, lower quality</div>
+                </div>
+                <div class="quality-option" data-quality="custom">
+                    <div class="quality-icon">🔧</div>
+                    <div class="quality-name">Custom</div>
+                    <div class="quality-desc">Advanced configuration</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Options -->
+        <div class="section-card">
+            <button class="advanced-toggle" onclick="toggleAdvanced()">
+                <span>Advanced Options</span>
+                <i class="fas fa-chevron-down" id="advancedIcon"></i>
+            </button>
+            
+            <div class="advanced-options" id="advancedOptions">
+                <div class="option-group">
+                    <label class="option-label">Overlap Factor (0.1 - 0.9)</label>
+                    <input type="range" class="option-slider" min="0.1" max="0.9" step="0.1" value="0.25" id="overlapSlider">
+                    <div class="slider-value" id="overlapValue">0.25</div>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Segment Length (seconds)</label>
+                    <input type="range" class="option-slider" min="10" max="60" step="5" value="30" id="segmentSlider">
+                    <div class="slider-value" id="segmentValue">30s</div>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Output Options</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalizeAudio" checked>
+                            <label for="normalizeAudio">Normalize Audio</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="applyFadeIn">
+                            <label for="applyFadeIn">Apply Fade In/Out</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="highQualityResampling" checked>
+                            <label for="highQualityResampling">High Quality Resampling</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preserveMono">
+                            <label for="preserveMono">Preserve Mono Tracks</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Section -->
+        <div class="process-section">
+            <button class="btn-process" id="processBtn" disabled>
+                <i class="fas fa-magic"></i>
+                Start AI Separation
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Model Comparison -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-chart-bar"></i>
+                Model Comparison
+            </h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Quality</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTDemucs</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>MDX-Net</td>
+                        <td>⭐⭐⭐⭐</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>Spleeter</td>
+                        <td>⭐⭐⭐</td>
+                        <td>⭐⭐⭐⭐</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Professional Features -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-crown"></i>
+                Professional Features
+            </h3>
+            <ul class="feature-list">
+                <li>
+                    <i class="fas fa-check"></i>
+                    Batch Processing
+                </li>
+                <li>
+                    <i class="fas fa-check"></i>
+                    Cloud Storage
+                </li>
+                <li>
+                    <i class="fas fa-check"></i>
+                    API Access
+                </li>
+                <li>
+                    <i class="fas fa-check"></i>
+                    Custom Models
+                </li>
+                <li>
+                    <i class="fas fa-check"></i>
+                    Priority Processing
+                </li>
+                <li>
+                    <i class="fas fa-check"></i>
+                    Advanced Analytics
+                </li>
+            </ul>
+        </div>
+
+        <!-- Usage Stats -->
+        <div class="sidebar-card">
+            <h3 class="sidebar-title">
+                <i class="fas fa-chart-line"></i>
+                Your Usage
+            </h3>
+            <div style="text-align: center; padding: 2rem 0;">
+                <div style="font-size: 2rem; font-weight: 700; color: #6366f1; margin-bottom: 0.5rem;">47</div>
+                <div style="color: #6b7280; margin-bottom: 1rem;">Files Processed This Month</div>
+                
+                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">2h 34m</div>
+                <div style="color: #6b7280;">Audio Processed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// File upload handling
+const uploadZone = document.getElementById('uploadZone');
+const audioFileInput = document.getElementById('audioFile');
+const processBtn = document.getElementById('processBtn');
+
+uploadZone.addEventListener('click', () => audioFileInput.click());
+uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => {
+    uploadZone.classList.remove('dragover');
+});
+uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        handleFileSelect(files[0]);
+    }
+});
+
+audioFileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
+    }
+});
+
+function handleFileSelect(file) {
+    // Update upload zone
+    uploadZone.innerHTML = `
+        <div class="upload-icon">
+            <i class="fas fa-music"></i>
+        </div>
+        <h3 class="upload-title">${file.name}</h3>
+        <p class="upload-subtitle">File size: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+        <button class="btn-upload" onclick="document.getElementById('audioFile').click()">
+            <i class="fas fa-edit"></i>
+            Change File
+        </button>
+    `;
+    
+    // Enable process button
+    processBtn.disabled = false;
+}
+
+// Model selection
+document.querySelectorAll('.model-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.querySelectorAll('.model-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+    });
+});
+
+// Quality selection
+document.querySelectorAll('.quality-option').forEach(option => {
+    option.addEventListener('click', () => {
+        document.querySelectorAll('.quality-option').forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+    });
+});
+
+// Advanced options toggle
+function toggleAdvanced() {
+    const options = document.getElementById('advancedOptions');
+    const icon = document.getElementById('advancedIcon');
+    
+    if (options.classList.contains('show')) {
+        options.classList.remove('show');
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        options.classList.add('show');
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// Slider value updates
+document.getElementById('overlapSlider').addEventListener('input', (e) => {
+    document.getElementById('overlapValue').textContent = e.target.value;
+});
+
+document.getElementById('segmentSlider').addEventListener('input', (e) => {
+    document.getElementById('segmentValue').textContent = e.target.value + 's';
+});
+
+// Process button
+processBtn.addEventListener('click', async () => {
+    if (!processBtn.disabled && audioFileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('audio_file', audioFileInput.files[0]);
+        
+        // Get selected options
+        const selectedModel = document.querySelector('.model-card.selected')?.dataset.model || 'default';
+        const selectedQuality = document.querySelector('.quality-option.selected')?.dataset.quality || 'high';
+        
+        formData.append('model', selectedModel);
+        formData.append('quality', selectedQuality);
+        
+        // Show processing state
+        processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Audio...';
+        processBtn.disabled = true;
+        
+        try {
+            const response = await fetch('/audio_processor/professional-separate/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    // Show success and download links
+                    displayResults(result);
+                } else {
+                    throw new Error(result.message || 'Processing failed');
+                }
+            } else {
+                throw new Error(`Server error: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Processing error:', error);
+            alert(`Error: ${error.message}`);
+        } finally {
+            // Reset button
+            processBtn.innerHTML = '<i class="fas fa-magic"></i> Start AI Separation';
+            processBtn.disabled = false;
+        }
+    }
+});
+
+function displayResults(result) {
+    // Create results section if it doesn't exist
+    let resultsSection = document.getElementById('resultsSection');
+    if (!resultsSection) {
+        resultsSection = document.createElement('div');
+        resultsSection.id = 'resultsSection';
+        resultsSection.className = 'results-section';
+        document.querySelector('.process-section').after(resultsSection);
+    }
+    
+    resultsSection.innerHTML = `
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-download"></i>
+                Separation Results
+            </h2>
+            
+            <div class="results-grid">
+                <div class="result-item">
+                    <div class="result-icon">🎤</div>
+                    <h3>Vocals</h3>
+                    <audio controls src="${result.vocals}"></audio>
+                    <a href="${result.vocals}" download class="btn-download">
+                        <i class="fas fa-download"></i> Download Vocals
+                    </a>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-icon">🥁</div>
+                    <h3>Drums</h3>
+                    <audio controls src="${result.drums}"></audio>
+                    <a href="${result.drums}" download class="btn-download">
+                        <i class="fas fa-download"></i> Download Drums
+                    </a>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-icon">🎸</div>
+                    <h3>Bass</h3>
+                    <audio controls src="${result.bass}"></audio>
+                    <a href="${result.bass}" download class="btn-download">
+                        <i class="fas fa-download"></i> Download Bass
+                    </a>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-icon">🎵</div>
+                    <h3>Other</h3>
+                    <audio controls src="${result.other}"></audio>
+                    <a href="${result.other}" download class="btn-download">
+                        <i class="fas fa-download"></i> Download Other
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add CSS for results section
+    if (!document.getElementById('resultsCSS')) {
+        const style = document.createElement('style');
+        style.id = 'resultsCSS';
+        style.textContent = `
+            .results-section {
+                margin-top: 2rem;
+            }
+            
+            .results-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+            
+            .result-item {
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            .result-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .result-item h3 {
+                color: #374151;
+                margin-bottom: 1rem;
+                font-size: 1.25rem;
+            }
+            
+            .result-item audio {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .btn-download {
+                display: inline-block;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: transform 0.2s;
+            }
+            
+            .btn-download:hover {
+                transform: translateY(-2px);
+                text-decoration: none;
+                color: white;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+</script>
+{% endblock %}

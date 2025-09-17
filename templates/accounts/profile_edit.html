@@ -1,0 +1,328 @@
+{% extends "base_modern.html" %}
+{% load static %}
+
+{% block title %}Edit Profile - NoisyNeuron{% endblock %}
+
+{% block extra_css %}
+<style>
+.edit-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.edit-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.edit-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.edit-subtitle {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.edit-form {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    font-family: inherit;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    color: #e53e3e;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.form-help {
+    color: #718096;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #2d3748;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+    text-decoration: none;
+    color: #2d3748;
+}
+
+.messages {
+    margin-bottom: 1rem;
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.alert-success {
+    background: #f0fff4;
+    color: #38a169;
+    border: 1px solid #9ae6b4;
+}
+
+.alert-error {
+    background: #fed7d7;
+    color: #e53e3e;
+    border: 1px solid #feb2b2;
+}
+
+.avatar-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 2px dashed #e2e8f0;
+}
+
+.current-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.avatar-label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.avatar-help {
+    color: #718096;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-container">
+    <div class="edit-header">
+        <h1 class="edit-title">Edit Profile</h1>
+        <p class="edit-subtitle">Update your account information and preferences</p>
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="edit-form">
+        {% csrf_token %}
+        
+        <div class="avatar-section">
+            <div class="current-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="avatar-label">Profile Picture</div>
+            <div class="avatar-help">Upload a new profile picture (optional)</div>
+            <!-- Add file input for avatar upload if needed -->
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    {% for error in form.first_name.errors %}
+                    <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    {% for error in form.last_name.errors %}
+                    <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group full-width">
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                    <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-help">We'll never share your email with anyone else.</div>
+            </div>
+
+            <!-- Add profile-specific fields if they exist -->
+            {% if profile_form %}
+            {% for field in profile_form %}
+            <div class="form-group {% if field.name == 'bio' %}full-width{% endif %}">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {% if field.name == 'bio' %}
+                    {{ field|add_class:"form-textarea" }}
+                {% else %}
+                    {{ field|add_class:"form-input" }}
+                {% endif %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                    <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% if field.help_text %}
+                <div class="form-help">{{ field.help_text }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form classes for styling
+    const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
+    inputs.forEach(input => {
+        if (!input.classList.contains('form-input') && !input.classList.contains('form-textarea')) {
+            if (input.tagName.toLowerCase() === 'textarea') {
+                input.classList.add('form-textarea');
+            } else {
+                input.classList.add('form-input');
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
